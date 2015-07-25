@@ -1,0 +1,11 @@
+{
+	"version": "0.1.0",
+	"private": true,
+	"name": "STX",
+	"description": "Interface for Excella STX.",
+	"dependencies": {
+		"angular": "1.4.x",
+		"angular-mocks": "~1.4.x",
+		"angular-route": "~1.4.x"
+	}
+}

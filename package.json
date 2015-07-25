@@ -1,0 +1,11 @@
+{
+	"version": "0.1.0",
+	"private": true,
+	"name": "STX",
+	"description": "Interface for Excella STX.",
+	"devDependencies": {
+		"bower": "^1.4.1"
+	},
+	"scripts": {
+	}
+}
