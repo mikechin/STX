@@ -7,13 +7,16 @@
 		<script src="js/lib/angular-route/angular-route.min.js"></script>
 		<script src="js/lib/x2js/xml2json.min.js"></script>
 		<script src="js/main.js"></script>
+		<script src="js/controllers/NavController.js"></script>
 		<script src="js/controllers/ScanController.js"></script>
 		<base href="/">
 	</head>
 	<body>
 		<div class="header">
 		</div>
-		<div class="nav">
+		<div class="nav" ng-controller="NavController">
+			<a href="#/" ng-class="{ active: isActive('/') }"><div>HOME</div></a>
+			<a href="#/scan" ng-class="{ active: isActive('/scan') }"><div>SCAN</div></a>
 		</div>
 		<div class="view" ng-view>
 		</div>
