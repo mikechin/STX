@@ -1,4 +1,30 @@
 <div class="content">
 	<h2>Scan</h2>
+	<div class="section">
+		<h4>Process Options</h4>
+		<select ng-model="ProcessOptions.ReadMICR">
+			<option value="E13B">E13B</option>
+			<option value="CMC7">CMC7</option>
+			<option value="ALL">Auto-detect</option>
+			<option value="NO">None</option>
+		</select>
+		<select ng-model="ProcessOptions.Endorse">
+			<option value="BACK">Back</option>
+			<option value="FRONT">Front</option>
+			<option value="BOTH">Both</option>
+			<option value="NO">None</option>
+		</select>
+		<select ng-model="ProcessOptions.DocFeed">
+			<option value="ALL">All</option>
+			<option value="MANUAL">Manual</option>
+			<option value="ID">ID</option>
+			<option value="MSR">MSR</option>
+		</select>
+		<select ng-model="ProcessOptions.DocFeedTimeout">
+			<option value="1000">1</option>
+			<option value="5000">5</option>
+			<option value="10000">10</option>
+		</select>
+	</div>
 	<button ng-click="scan()">Scan</button>
 </div>

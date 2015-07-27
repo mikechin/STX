@@ -25,13 +25,6 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 				'PrintFont': 'INTFONT2',
 				'PrintData': 'foo'
 			},
-			'ProcessOptions': {
-				'MICRFmtCode': 0,
-				'DocFeed': 'MANUAL',
-				'DocFeedTimeout': 1000,
-				'Endorse': 'NO',
-				'ReadMICR': 'E13B'
-			}
 		}
 	};
 
@@ -45,13 +38,34 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 		}
 	};
 
+	$scope.ProcessOptions = {
+		'ReadMICR': 'E13B',
+		'Endorse': 'NO',
+		'DocFeed': 'MANUAL',
+		'DocFeedTimeout': '5000',
+		'MICRFmtCode': '0'
+	};
+
+	function setOptions() {
+		setProcessOptions();
+	}
+
+	function setProcessOptions() {
+		_options.DeviceSettings.ProcessOptions = $scope.ProcessOptions;
+	}
+
 	$scope.scan = function() {
+		setOptions();
+
+		console.log(_options);
+
 		var dataSend = _x2js.json2xml_str(_options);
 
+		console.log(dataSend);
+
+		/*
 		console.log('sending...');
-
 		_scan.data = dataSend;
-
 		$http(_scan).
 		success(function(data, status, headers, config) {
 			console.log('success - ' + status + '.');
@@ -60,5 +74,6 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 		error(function(data, status, headers, config) {
 			console.log('fail - ' + status + '.');
 		});
+		*/
 	};
 }]);
