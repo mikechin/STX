@@ -4,19 +4,6 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 	var _x2js = new X2JS();
 	var _options = {
 		'DeviceSettings': {
-			'ImageOptions': {
-				'Number': 2,
-				'ImageColor1': 'GRAY8',
-				'FileType1': 'JPG',
-				'Resolution1': '200x200',
-				'Compression1': 'JPEG',
-				'ImageSide1': 'FRONT',
-				'ImageColor2': 'GRAY8',
-				'FileType2': 'JPG',
-				'Resolution2': '200x200',
-				'Compression2': 'JPEG',
-				'ImageSide2': 'BACK'
-			},
 			'Application': {
 				'DocUnits': 'ENGLISH',
 				'Transfer': 'HTTP'
@@ -46,8 +33,42 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 		'MICRFmtCode': '0'
 	};
 
+	$scope.ImageOptions = {
+		'Num': '1',
+		'ImageColor': 'GRAY8',
+		'FileType': 'JPG',
+		'Resolution': '200x200',
+		'Compression': 'JPEG'
+	}
+
 	function setOptions() {
+		setImageOptions();
 		setProcessOptions();
+	}
+
+	function setImageOptions() {
+		var imageOptions = {};
+
+		for(var i = 1; i <= $scope.ImageOptions.Num; i++) {
+			imageOptions['Number'] = $scope.ImageOptions.Num;
+			angular.forEach($scope.ImageOptions, function(value, key) {
+				if(key !== 'Num') {
+					var numberedKey = key + i;
+					imageOptions[numberedKey] = $scope.ImageOptions[key];
+				}
+			});
+
+			var side = '';
+			if(i === 1) {
+				side = 'FRONT';
+			}
+			else {
+				side = 'BACK';
+			}
+			imageOptions['ImageSide' + i] = side;
+		}
+
+		_options.DeviceSettings.ImageOptions = imageOptions;
 	}
 
 	function setProcessOptions() {

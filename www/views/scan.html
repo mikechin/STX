@@ -26,5 +26,31 @@
 			<option value="10000">10</option>
 		</select>
 	</div>
+	<div class="section">
+		<h4>Image Options</h4>
+		<select ng-model="ImageOptions.Num">
+			<option value="1">Front</option>
+			<option value="2">Front and Back</option>
+		</select>
+		<select ng-model="ImageOptions.ImageColor">
+			<option value="BW">Black and white</option>
+			<option value="GRAY8">8-bit grayscale</option>
+			<option value="COL24">24-bit color</option>
+		</select>
+		<select ng-model="ImageOptions.Resolution">
+			<option value="100x100">100x100 DPI</option>
+			<option value="200x200">200x200 DPI</option>
+		</select>
+		<select ng-model="ImageOptions.Compression">
+			<option value="GROUP4">Image will be compressed using Group4 compression type</option>
+			<option value="JPEG">Image will be compressed using JPEG compression type</option>
+			<option value="NONE">No compression</option>
+		</select>
+		<select ng-model="ImageOptions.FileType">
+			<option value="TIF">tiff</option>
+			<option value="JPG">jpg</option>
+			<option value="BMP">bmp</option>
+		</select>
+	</div>
 	<button ng-click="scan()">Scan</button>
 </div>
