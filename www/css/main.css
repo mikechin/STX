@@ -10,6 +10,9 @@ a:hover {
 a:active {
 }
 
+.active {
+}
+
 body {
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 	font-size: 1em;
