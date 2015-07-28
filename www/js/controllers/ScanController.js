@@ -39,19 +39,32 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 
 	$scope.Endorser = {
 		'PrintFont': 'INTFONT2',
-		'PrintFrontFont': 'INTFONT2',
 		'PrintStyle': 'NORMAL',
+		'PrintFrontFont': 'INTFONT2',
 		'PrintFrontStyle': 'NORMAL'
 	};
 
 	function setOptions() {
-		setEndorser();
+		if($scope.ProcessOptions.Endorse !== 'NO') {
+			setEndorser();
+		}
 		setImageOptions();
 		setProcessOptions();
 	}
 
 	function setEndorser()  {
-		_options.DeviceSettings.Endorser = $scope.Endorser;
+		_options.DeviceSettings.Endorser = {};
+		if($scope.ProcessOptions.Endorse === 'BACK' || $scope.ProcessOptions.Endorse === 'BOTH') {
+			_options.DeviceSettings.Endorser.PrintData = $scope.Endorser.PrintData;
+			_options.DeviceSettings.Endorser.PrintFont = $scope.Endorser.PrintFont;
+			_options.DeviceSettings.Endorser.PrintStyle = $scope.Endorser.PrintStyle;
+		}
+
+		if($scope.ProcessOptions.Endorse === 'FRONT' || $scope.ProcessOptions.Endorse === 'BOTH') {
+			_options.DeviceSettings.Endorser.PrintFrontData = $scope.Endorser.PrintFrontData;
+			_options.DeviceSettings.Endorser.PrintFrontFont = $scope.Endorser.PrintFrontFont;
+			_options.DeviceSettings.Endorser.PrintFrontStyle = $scope.Endorser.PrintFrontStyle;
+		}
 	}
 
 	function setImageOptions() {
@@ -90,10 +103,9 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 
 		var dataSend = _x2js.json2xml_str(_options);
 
-		console.log(dataSend);
-
 		/*
 		console.log('sending...');
+		console.log(dataSend);
 		_scan.data = dataSend;
 		$http(_scan).
 		success(function(data, status, headers, config) {
