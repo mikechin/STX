@@ -18,6 +18,13 @@ body {
 	font-size: 1em;
 }
 
+button.scan {
+	background-color: #8AC007;
+	border: none;
+	color: #FFFFFF;
+	padding: 20px;
+}
+
 .clear {
 	clear: both;
 }
