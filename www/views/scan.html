@@ -79,45 +79,51 @@
 			</select>
 		</div>
 	</div>
-	<div class="section">
-		<h4>Endorser</h4>
-		<div class="option">
-			<label>Back Message</label>
-			<input ng-model="Endorser.PrintData" />
+	<div class="section" ng-if="ProcessOptions.Endorse !== 'NO'">
+		<h4>Endorse Options</h4>
+		<div class="title" ng-if="ProcessOptions.Endorse === 'BACK' || ProcessOptions.Endorse === 'BOTH'">Back</div>
+		<div class="sub-section" ng-if="ProcessOptions.Endorse === 'BACK' || ProcessOptions.Endorse === 'BOTH'">
+			<div class="option">
+				<label>Message</label>
+				<input ng-model="Endorser.PrintData" />
+			</div>
+			<div class="option">
+				<label>Font</label>
+				<select ng-model="Endorser.PrintFont">
+					<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
+					<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>Style</label>
+				<select ng-model="Endorser.PrintStyle">
+					<option value="BOLD">Bold</option>
+					<option value="NORMAL">Normal</option>
+					<option value="WIDE">WIDE</option>
+				</select>
+			</div>
 		</div>
-		<div class="option">
-			<label>Back Font</label>
-			<select ng-model="Endorser.PrintFont">
-				<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
-				<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
-			</select>
-		</div>
-		<div class="option">
-			<label>Back Style</label>
-			<select ng-model="Endorser.PrintStyle">
-				<option value="BOLD">Bold</option>
-				<option value="NORMAL">Normal</option>
-				<option value="WIDE">WIDE</option>
-			</select>
-		</div>
-		<div class="option">
-			<label>Front Message</label>
-			<input ng-model="Endorser.PrintFrontData" />
-		</div>
-		<div class="option">
-			<label>Front Font</label>
-			<select ng-model="Endorser.PrintFrontFont">
-				<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
-				<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
-			</select>
-		</div>
-		<div class="option">
-			<label>Front Style</label>
-			<select ng-model="Endorser.PrintFrontStyle">
-				<option value="BOLD">Bold</option>
-				<option value="NORMAL">Normal</option>
-				<option value="WIDE">WIDE</option>
-			</select>
+		<div class="title" ng-if="ProcessOptions.Endorse === 'FRONT' || ProcessOptions.Endorse === 'BOTH'">Front</div>
+		<div class="sub-section" ng-if="ProcessOptions.Endorse === 'FRONT' || ProcessOptions.Endorse === 'BOTH'">
+			<div class="option">
+				<label>Front Message</label>
+				<input ng-model="Endorser.PrintFrontData" />
+			</div>
+			<div class="option">
+				<label>Front Font</label>
+				<select ng-model="Endorser.PrintFrontFont">
+					<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
+					<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>Front Style</label>
+				<select ng-model="Endorser.PrintFrontStyle">
+					<option value="BOLD">Bold</option>
+					<option value="NORMAL">Normal</option>
+					<option value="WIDE">WIDE</option>
+				</select>
+			</div>
 		</div>
 	</div>
 	<button class="scan" ng-click="scan()">Scan</button>

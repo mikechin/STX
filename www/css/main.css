@@ -112,6 +112,14 @@ button.scan {
 	margin: 10px;
 }
 
+.section .title {
+	margin-left: 10px;
+}
+
+.sub-section {
+	margin-left: 10px;
+}
+
 .view {
 	margin-left: auto;
 	margin-right: auto;
