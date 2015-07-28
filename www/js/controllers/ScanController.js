@@ -7,11 +7,7 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 			'Application': {
 				'DocUnits': 'ENGLISH',
 				'Transfer': 'HTTP'
-			},
-			'Endorser': {
-				'PrintFont': 'INTFONT2',
-				'PrintData': 'foo'
-			},
+			}
 		}
 	};
 
@@ -39,11 +35,23 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 		'FileType': 'JPG',
 		'Resolution': '200x200',
 		'Compression': 'JPEG'
-	}
+	};
+
+	$scope.Endorser = {
+		'PrintFont': 'INTFONT2',
+		'PrintFrontFont': 'INTFONT2',
+		'PrintStyle': 'NORMAL',
+		'PrintFrontStyle': 'NORMAL'
+	};
 
 	function setOptions() {
+		setEndorser();
 		setImageOptions();
 		setProcessOptions();
+	}
+
+	function setEndorser()  {
+		_options.DeviceSettings.Endorser = $scope.Endorser;
 	}
 
 	function setImageOptions() {

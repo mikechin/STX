@@ -52,5 +52,28 @@
 			<option value="BMP">bmp</option>
 		</select>
 	</div>
+	<div class="section">
+		<h4>Endorser</h4>
+		<input ng-model="Endorser.PrintData" />
+		<input ng-model="Endorser.PrintFrontData" />
+		<select ng-model="Endorser.PrintFont">
+			<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
+			<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
+		</select>
+		<select ng-model="Endorser.PrintFrontFont">
+			<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
+			<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
+		</select>
+		<select ng-model="Endorser.PrintStyle">
+			<option value="BOLD">Bold</option>
+			<option value="NORMAL">Normal</option>
+			<option value="WIDE">WIDE</option>
+		</select>
+		<select ng-model="Endorser.PrintFrontStyle">
+			<option value="BOLD">Bold</option>
+			<option value="NORMAL">Normal</option>
+			<option value="WIDE">WIDE</option>
+		</select>
+	</div>
 	<button ng-click="scan()">Scan</button>
 </div>
