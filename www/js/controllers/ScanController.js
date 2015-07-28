@@ -32,14 +32,16 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 	$scope.ImageOptions = {
 		'Num': '1',
 		'ImageColor': 'GRAY8',
-		'FileType': 'JPG',
 		'Resolution': '200x200',
-		'Compression': 'JPEG'
+		'Compression': 'JPEG',
+		'FileType': 'JPG'
 	};
 
 	$scope.Endorser = {
+		'PrintData': '',
 		'PrintFont': 'INTFONT2',
 		'PrintStyle': 'NORMAL',
+		'PrintFrontData': '',
 		'PrintFrontFont': 'INTFONT2',
 		'PrintFrontStyle': 'NORMAL'
 	};
