@@ -1,3 +1,130 @@
 <div class="content">
 	<h2>Scan</h2>
+	<div class="section">
+		<h4>Process Options</h4>
+		<div class="option">
+			<label>ReadMICR</label>
+			<select ng-model="ProcessOptions.ReadMICR">
+				<option value="E13B">E13B</option>
+				<option value="CMC7">CMC7</option>
+				<option value="ALL">Auto-detect</option>
+				<option value="NO">None</option>
+			</select>
+		</div>
+		<div class="option">
+			<label>Endorse</label>
+			<select ng-model="ProcessOptions.Endorse">
+				<option value="BACK">Back</option>
+				<option value="FRONT">Front</option>
+				<option value="BOTH">Both</option>
+				<option value="NO">None</option>
+			</select>
+		</div>
+		<div class="option">
+			<label>DocFeed</label>
+			<select ng-model="ProcessOptions.DocFeed">
+				<option value="ALL">All</option>
+				<option value="MANUAL">Manual</option>
+				<option value="ID">ID</option>
+				<option value="MSR">MSR</option>
+			</select>
+		</div>
+		<div class="option">
+			<label>Timeout</label>
+			<select ng-model="ProcessOptions.DocFeedTimeout">
+				<option value="1000">1</option>
+				<option value="5000">5</option>
+				<option value="10000">10</option>
+			</select>
+		</div>
+	</div>
+	<div class="section">
+		<h4>Image Options</h4>
+		<div class="option">
+			<label>Sides</label>
+			<select ng-model="ImageOptions.Num">
+				<option value="1">Front</option>
+				<option value="2">Front and Back</option>
+			</select>
+		</div>
+		<div class="option">
+			<label>Color</label>
+			<select ng-model="ImageOptions.ImageColor">
+				<option value="BW">Black and white</option>
+				<option value="GRAY8">8-bit grayscale</option>
+				<option value="COL24">24-bit color</option>
+			</select>
+		</div>
+		<div class="option">
+			<label>Resolution</label>
+			<select ng-model="ImageOptions.Resolution">
+				<option value="100x100">100x100 DPI</option>
+				<option value="200x200">200x200 DPI</option>
+			</select>
+		</div>
+		<div class="option">
+			<label>Compression</label>
+			<select ng-model="ImageOptions.Compression">
+				<option value="GROUP4">Group4</option>
+				<option value="JPEG">JPEG</option>
+				<option value="NONE">None</option>
+			</select>
+		</div>
+		<div class="option">
+			<label>File Type</label>
+			<select ng-model="ImageOptions.FileType">
+				<option value="TIF">tiff</option>
+				<option value="JPG">jpg</option>
+				<option value="BMP">bmp</option>
+			</select>
+		</div>
+	</div>
+	<div class="section" ng-if="ProcessOptions.Endorse !== 'NO'">
+		<h4>Endorse Options</h4>
+		<div class="title" ng-if="ProcessOptions.Endorse === 'BACK' || ProcessOptions.Endorse === 'BOTH'">Back</div>
+		<div class="sub-section" ng-if="ProcessOptions.Endorse === 'BACK' || ProcessOptions.Endorse === 'BOTH'">
+			<div class="option">
+				<label>Message</label>
+				<input ng-model="Endorser.PrintData" />
+			</div>
+			<div class="option">
+				<label>Font</label>
+				<select ng-model="Endorser.PrintFont">
+					<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
+					<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>Style</label>
+				<select ng-model="Endorser.PrintStyle">
+					<option value="BOLD">Bold</option>
+					<option value="NORMAL">Normal</option>
+					<option value="WIDE">Wide</option>
+				</select>
+			</div>
+		</div>
+		<div class="title" ng-if="ProcessOptions.Endorse === 'FRONT' || ProcessOptions.Endorse === 'BOTH'">Front</div>
+		<div class="sub-section" ng-if="ProcessOptions.Endorse === 'FRONT' || ProcessOptions.Endorse === 'BOTH'">
+			<div class="option">
+				<label>Front Message</label>
+				<input ng-model="Endorser.PrintFrontData" />
+			</div>
+			<div class="option">
+				<label>Front Font</label>
+				<select ng-model="Endorser.PrintFrontFont">
+					<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
+					<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>Front Style</label>
+				<select ng-model="Endorser.PrintFrontStyle">
+					<option value="BOLD">Bold</option>
+					<option value="NORMAL">Normal</option>
+					<option value="WIDE">Wide</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<button class="scan" ng-click="scan()">Scan</button>
 </div>

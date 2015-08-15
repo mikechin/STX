@@ -1,4 +1,4 @@
-var stx = angular.module('stx', ['ngRoute']);
+var stx = angular.module('stx', ['ngRoute', 'ngCookies']);
 
 stx.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.
@@ -6,6 +6,7 @@ stx.config(['$routeProvider', function($routeProvider) {
 			templateUrl: 'views/main.html'
 		}).
 		when('/scan', {
+			controller: 'ScanController',
 			templateUrl: 'views/scan.html'
 		}).
 		otherwise({
