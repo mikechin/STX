@@ -77,9 +77,12 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 				 + '	</DocInfo>'
 				 + '	<ImageInfo>'
 				 + '		<ImageSHA1Key1>NONE</ImageSHA1Key1>'
+				 + '		<ImageSHA1Key2>NONE</ImageSHA1Key2>'
 				 + '		<ImageSize1>129537</ImageSize1>'
+				 + '		<ImageSize2>80138</ImageSize2>'
 				 + '		<ImageURL1>/chkimg/FRONT200GRAY8_1.JPG</ImageURL1>'
-				 + '		<Number>1</Number>'
+				 + '		<ImageURL2>/chkimg/BACK200GRAY8_2.JPG</ImageURL2>'
+				 + '		<Number>2</Number>'
 				 + '	</ImageInfo>'
 				 + '</DeviceInformation>';
 
@@ -92,7 +95,7 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 	};
 
 	$scope.ImageOptions = {
-		'Num': '1',
+		'Num': '2',
 		'ImageColor': 'GRAY8',
 		'Resolution': '200x200',
 		'Compression': 'JPEG',
@@ -161,6 +164,8 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 	}
 
 	$scope.scan = function() {
+		var data = _x2js.xml_str2json(testData);
+		/*
 		setOptions();
 
 		console.log(_options);
@@ -179,5 +184,6 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 		error(function(data, status, headers, config) {
 			console.log('fail - ' + status + '.');
 		});
+		*/
 	};
 }]);
