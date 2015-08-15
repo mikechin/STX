@@ -21,6 +21,68 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 		}
 	};
 
+	var testData = '<?xml version="1.0" encoding="utf-8"?>'
+				 + '<DeviceInformation>'
+				 + '	<CommandStatus>'
+				 + '		<BadData>NONE</BadData>'
+				 + '		<CheckDS>F</CheckDS>'
+				 + '		<KVErrCnt>0</KVErrCnt>'
+				 + '		<ResponseType>CHECK</ResponseType>'
+				 + '		<ReturnCode>0</ReturnCode>'
+				 + '		<ReturnMsg>OK</ReturnMsg>'
+				 + '	</CommandStatus>'
+				 + '	<DeviceStatus>'
+				 + '		<AccessGuide>LATCHED</AccessGuide>'
+				 + '		<AutoFeeder>NOTSUP</AutoFeeder>'
+				 + '		<FrontInk>OK</FrontInk>'
+				 + '		<FrontPrinter>PRESENT</FrontPrinter>'
+				 + '		<IDFeeder>EMPTY</IDFeeder>'
+				 + '		<Ink>OK</Ink>'
+				 + '		<LED1>NNNN</LED1>'
+				 + '		<LED2>GGGG</LED2>'
+				 + '		<LED3>NNNN</LED3>'
+				 + '		<Lamp1>OK</Lamp1>'
+				 + '		<Lamp2>OK</Lamp2>'
+				 + '		<ManualFeeder>EMPTY</ManualFeeder>'
+				 + '		<Path>OK</Path>'
+				 + '		<Printer>PRESENT</Printer>'
+				 + '		<RTCBattery>OK</RTCBattery>'
+				 + '		<RawSensors>384</RawSensors>'
+				 + '		<ScanCalibStatus>FACTORY</ScanCalibStatus>'
+				 + '		<SnsrCalibStatus>FACTORY</SnsrCalibStatus>'
+				 + '		<StartTimeout>4000</StartTimeout>'
+				 + '		<State>ONLINE</State>'
+				 + '	</DeviceStatus>'
+				 + '	<DocInfo>'
+				 + '		<DocHeight>3650</DocHeight>'
+				 + '		<DocUnits>ENGLISH</DocUnits>'
+				 + '		<DocWidth>8320</DocWidth>'
+				 + '		<MICRAcct>7163942209</MICRAcct>'
+				 + '		<MICRAmt></MICRAmt>'
+				 + '		<MICRAux>22602194</MICRAux>'
+				 + '		<MICRBankNum>1329</MICRBankNum>'
+				 + '		<MICRChkType>BUSINESS</MICRChkType>'
+				 + '		<MICRCountry>USA</MICRCountry>'
+				 + '		<MICRDecode>OK</MICRDecode>'
+				 + '		<MICREPC></MICREPC>'
+				 + '		<MICRFont>E13B</MICRFont>'
+				 + '		<MICROnUs> 7163942209U</MICROnUs>'
+				 + '		<MICROut>U22602194U T072413298T 7163942209U/0100</MICROut>'
+				 + '		<MICRParseSts0>0100</MICRParseSts0>'
+				 + '		<MICRParseSts1>11</MICRParseSts1>'
+				 + '		<MICRRaw>U22602194U T072413298T 7163942209U</MICRRaw>'
+				 + '		<MICRSerNum>22602194</MICRSerNum>'
+				 + '		<MICRTPC></MICRTPC>'
+				 + '		<MICRTransit>072413298</MICRTransit>'
+				 + '	</DocInfo>'
+				 + '	<ImageInfo>'
+				 + '		<ImageSHA1Key1>NONE</ImageSHA1Key1>'
+				 + '		<ImageSize1>129537</ImageSize1>'
+				 + '		<ImageURL1>/chkimg/FRONT200GRAY8_1.JPG</ImageURL1>'
+				 + '		<Number>1</Number>'
+				 + '	</ImageInfo>'
+				 + '</DeviceInformation>';
+
 	$scope.ProcessOptions = {
 		'ReadMICR': 'E13B',
 		'Endorse': 'NO',
@@ -105,18 +167,17 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 
 		var dataSend = _x2js.json2xml_str(_options);
 
-		/*
 		console.log('sending...');
 		console.log(dataSend);
 		_scan.data = dataSend;
 		$http(_scan).
 		success(function(data, status, headers, config) {
 			console.log('success - ' + status + '.');
+			console.log(data);
 			console.log(_x2js.xml_str2json(data));
 		}).
 		error(function(data, status, headers, config) {
 			console.log('fail - ' + status + '.');
 		});
-		*/
 	};
 }]);
