@@ -1,4 +1,4 @@
-stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
+stx.controller('ScanController', ['$scope', '$http', 'process', function($scope, $http, process) {
 	'use strict';
 
 	var _x2js = new X2JS();
@@ -165,6 +165,12 @@ stx.controller('ScanController', ['$scope', '$http', function($scope, $http) {
 
 	$scope.scan = function() {
 		var data = _x2js.xml_str2json(testData);
+		process.start(data);
+
+		console.log(process.doc);
+		console.log(process.MICR);
+		console.log(process.image);
+
 		/*
 		setOptions();
 
