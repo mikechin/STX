@@ -19,9 +19,16 @@ body {
 }
 
 button.scan {
-	background-color: #8AC007;
+	background-color: #8ac007;
 	border: none;
-	color: #FFFFFF;
+	color: #ffffff;
+	padding: 20px;
+}
+
+button.options {
+	background-color: #e0e0e0;
+	border: none;
+	color: #000000;
 	padding: 20px;
 }
 
@@ -100,6 +107,7 @@ button.scan {
 
 .section {
 	background-color: #f8f8f8;
+	border: 1px solid #c0c0c0;
 	padding: 20px; 20px 20px 20px;
 	margin-bottom: 20px;
 }

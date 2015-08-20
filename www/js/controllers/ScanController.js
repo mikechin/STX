@@ -1,27 +1,14 @@
 stx.controller('ScanController', ['$scope', '$http', 'process', function($scope, $http, process) {
 	'use strict';
 
-	var _x2js = new X2JS();
-	var _options = {
-		'DeviceSettings': {
-			'Application': {
-				'DocUnits': 'ENGLISH',
-				'Transfer': 'HTTP'
-			}
-		}
-	};
-
+	// **************************************************
+	// private.
+	//
+	//
+	// **************************************************
 	var _stxIpAddress = '192.168.1.101';
-	var _scan = {
-		method: 'POST',
-		url: 'http://' + _stxIpAddress + '/Excella?DeviceScan',
-		headers: {
-			'Accept': 'application/xml',
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
-	};
-
-	var testData = '<?xml version="1.0" encoding="utf-8"?>'
+	var _x2js = new X2JS();
+	var _testData = '<?xml version="1.0" encoding="utf-8"?>'
 				 + '<DeviceInformation>'
 				 + '	<CommandStatus>'
 				 + '		<BadData>NONE</BadData>'
@@ -86,38 +73,23 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 				 + '	</ImageInfo>'
 				 + '</DeviceInformation>';
 
-	$scope.ProcessOptions = {
-		'ReadMICR': 'E13B',
-		'Endorse': 'NO',
-		'DocFeed': 'MANUAL',
-		'DocFeedTimeout': '5000',
-		'MICRFmtCode': '0'
-	};
-
-	$scope.ImageOptions = {
-		'Num': '2',
-		'ImageColor': 'GRAY8',
-		'Resolution': '200x200',
-		'Compression': 'JPEG',
-		'FileType': 'JPG'
-	};
-
-	$scope.Endorser = {
-		'PrintData': '',
-		'PrintFont': 'INTFONT2',
-		'PrintStyle': 'NORMAL',
-		'PrintFrontData': '',
-		'PrintFrontFont': 'INTFONT2',
-		'PrintFrontStyle': 'NORMAL'
-	};
-
-	function setOptions() {
-		if($scope.ProcessOptions.Endorse !== 'NO') {
-			setEndorser();
+	var _options = {
+		'DeviceSettings': {
+			'Application': {
+				'DocUnits': 'ENGLISH',
+				'Transfer': 'HTTP'
+			}
 		}
-		setImageOptions();
-		setProcessOptions();
-	}
+	};
+
+	var _scan = {
+		method: 'POST',
+		url: 'http://' + _stxIpAddress + '/Excella?DeviceScan',
+		headers: {
+			'Accept': 'application/xml',
+			'Content-Type': 'application/x-www-form-urlencoded'
+		}
+	};
 
 	function setEndorser()  {
 		_options.DeviceSettings.Endorser = {};
@@ -159,12 +131,52 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		_options.DeviceSettings.ImageOptions = imageOptions;
 	}
 
+	function setOptions() {
+		if($scope.ProcessOptions.Endorse !== 'NO') {
+			setEndorser();
+		}
+		setImageOptions();
+		setProcessOptions();
+	}
+
 	function setProcessOptions() {
 		_options.DeviceSettings.ProcessOptions = $scope.ProcessOptions;
 	}
 
+	// **************************************************
+	// public.
+	//
+	//
+	// **************************************************
+	$scope.showOptions = false;
+
+	$scope.Endorser = {
+		'PrintData': '',
+		'PrintFont': 'INTFONT2',
+		'PrintStyle': 'NORMAL',
+		'PrintFrontData': '',
+		'PrintFrontFont': 'INTFONT2',
+		'PrintFrontStyle': 'NORMAL'
+	};
+
+	$scope.ImageOptions = {
+		'Num': '2',
+		'ImageColor': 'GRAY8',
+		'Resolution': '200x200',
+		'Compression': 'JPEG',
+		'FileType': 'JPG'
+	};
+
+	$scope.ProcessOptions = {
+		'ReadMICR': 'E13B',
+		'Endorse': 'NO',
+		'DocFeed': 'MANUAL',
+		'DocFeedTimeout': '5000',
+		'MICRFmtCode': '0'
+	};
+
 	$scope.scan = function() {
-		var data = _x2js.xml_str2json(testData);
+		var data = _x2js.xml_str2json(_testData);
 		process.start(data);
 
 		console.log(process.doc);
@@ -191,5 +203,9 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 			console.log('fail - ' + status + '.');
 		});
 		*/
+	};
+
+	$scope.toggleOptions = function() {
+		$scope.showOptions = !$scope.showOptions;
 	};
 }]);
