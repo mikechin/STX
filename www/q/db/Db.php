@@ -15,16 +15,17 @@ class Db {
 		}
 	}
 
-	public function getUserData() {
-		$firstname = 'Joe';
-
-		$q = $this->db->prepare("SELECT * FROM users WHERE firstname = :firstname");
+	public function getUserData($id) {
+		$q = $this->db->prepare("SELECT firstname, lastname FROM users WHERE usrId = :id");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
-		$q->bindParam(':firstname', $firstname);
+		$q->bindParam(':id', $id);
 		$q->execute();
 
 		while($row = $q->fetch()) {
-			var_dump($row);
+			echo json_encode(array(
+				'firstname' => $row['firstname'],
+				'lastname' => $row['lastname']
+			));
 		}
 	}
 }
