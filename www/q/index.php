@@ -3,9 +3,14 @@
 define('SYSPATH', true);
 
 require 'flight/Flight.php';
+require '../../x/config.php';
+require 'db/Db.php';
+
+Flight::register('db', 'Db', array($user, $pass));
 
 Flight::route('/', function() {
-	echo 'root';
+	$db = Flight::db();
+	$db->getUserData();
 });
 
 Flight::start();
