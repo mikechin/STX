@@ -91,7 +91,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		}
 	};
 
-	function setEndorser()  {
+	function setEndorser() {
 		_options.DeviceSettings.Endorser = {};
 		if($scope.ProcessOptions.Endorse === 'BACK' || $scope.ProcessOptions.Endorse === 'BOTH') {
 			_options.DeviceSettings.Endorser.PrintData = $scope.Endorser.PrintData;
