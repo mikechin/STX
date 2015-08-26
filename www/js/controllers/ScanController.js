@@ -157,6 +157,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	//
 	//
 	// **************************************************
+	$scope.scannedData = null;
 	$scope.showOptions = false;
 
 	$scope.Endorser = {
@@ -176,6 +177,11 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		'FileType': 'JPG'
 	};
 
+	$scope.panes = {
+		scan: true,
+		info: false
+	};
+
 	$scope.ProcessOptions = {
 		'ReadMICR': 'E13B',
 		'Endorse': 'NO',
@@ -192,6 +198,14 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		console.log(process.MICR);
 		console.log(process.image);
 
+		$scope.scannedData = process;
+
+		$scope.panes = {
+			scan: false,
+			info: true
+		}
+
+		/*
 		_storeCheck.data = process;
 
 		console.log(_storeCheck);
@@ -203,6 +217,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		error(function(data, status, headers, config) {
 			console.log('error.');
 		});
+		*/
 		/*
 		setOptions();
 
