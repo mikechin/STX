@@ -82,24 +82,6 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		}
 	};
 
-	var _scan = {
-		method: 'POST',
-		url: 'http://' + _stxIpAddress + '/Excella?DeviceScan',
-		headers: {
-			'Accept': 'application/xml',
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
-	};
-
-	var _storeCheck = {
-		method: 'POST',
-		url: 'http://stx.localhost:8888/q/check',
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json'
-		}
-	};
-
 	function setEndorser() {
 		_options.DeviceSettings.Endorser = {};
 		if($scope.ProcessOptions.Endorse === 'BACK' || $scope.ProcessOptions.Endorse === 'BOTH') {
@@ -201,10 +183,15 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	};
 
 	$scope.save = function() {
-		_storeCheck.data = process;
-
-		console.log(_storeCheck);
-		$http(_storeCheck).
+		$http({
+			method: 'POST',
+			url: 'http://stx.localhost:8888/q/check',
+			data: process,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			console.log(data);
@@ -256,7 +243,15 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		console.log('sending...');
 		console.log(dataSend);
 		_scan.data = dataSend;
-		$http(_scan).
+
+		$http({
+			method: 'POST',
+			url: 'http://' + _stxIpAddress + '/Excella?DeviceScan',
+			headers: {
+				'Accept': 'application/xml',
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}
+		}).
 		success(function(data, status, headers, config) {
 			console.log('success - ' + status + '.');
 			console.log(data);
