@@ -91,6 +91,15 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		}
 	};
 
+	var _storeCheck = {
+		method: 'POST',
+		url: 'http://stx.localhost:8888/q/check',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		}
+	};
+
 	function setEndorser() {
 		_options.DeviceSettings.Endorser = {};
 		if($scope.ProcessOptions.Endorse === 'BACK' || $scope.ProcessOptions.Endorse === 'BOTH') {
@@ -183,6 +192,17 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		console.log(process.MICR);
 		console.log(process.image);
 
+		_storeCheck.data = process;
+
+		console.log(_storeCheck);
+		$http(_storeCheck).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			console.log(data);
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
 		/*
 		setOptions();
 

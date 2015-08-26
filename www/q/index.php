@@ -16,6 +16,12 @@ Flight::route('/user/@id', function($id) {
 	$db->getUserData($id);
 });
 
+Flight::route('POST /check', function() {
+	$doc = Flight::request()->data->doc;
+	$MICR = Flight::request()->data->MICR;
+	$image = Flight::request()->data->image;
+});
+
 Flight::start();
 
 ?>
