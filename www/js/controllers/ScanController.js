@@ -160,6 +160,16 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	$scope.scannedData = null;
 	$scope.showOptions = false;
 
+	$scope.customer = {
+		name: '',
+		edit: true
+	};
+
+	$scope.issuer = {
+		name: '',
+		edit: true
+	};
+
 	$scope.Endorser = {
 		'PrintData': '',
 		'PrintFont': 'INTFONT2',
@@ -190,22 +200,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		'MICRFmtCode': '0'
 	};
 
-	$scope.scan = function() {
-		var data = _x2js.xml_str2json(_testData);
-		process.start(data);
-
-		console.log(process.doc);
-		console.log(process.MICR);
-		console.log(process.image);
-
-		$scope.scannedData = process;
-
-		$scope.panes = {
-			scan: false,
-			info: true
-		}
-
-		/*
+	$scope.save = function() {
 		_storeCheck.data = process;
 
 		console.log(_storeCheck);
@@ -217,7 +212,14 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		error(function(data, status, headers, config) {
 			console.log('error.');
 		});
-		*/
+	};
+
+	$scope.scan = function() {
+		var data = _x2js.xml_str2json(_testData);
+		process.start(data);
+		$scope.scannedData = process;
+		$scope.panes.info = true;
+
 		/*
 		setOptions();
 
