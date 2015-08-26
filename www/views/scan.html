@@ -1,6 +1,7 @@
 <div class="content">
-	<h2>Scan</h2>
-	<div class="section">
+	<button class="scan" ng-click="scan()">Scan</button>
+	<button class="options" ng-click="toggleOptions()">Options</button>
+	<div class="section" ng-show="showOptions">
 		<h4>Process Options</h4>
 		<div class="option">
 			<label>ReadMICR</label>
@@ -38,7 +39,7 @@
 			</select>
 		</div>
 	</div>
-	<div class="section">
+	<div class="section" ng-show="showOptions">
 		<h4>Image Options</h4>
 		<div class="option">
 			<label>Sides</label>
@@ -126,5 +127,4 @@
 			</div>
 		</div>
 	</div>
-	<button class="scan" ng-click="scan()">Scan</button>
 </div>
