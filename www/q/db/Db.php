@@ -51,6 +51,22 @@ class Db {
 		}
 	}
 
+	public function getUserByName($firstname, $lastname) {
+		$q = $this->db->prepare("SELECT usrId, firstname, lastname FROM users WHERE firstname = :firstname AND lastname = :lastname");
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':firstname', $firstname);
+		$q->bindParam(':lastname', $lastname);
+		$q->execute();
+
+		while($row = $q->fetch()) {
+			$this->send(array(
+				'usrId' => $row['usrId'],
+				'firstname' => $row['firstname'],
+				'lastname' => $row['lastname']
+			));
+		}
+	}
+
 	public function getIssuerByAccountRouting($account, $routing) {
 		$q = $this->db->prepare("SELECT name FROM issuers WHERE account = :account AND routing = :routing");
 		$q->setFetchMode(PDO::FETCH_ASSOC);

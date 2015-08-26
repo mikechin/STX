@@ -11,9 +11,14 @@ Flight::register('db', 'Db', array($user, $pass));
 Flight::route('/', function() {
 });
 
-Flight::route('/user/@id', function($id) {
+Flight::route('GET /user/@id', function($id) {
 	$db = Flight::db();
 	$db->getUserData($id);
+});
+
+Flight::route('GET /user/@firstname/@lastname', function($firstname, $lastname) {
+	$db = Flight::db();
+	$db->getUserByName($firstname, $lastname);
 });
 
 Flight::route('POST /check', function() {
@@ -22,7 +27,7 @@ Flight::route('POST /check', function() {
 	$image = Flight::request()->data->image;
 });
 
-Flight::route('/issuers/@account/@routing', function($account, $routing) {
+Flight::route('GET /issuers/@account/@routing', function($account, $routing) {
 	$db = Flight::db();
 	$db->getIssuerByAccountRouting($account, $routing);
 });

@@ -143,7 +143,11 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	$scope.showOptions = false;
 
 	$scope.customer = {
-		name: '',
+		id: '',
+		name: {
+			first: '',
+			last: ''
+		},
 		edit: true
 	};
 
@@ -180,6 +184,28 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		'DocFeed': 'MANUAL',
 		'DocFeedTimeout': '5000',
 		'MICRFmtCode': '0'
+	};
+
+	$scope.customerSearch = function() {
+		var url = 'http://stx.localhost:8888/q/user/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			$scope.customer.id = data.usrId;
+			$scope.customer.name.first = data.firstname;
+			$scope.customer.name.last = data.lastname;
+			$scope.customer.edit = false;
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
 	};
 
 	$scope.save = function() {
