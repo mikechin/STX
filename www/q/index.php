@@ -22,6 +22,11 @@ Flight::route('POST /check', function() {
 	$image = Flight::request()->data->image;
 });
 
+Flight::route('/issuers/@account/@routing', function($account, $routing) {
+	$db = Flight::db();
+	$db->getIssuerByAccountRouting($account, $routing);
+});
+
 Flight::start();
 
 ?>

@@ -218,7 +218,33 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		var data = _x2js.xml_str2json(_testData);
 		process.start(data);
 		$scope.scannedData = process;
-		$scope.panes.info = true;
+
+		var url = 'http://stx.localhost:8888/q/issuers/' + process.MICR.acct + '/' + process.MICR.transit;
+		console.log(url);
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			console.log(data);
+			if(data.status) {
+				$scope.issuer.name = data.name;
+				$scope.issuer.edit = false;
+			}
+			else {
+				$scope.issuer.edit = true;
+			}
+
+			$scope.panes.info = true;
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
 
 		/*
 		setOptions();

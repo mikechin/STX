@@ -3,7 +3,23 @@
 defined('SYSPATH') or die('No direct script access.');
 
 class Db {
+	// **************************************************
+	// private.
+	//
+	//
+	// **************************************************
 	private $db;
+
+	private function send($data) {
+		header("Access-Control-Allow-Origin: *");
+		header("Access-Control-Allow-Headers: Content-Type");
+		header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+		header("Access-Control-Allow-Credentials: true");
+		header("Access-Control-Allow-Max-Age: 86400");
+		header("Content-Type: application/json");
+
+		echo json_encode($data);
+	}
 
 	function __construct($user, $pass) {
 		try {
@@ -16,23 +32,42 @@ class Db {
 		}
 	}
 
+	// **************************************************
+	// public.
+	//
+	//
+	// **************************************************
 	public function getUserById($id) {
-		header("Access-Control-Allow-Origin: *");
-		header("Access-Control-Allow-Headers: Content-Type");
-		header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-		header("Access-Control-Allow-Credentials: true");
-		header("Access-Control-Allow-Max-Age: 86400");
-		header("Content-Type: application/json");
-
 		$q = $this->db->prepare("SELECT firstname, lastname FROM users WHERE usrId = :id");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':id', $id);
 		$q->execute();
 
 		while($row = $q->fetch()) {
-			echo json_encode(array(
+			$this->send(array(
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname']
+			));
+		}
+	}
+
+	public function getIssuerByAccountRouting($account, $routing) {
+		$q = $this->db->prepare("SELECT name FROM issuers WHERE account = :account AND routing = :routing");
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':account', $account);
+		$q->bindParam(':routing', $routing);
+		$q->execute();
+
+		$row = $q->fetch();
+		if($row) {
+			$this->send(array(
+				'status' => true,
+				'name' => $row['name']
+			));
+		}
+		else {
+			$this->send(array(
+				'status' => false
 			));
 		}
 	}
