@@ -6,14 +6,14 @@ require 'flight/Flight.php';
 require '../../x/config.php';
 require 'db/Db.php';
 
-Flight::register('db', 'Db', array($user, $pass));
+Flight::register('db', 'Db', [ $user, $pass ]);
 
 Flight::route('/', function() {
 });
 
 Flight::route('GET /user/@id', function($id) {
 	$db = Flight::db();
-	$db->getUserData($id);
+	$db->getUserById($id);
 });
 
 Flight::route('GET /user/@firstname/@lastname', function($firstname, $lastname) {

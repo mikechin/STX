@@ -38,16 +38,23 @@ class Db {
 	//
 	// **************************************************
 	public function getUserById($id) {
-		$q = $this->db->prepare("SELECT firstname, lastname FROM users WHERE usrId = :id");
+		$q = $this->db->prepare("SELECT firstname, lastname FROM users WHERE usrId = :id LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':id', $id);
 		$q->execute();
 
-		while($row = $q->fetch()) {
-			$this->send(array(
+		$row = $q->fetch();
+		if($row) {
+			$this->send([
+				'status' => true,
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname']
-			));
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false,
+			]);
 		}
 	}
 
@@ -58,17 +65,30 @@ class Db {
 		$q->bindParam(':lastname', $lastname);
 		$q->execute();
 
+		$data = [];
 		while($row = $q->fetch()) {
-			$this->send(array(
+			$data[] = [
 				'usrId' => $row['usrId'],
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname']
-			));
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'users' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
 		}
 	}
 
 	public function getIssuerByAccountRouting($account, $routing) {
-		$q = $this->db->prepare("SELECT name FROM issuers WHERE account = :account AND routing = :routing");
+		$q = $this->db->prepare("SELECT name FROM issuers WHERE account = :account AND routing = :routing LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':account', $account);
 		$q->bindParam(':routing', $routing);
@@ -76,15 +96,15 @@ class Db {
 
 		$row = $q->fetch();
 		if($row) {
-			$this->send(array(
+			$this->send([
 				'status' => true,
 				'name' => $row['name']
-			));
+			]);
 		}
 		else {
-			$this->send(array(
+			$this->send([
 				'status' => false
-			));
+			]);
 		}
 	}
 }
