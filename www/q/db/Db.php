@@ -43,12 +43,12 @@ class Db {
 		$q->bindParam(':lastname', $lastname);
 		$q->execute();
 
-		$usrId = $this->db->lastInsertId();
+		$cusId = $this->db->lastInsertId();
 
-		if($usrId) {
+		if($cusId) {
 			$this->send([
 				'status' => true,
-				'usrId' => $usrId
+				'cusId' => $cusId
 			]);
 		}
 		else {
@@ -81,7 +81,7 @@ class Db {
 	}
 
 	public function getCustomerById($id) {
-		$q = $this->db->prepare("SELECT firstname, lastname FROM customers WHERE usrId = :id LIMIT 1");
+		$q = $this->db->prepare("SELECT firstname, lastname FROM customers WHERE cusId = :id LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':id', $id);
 		$q->execute();
@@ -102,7 +102,7 @@ class Db {
 	}
 
 	public function getCustomerByName($firstname, $lastname) {
-		$q = $this->db->prepare("SELECT usrId, firstname, lastname FROM customers WHERE firstname = :firstname AND lastname = :lastname");
+		$q = $this->db->prepare("SELECT cusId, firstname, lastname FROM customers WHERE firstname = :firstname AND lastname = :lastname");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':firstname', $firstname);
 		$q->bindParam(':lastname', $lastname);
@@ -111,7 +111,7 @@ class Db {
 		$data = [];
 		while($row = $q->fetch()) {
 			$data[] = [
-				'usrId' => $row['usrId'],
+				'cusId' => $row['cusId'],
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname']
 			];
