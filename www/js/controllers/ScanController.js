@@ -139,6 +139,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	//
 	//
 	// **************************************************
+	$scope.customers = [];
 	$scope.scannedData = null;
 	$scope.showOptions = false;
 
@@ -187,7 +188,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	};
 
 	$scope.customerSearch = function() {
-		var url = 'http://stx.localhost:8888/q/user/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
+		var url = 'http://stx.localhost:8888/q/customer/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
 		$http({
 			method: 'GET',
 			url: url,
@@ -198,9 +199,9 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
-			$scope.customer.id = data.usrId;
-			$scope.customer.name.first = data.firstname;
-			$scope.customer.name.last = data.lastname;
+			console.log(data);
+			$scope.customers = data.customers;
+			console.log($scope.customers);
 			$scope.customer.edit = false;
 		}).
 		error(function(data, status, headers, config) {
@@ -233,7 +234,6 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		$scope.scannedData = process;
 
 		var url = 'http://stx.localhost:8888/q/issuers/' + process.MICR.acct + '/' + process.MICR.transit;
-		console.log(url);
 		$http({
 			method: 'GET',
 			url: url,

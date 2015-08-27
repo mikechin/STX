@@ -37,8 +37,8 @@ class Db {
 	//
 	//
 	// **************************************************
-	public function getUserById($id) {
-		$q = $this->db->prepare("SELECT firstname, lastname FROM users WHERE usrId = :id LIMIT 1");
+	public function getCustomerById($id) {
+		$q = $this->db->prepare("SELECT firstname, lastname FROM customers WHERE usrId = :id LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':id', $id);
 		$q->execute();
@@ -58,8 +58,8 @@ class Db {
 		}
 	}
 
-	public function getUserByName($firstname, $lastname) {
-		$q = $this->db->prepare("SELECT usrId, firstname, lastname FROM users WHERE firstname = :firstname AND lastname = :lastname");
+	public function getCustomerByName($firstname, $lastname) {
+		$q = $this->db->prepare("SELECT usrId, firstname, lastname FROM customers WHERE firstname = :firstname AND lastname = :lastname");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':firstname', $firstname);
 		$q->bindParam(':lastname', $lastname);
@@ -77,7 +77,7 @@ class Db {
 		if(count($data) > 0) {
 			$this->send([
 				'status' => true,
-				'users' => $data
+				'customers' => $data
 			]);
 		}
 		else {

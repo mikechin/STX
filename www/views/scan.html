@@ -151,15 +151,19 @@
 		</div>
 		<div class="section">
 			<h4>Customer</h4>
-			<div class="option">
+			<div class="option" ng-show="customer.edit">
 				<label>Name</label>
-				<div ng-hide="customer.edit">{{ customer.id }}</div>
-				<div ng-hide="customer.edit">{{ customer.name.first }}</div>
-				<div ng-hide="customer.edit">{{ customer.name.last }}</div>
-				<input ng-model="customer.name.first" ng-show="customer.edit" />
-				<input ng-model="customer.name.last" ng-show="customer.edit" />
+				<input ng-model="customer.name.first" />
+				<input ng-model="customer.name.last" />
 			</div>
 			<button class="confirm" ng-click="customerSearch()">Search</button>
+			<div ng-hide="customer.edit">
+				<div class="option" ng-repeat="c in customers">
+					<div>{{ c.usrId }}</div>
+					<div>{{ c.firstname }}</div>
+					<div>{{ c.lastname }}</div>
+				</div>
+			</div>
 		</div>
 		<div class="section">
 			<h4>Issuer</h4>

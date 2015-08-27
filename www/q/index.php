@@ -11,14 +11,14 @@ Flight::register('db', 'Db', [ $user, $pass ]);
 Flight::route('/', function() {
 });
 
-Flight::route('GET /user/@id', function($id) {
+Flight::route('GET /customer/@id', function($id) {
 	$db = Flight::db();
-	$db->getUserById($id);
+	$db->getCustomerById($id);
 });
 
-Flight::route('GET /user/@firstname/@lastname', function($firstname, $lastname) {
+Flight::route('GET /customer/@firstname/@lastname', function($firstname, $lastname) {
 	$db = Flight::db();
-	$db->getUserByName($firstname, $lastname);
+	$db->getCustomerByName($firstname, $lastname);
 });
 
 Flight::route('POST /check', function() {
