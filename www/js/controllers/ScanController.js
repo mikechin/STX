@@ -223,7 +223,6 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
-			console.log(data);
 			$scope.customers = data.customers;
 			console.log($scope.customers);
 			$scope.customer.search = true;
@@ -231,6 +230,32 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		error(function(data, status, headers, config) {
 			console.log('error.');
 
+		});
+	};
+
+	$scope.issuerAdd = function() {
+		var url = 'http://stx.localhost:8888/q/issuer/add';
+		$http({
+			method: 'POST',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			data: {
+				account: process.MICR.acct,
+				routing: process.MICR.transit,
+				name: $scope.issuer.name
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			if(data.status) {
+				$scope.issuer.edit = false;
+			}
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
 		});
 	};
 
@@ -258,7 +283,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		process.start(data);
 		$scope.scannedData = process;
 
-		var url = 'http://stx.localhost:8888/q/issuers/' + process.MICR.acct + '/' + process.MICR.transit;
+		var url = 'http://stx.localhost:8888/q/issuer/' + process.MICR.acct + '/' + process.MICR.transit;
 		$http({
 			method: 'GET',
 			url: url,
@@ -269,7 +294,6 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
-			console.log(data);
 			if(data.status) {
 				$scope.issuer.name = data.name;
 				$scope.issuer.edit = false;

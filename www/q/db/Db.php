@@ -58,6 +58,28 @@ class Db {
 		}
 	}
 
+	public function addIssuer($account, $routing, $name) {
+		$q = $this->db->prepare("INSERT INTO issuers (account, routing, name) VALUES (:account, :routing, :name)");
+		$q->bindParam(':account', $account);
+		$q->bindParam(':routing', $routing);
+		$q->bindParam(':name', $name);
+		$q->execute();
+
+		$issId = $this->db->lastInsertId();
+
+		if($issId) {
+			$this->send([
+				'status' => true,
+				'issId' => $issId
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function getCustomerById($id) {
 		$q = $this->db->prepare("SELECT firstname, lastname FROM customers WHERE usrId = :id LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);

@@ -174,7 +174,10 @@
 			<div class="option">
 				<label>Name</label>
 				<div ng-hide="issuer.edit">{{ issuer.name }}</div>
-				<input ng-model="issuer.name" ng-show="issuer.edit" />
+				<div ng-show="issuer.edit">
+					<input ng-model="issuer.name" />
+					<button class="confirm" ng-click="issuerAdd()">Add</button>
+				</div>
 			</div>
 		</div>
 		<button class="confirm" ng-click="save()">Save</button>

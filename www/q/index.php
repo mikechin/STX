@@ -35,7 +35,16 @@ Flight::route('POST /check', function() {
 	$image = Flight::request()->data->image;
 });
 
-Flight::route('GET /issuers/@account/@routing', function($account, $routing) {
+Flight::route('POST /issuer/add', function() {
+	$account = Flight::request()->data->account;
+	$routing = Flight::request()->data->routing;
+	$name = Flight::request()->data->name;
+
+	$db = Flight::db();
+	$db->addIssuer($account, $routing, $name);
+});
+
+Flight::route('GET /issuer/@account/@routing', function($account, $routing) {
 	$db = Flight::db();
 	$db->getIssuerByAccountRouting($account, $routing);
 });
