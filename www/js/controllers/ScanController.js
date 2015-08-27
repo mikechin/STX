@@ -149,7 +149,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 			first: '',
 			last: ''
 		},
-		edit: true
+		search: false
 	};
 
 	$scope.issuer = {
@@ -202,7 +202,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 			console.log(data);
 			$scope.customers = data.customers;
 			console.log($scope.customers);
-			$scope.customer.edit = false;
+			$scope.customer.search = true;
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
