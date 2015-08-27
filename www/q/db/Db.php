@@ -37,6 +37,27 @@ class Db {
 	//
 	//
 	// **************************************************
+	public function addCustomer($firstname, $lastname) {
+		$q = $this->db->prepare("INSERT INTO customers (firstname, lastname) VALUES (:firstname, :lastname)");
+		$q->bindParam(':firstname', $firstname);
+		$q->bindParam(':lastname', $lastname);
+		$q->execute();
+
+		$usrId = $this->db->lastInsertId();
+
+		if($usrId) {
+			$this->send([
+				'status' => true,
+				'usrId' => $usrId
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function getCustomerById($id) {
 		$q = $this->db->prepare("SELECT firstname, lastname FROM customers WHERE usrId = :id LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
@@ -53,7 +74,7 @@ class Db {
 		}
 		else {
 			$this->send([
-				'status' => false,
+				'status' => false
 			]);
 		}
 	}

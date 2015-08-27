@@ -11,6 +11,14 @@ Flight::register('db', 'Db', [ $user, $pass ]);
 Flight::route('/', function() {
 });
 
+Flight::route('POST /customer/add', function() {
+	$firstname = Flight::request()->data->firstname;
+	$lastname = Flight::request()->data->lastname;
+
+	$db = Flight::db();
+	$db->addCustomer($firstname, $lastname);
+});
+
 Flight::route('GET /customer/@id', function($id) {
 	$db = Flight::db();
 	$db->getCustomerById($id);

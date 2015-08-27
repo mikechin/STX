@@ -187,6 +187,30 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		'MICRFmtCode': '0'
 	};
 
+	$scope.customerAdd = function() {
+		var url = 'http://stx.localhost:8888/q/customer/add';
+		$http({
+			method: 'POST',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			data: {
+				firstname: $scope.customer.name.first,
+				lastname: $scope.customer.name.last
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			console.log(data);
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+
+		});
+	};
+
 	$scope.customerSearch = function() {
 		var url = 'http://stx.localhost:8888/q/customer/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
 		$http({
@@ -206,6 +230,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
+
 		});
 	};
 

@@ -158,7 +158,10 @@
 			</div>
 			<button class="confirm" ng-click="customerSearch()">Search</button>
 			<div ng-show="customer.search">
-				<div ng-hide="customers.length">No results.</div>
+				<div ng-hide="customers.length">
+					<span>No results.</span>
+					<button class="confirm" ng-click="customerAdd()">Add</button>
+				</div>
 				<div class="option" ng-repeat="c in customers">
 					<div>{{ c.usrId }}</div>
 					<div>{{ c.firstname }}</div>
