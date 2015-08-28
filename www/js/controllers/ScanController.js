@@ -302,6 +302,19 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		});
 	};
 
+	$scope.customerSelect = function(i) {
+		var customer = $scope.customers[i];
+		$scope.customer = {
+			id: customer.cusId,
+			name: {
+				first: customer.firstname,
+				last: customer.lastname
+			},
+			search: false,
+			selected: true
+		};
+	};
+
 	$scope.issuerAdd = function() {
 		var url = 'http://stx.localhost:8888/q/issuer/add';
 		$http({
@@ -329,6 +342,8 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	};
 
 	$scope.save = function() {
+		console.log(process);
+
 		$http({
 			method: 'POST',
 			url: 'http://stx.localhost:8888/q/check',
@@ -340,7 +355,6 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
-			console.log(data);
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');

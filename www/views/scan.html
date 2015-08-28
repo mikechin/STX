@@ -165,6 +165,7 @@
 					</div>
 					<div class="option" ng-repeat="c in customers">
 						<div>{{ c.cusId }} {{ c.firstname }} {{ c.lastname }}</div>
+						<button class="confirm" ng-click="customerSelect($index)">Select</button>
 					</div>
 				</div>
 			</div>
