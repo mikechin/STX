@@ -342,7 +342,9 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	};
 
 	$scope.save = function() {
-		console.log(process);
+		process.cusId = $scope.customer.id;
+		process.issId = '1';
+		process.bnkId = '1';
 
 		$http({
 			method: 'POST',
@@ -355,6 +357,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
+			console.log(data);
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');

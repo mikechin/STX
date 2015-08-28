@@ -41,9 +41,9 @@ Flight::route('GET /customer/@firstname/@lastname', function($firstname, $lastna
 });
 
 Flight::route('POST /check', function() {
-	$doc = Flight::request()->data->doc;
-	$MICR = Flight::request()->data->MICR;
-	$image = Flight::request()->data->image;
+	$data = Flight::request()->data;
+	$db = Flight::db();
+	$db->addCheck($data);
 });
 
 Flight::route('POST /issuer/add', function() {

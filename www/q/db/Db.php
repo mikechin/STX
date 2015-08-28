@@ -64,6 +64,63 @@ class Db {
 		}
 	}
 
+
+	public function addCheck($data) {
+		$cusId = $data->cusId;
+		$issId = $data->issId;
+		$bnkId = $data->bnkId;
+
+		$doc = $data->doc;
+		$MICR = $data->MICR;
+		$image = $data->image;
+
+		$q = $this->db->prepare("INSERT INTO checks (cusId, issId, bnkId, MICRAcct, MICRAmt, MICRAux, MICRBankNum, MICRChkType, MICRCountry, MICRDecode, MICREPC, MICRFont, MICROnUs, MICROut, MICRParseSts0, MICRParseSts1, MICRRaw, MICRSerNum, MICRTPC, MICRTransit, DocHeight, DocUnits, DocWidth, ImageSHA1Key1, ImageSHA1Key2, ImageSize1, ImageSize2, ImageURL1, ImageURL2) VALUES (:cusId, :issId, :bnkId, :MICRAcct, :MICRAmt, :MICRAux, :MICRBankNum, :MICRChkType, :MICRCountry, :MICRDecode, :MICREPC, :MICRFont, :MICROnUs, :MICROut, :MICRParseSts0, :MICRParseSts1, :MICRRaw, :MICRSerNum, :MICRTPC, :MICRTransit, :DocHeight, :DocUnits, :DocWidth, :ImageSHA1Key1, :ImageSHA1Key2, :ImageSize1, :ImageSize2, :ImageURL1, :ImageURL2)");
+		$q->bindParam(':cusId', $cusId);
+		$q->bindParam(':issId', $issId);
+		$q->bindParam(':bnkId', $bnkId);
+		$q->bindParam(':MICRAcct', $MICR['acct']);
+		$q->bindParam(':MICRAmt', $MICR['amt']);
+		$q->bindParam(':MICRAux', $MICR['aux']);
+		$q->bindParam(':MICRBankNum', $MICR['bankNum']);
+		$q->bindParam(':MICRChkType', $MICR['chkType']);
+		$q->bindParam(':MICRCountry', $MICR['country']);
+		$q->bindParam(':MICRDecode', $MICR['decode']);
+		$q->bindParam(':MICREPC', $MICR['EPC']);
+		$q->bindParam(':MICRFont', $MICR['font']);
+		$q->bindParam(':MICROnUs', $MICR['onUs']);
+		$q->bindParam(':MICROut', $MICR['out']);
+		$q->bindParam(':MICRParseSts0', $MICR['parseSts0']);
+		$q->bindParam(':MICRParseSts1', $MICR['parseSts1']);
+		$q->bindParam(':MICRRaw', $MICR['raw']);
+		$q->bindParam(':MICRSerNum', $MICR['serNum']);
+		$q->bindParam(':MICRTPC', $MICR['TPC']);
+		$q->bindParam(':MICRTransit', $MICR['transit']);
+		$q->bindParam(':DocHeight', $doc['height']);
+		$q->bindParam(':DocUnits', $doc['units']);
+		$q->bindParam(':DocWidth', $doc['width']);
+		$q->bindParam(':ImageSHA1Key1', $image['front']['SHAKey']);
+		$q->bindParam(':ImageSHA1Key2', $image['back']['SHAKey']);
+		$q->bindParam(':ImageSize1', $image['front']['size']);
+		$q->bindParam(':ImageSize2', $image['back']['size']);
+		$q->bindParam(':ImageURL1', $image['front']['url']);
+		$q->bindParam(':ImageURL2', $image['back']['url']);
+		$q->execute();
+
+		$chkId = $this->db->lastInsertId();
+
+		if($chkId) {
+			$this->send([
+				'status' => true,
+				'chkId' => $chkId
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function addIssuer($account, $routing, $name) {
 		$q = $this->db->prepare("INSERT INTO issuers (account, routing, name) VALUES (:account, :routing, :name)");
 		$q->bindParam(':account', $account);
