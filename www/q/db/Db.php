@@ -80,6 +80,28 @@ class Db {
 		}
 	}
 
+	public function getBankById($id) {
+		$q = $this->db->prepare("SELECT bnkId, account, name FROM banks WHERE account = :id LIMIT 1");
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		$row = $q->fetch();
+		if($row) {
+			$this->send([
+				'status' => true,
+				'bnkId' => $row['bnkId'],
+				'account' => $row['account'],
+				'name' => $row['name']
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function getCustomerById($id) {
 		$q = $this->db->prepare("SELECT firstname, lastname FROM customers WHERE cusId = :id LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);

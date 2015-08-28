@@ -143,6 +143,12 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	$scope.scannedData = null;
 	$scope.showOptions = false;
 
+	$scope.bank = {
+		id: '',
+		name: '',
+		edit: true
+	};
+
 	$scope.customer = {
 		id: '',
 		name: {
@@ -303,6 +309,29 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 			}
 
 			$scope.panes.info = true;
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
+
+		var url = 'http://stx.localhost:8888/q/bank/' + process.MICR.bankNum;
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			if(data.status) {
+				$scope.bank.name = data.name;
+				$scope.bank.edit = false;
+			}
+			else {
+				$scope.bank.edit = true;
+			}
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');

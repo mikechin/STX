@@ -163,9 +163,7 @@
 					<button class="confirm" ng-click="customerAdd()">Add</button>
 				</div>
 				<div class="option" ng-repeat="c in customers">
-					<div>{{ c.cusId }}</div>
-					<div>{{ c.firstname }}</div>
-					<div>{{ c.lastname }}</div>
+					<div>{{ c.cusId }} {{ c.firstname }} {{ c.lastname }}</div>
 				</div>
 			</div>
 		</div>
@@ -177,6 +175,17 @@
 				<div ng-show="issuer.edit">
 					<input ng-model="issuer.name" />
 					<button class="confirm" ng-click="issuerAdd()">Add</button>
+				</div>
+			</div>
+		</div>
+		<div class="section">
+			<h4>Bank</h4>
+			<div class="option">
+				<label>Name</label>
+				<div ng-hide="bank.edit">{{ bank.name }}</div>
+				<div ng-show="bank.edit">
+					<input ng-model="bank.name" />
+					<button class="confirm" ng-click="bankAdd()">Add</button>
 				</div>
 			</div>
 		</div>
