@@ -73,12 +73,10 @@ class Db {
 		}
 	}
 
-
 	public function addCheck($data) {
 		$cusId = $data->cusId;
 		$issId = $data->issId;
 		$bnkId = $data->bnkId;
-
 		$doc = $data->doc;
 		$MICR = $data->MICR;
 		$image = $data->image;
@@ -130,7 +128,11 @@ class Db {
 		}
 	}
 
-	public function addIssuer($account, $routing, $name) {
+	public function addIssuer($data) {
+		$account = $data->account;
+		$routing = $data->routing;
+		$name = $data->name;
+
 		$q = $this->db->prepare("INSERT INTO issuers (account, routing, name) VALUES (:account, :routing, :name)");
 		$q->bindParam(':account', $account);
 		$q->bindParam(':routing', $routing);

@@ -32,18 +32,13 @@ Flight::route('GET /customer/@firstname/@lastname', function($firstname, $lastna
 });
 
 Flight::route('POST /check', function() {
-	$data = Flight::request()->data;
 	$db = Flight::db();
-	$db->addCheck($data);
+	$db->addCheck(Flight::request()->data);
 });
 
 Flight::route('POST /issuer/add', function() {
-	$account = Flight::request()->data->account;
-	$routing = Flight::request()->data->routing;
-	$name = Flight::request()->data->name;
-
 	$db = Flight::db();
-	$db->addIssuer($account, $routing, $name);
+	$db->addIssuer(Flight::request()->data);
 });
 
 Flight::route('GET /issuer/@account/@routing', function($account, $routing) {
