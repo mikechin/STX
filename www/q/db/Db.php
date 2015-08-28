@@ -37,10 +37,16 @@ class Db {
 	//
 	//
 	// **************************************************
-	public function addCustomer($firstname, $lastname) {
-		$q = $this->db->prepare("INSERT INTO customers (firstname, lastname) VALUES (:firstname, :lastname)");
+	public function addCustomer($firstname, $lastname, $address1, $address2, $city, $state, $zipcode, $phone) {
+		$q = $this->db->prepare("INSERT INTO customers (firstname, lastname, address1, address2, city, state, zipcode, phone) VALUES (:firstname, :lastname, :address1, :address2, :city, :state, :zipcode, :phone)");
 		$q->bindParam(':firstname', $firstname);
 		$q->bindParam(':lastname', $lastname);
+		$q->bindParam(':address1', $address1);
+		$q->bindParam(':address2', $address2);
+		$q->bindParam(':city', $city);
+		$q->bindParam(':state', $state);
+		$q->bindParam(':zipcode', $zipcode);
+		$q->bindParam(':phone', $phone);
 		$q->execute();
 
 		$cusId = $this->db->lastInsertId();

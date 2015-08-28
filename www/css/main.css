@@ -25,6 +25,13 @@ button.confirm {
 	padding: 20px;
 }
 
+button.cancel {
+	background-color: #e0e0e0;
+	border: none;
+	color: #000000;
+	padding: 20px;
+}
+
 button.options {
 	background-color: #e0e0e0;
 	border: none;

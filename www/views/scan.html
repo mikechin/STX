@@ -151,21 +151,71 @@
 		</div>
 		<div class="section">
 			<h4>Customer</h4>
+			<div ng-hide="customer.selected">
+				<div class="option">
+					<label>Name</label>
+					<input ng-model="customer.name.first" />
+					<input ng-model="customer.name.last" />
+				</div>
+				<button class="confirm" ng-click="customerSearch()">Search</button>
+				<button class="confirm" ng-click="customerNew()">New</button>
+				<div ng-show="customer.search">
+					<div ng-hide="customers.length">
+						<span>No results.</span>
+					</div>
+					<div class="option" ng-repeat="c in customers">
+						<div>{{ c.cusId }} {{ c.firstname }} {{ c.lastname }}</div>
+					</div>
+				</div>
+			</div>
+			<div ng-show="customer.selected">
+				<div class="option">
+					<label>Name</label>
+					<div>{{ customer.id }} {{ customer.name.first }} {{ customer.name.last }}</div>
+				</div>
+				<button class="confirm" ng-click="customerEdit()">Edit</button>
+			</div>
+		</div>
+		<div class="section" ng-show="newCustomer.add">
+			<h4>New Customer</h4>
 			<div class="option">
-				<label>Name</label>
-				<input ng-model="customer.name.first" />
-				<input ng-model="customer.name.last" />
+				<table>
+					<tr>
+						<td>First Name</td>
+						<td><input ng-model="newCustomer.name.first" /></td>
+					</tr>
+					<tr>
+						<td>Last Name</td>
+						<td><input ng-model="newCustomer.name.last" /></td>
+					</tr>
+					<tr>
+						<td>Address</td>
+						<td><input ng-model="newCustomer.address1" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input ng-model="newCustomer.address2" /></td>
+					</tr>
+					<tr>
+						<td>City</td>
+						<td><input ng-model="newCustomer.city" /></td>
+					</tr>
+					<tr>
+						<td>State</td>
+						<td><input ng-model="newCustomer.state" /></td>
+					</tr>
+					<tr>
+						<td>Zip</td>
+						<td><input ng-model="newCustomer.zipcode" /></td>
+					</tr>
+					<tr>
+						<td>Phone</td>
+						<td><input ng-model="newCustomer.phone" /></td>
+					</tr>
+				</table>
 			</div>
-			<button class="confirm" ng-click="customerSearch()">Search</button>
-			<div ng-show="customer.search">
-				<div ng-hide="customers.length">
-					<span>No results.</span>
-					<button class="confirm" ng-click="customerAdd()">Add</button>
-				</div>
-				<div class="option" ng-repeat="c in customers">
-					<div>{{ c.cusId }} {{ c.firstname }} {{ c.lastname }}</div>
-				</div>
-			</div>
+			<button class="confirm" ng-click="customerAdd()">Add</button>
+			<button class="cancel" ng-click="customerNewCancel()">Cancel</button>
 		</div>
 		<div class="section">
 			<h4>Issuer</h4>

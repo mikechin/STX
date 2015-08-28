@@ -17,11 +17,17 @@ Flight::route('GET /bank/@id', function($id) {
 });
 
 Flight::route('POST /customer/add', function() {
-	$firstname = Flight::request()->data->firstname;
-	$lastname = Flight::request()->data->lastname;
+	$firstname = Flight::request()->data->name['first'];
+	$lastname = Flight::request()->data->name['last'];
+	$address1 = Flight::request()->data->address1;
+	$address2 = Flight::request()->data->address2;
+	$city = Flight::request()->data->city;
+	$state = Flight::request()->data->state;
+	$zipcode = Flight::request()->data->zipcode;
+	$phone = Flight::request()->data->phone;
 
 	$db = Flight::db();
-	$db->addCustomer($firstname, $lastname);
+	$db->addCustomer($firstname, $lastname, $address1, $address2, $city, $state, $zipcode, $phone);
 });
 
 Flight::route('GET /customer/@id', function($id) {

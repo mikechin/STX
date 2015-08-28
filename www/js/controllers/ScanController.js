@@ -155,7 +155,23 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 			first: '',
 			last: ''
 		},
-		search: false
+		search: false,
+		selected: false
+	};
+
+	$scope.newCustomer = {
+		add: false,
+		name: {
+			first: '',
+			last: ''
+		},
+		address1: '',
+		address2: '',
+		city: '',
+		state: '',
+		zipcode: '',
+		phone: '',
+		comment: ''
 	};
 
 	$scope.issuer = {
@@ -202,19 +218,67 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			},
-			data: {
-				firstname: $scope.customer.name.first,
-				lastname: $scope.customer.name.last
-			}
+			data: $scope.newCustomer
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			console.log(data);
+			$scope.customer.id = data.cusId;
+			$scope.customer.name.first = $scope.newCustomer.name.first;
+			$scope.customer.name.last = $scope.newCustomer.name.last;
+			$scope.newCustomer.add = false;
+			$scope.customer.selected = true;
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
 
 		});
+	};
+
+	$scope.customerEdit = function() {
+		$scope.customer = {
+			id: '',
+			name: {
+				first: '',
+				last: ''
+			},
+			search: false,
+			selected: false
+		};
+	};
+
+	$scope.customerNewCancel = function() {
+		$scope.newCustomer = {
+			add: false,
+			name: {
+				first: '',
+				last: ''
+			},
+			address1: '',
+			address2: '',
+			city: '',
+			state: '',
+			zipcode: '',
+			phone: '',
+			comment: ''
+		};
+	};
+
+	$scope.customerNew = function() {
+		$scope.newCustomer = {
+			add: true,
+			name: {
+				first: '',
+				last: ''
+			},
+			address1: '',
+			address2: '',
+			city: '',
+			state: '',
+			zipcode: '',
+			phone: '',
+			comment: ''
+		};
 	};
 
 	$scope.customerSearch = function() {
@@ -230,7 +294,6 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			$scope.customers = data.customers;
-			console.log($scope.customers);
 			$scope.customer.search = true;
 		}).
 		error(function(data, status, headers, config) {
