@@ -37,7 +37,16 @@ class Db {
 	//
 	//
 	// **************************************************
-	public function addCustomer($firstname, $lastname, $address1, $address2, $city, $state, $zipcode, $phone) {
+	public function addCustomer($data) {
+		$firstname = $data->name['first'];
+		$lastname = $data->name['last'];
+		$address1 = $data->address1;
+		$address2 = $data->address2;
+		$city = $data->city;
+		$state = $data->state;
+		$zipcode = $data->zipcode;
+		$phone = $data->phone;
+
 		$q = $this->db->prepare("INSERT INTO customers (firstname, lastname, address1, address2, city, state, zipcode, phone) VALUES (:firstname, :lastname, :address1, :address2, :city, :state, :zipcode, :phone)");
 		$q->bindParam(':firstname', $firstname);
 		$q->bindParam(':lastname', $lastname);
