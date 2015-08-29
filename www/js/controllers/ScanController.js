@@ -145,8 +145,12 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 
 	$scope.bank = {
 		id: '',
-		name: '',
-		edit: true
+		name: ''
+	};
+
+	$scope.newBank = {
+		add: false,
+		name: ''
 	};
 
 	$scope.customer = {
@@ -426,10 +430,9 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			console.log('success.');
 			if(data.status) {
 				$scope.bank.name = data.name;
-				$scope.bank.edit = false;
 			}
 			else {
-				$scope.bank.edit = true;
+				$scope.newBank.add = true;
 			}
 
 			getBanks.resolve();

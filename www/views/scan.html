@@ -271,13 +271,24 @@
 		<div class="section">
 			<h4>Bank</h4>
 			<div class="option">
-				<label>Name</label>
-				<div ng-hide="bank.edit">{{ bank.name }}</div>
-				<div ng-show="bank.edit">
-					<input ng-model="bank.name" />
-					<button class="confirm" ng-click="bankAdd()">Add</button>
+				<div ng-hide="newBank.add">
+					<label>Name</label>
+					<div>{{ bank.name }}</div>
 				</div>
+				<div ng-show="newBank.add">No results.</div>
 			</div>
+		</div>
+		<div class="section" ng-show="newBank.add">
+			<h4>New Bank</h4>
+			<div class="option">
+				<table>
+					<tr>
+						<td>Name</td>
+						<td><input ng-model="newBank.name" /></td>
+					</tr>
+				</table>
+			</div>
+			<button class="confirm" ng-click="bankAdd()">Add</button>
 		</div>
 		<button class="confirm" ng-click="save()">Save</button>
 	</div>
