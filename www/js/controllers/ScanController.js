@@ -387,8 +387,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 
 	$scope.save = function() {
 		process.cusId = $scope.customer.id;
-		process.issId = '1';
-		process.bnkId = '1';
+		process.issId = $scope.issuer.id;
+		process.bnkId = $scope.bank.id;
 
 		$http({
 			method: 'POST',
@@ -429,6 +429,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			if(data.status) {
+				$scope.issuer.id = data.issId;
 				$scope.issuer.name = data.name;
 			}
 			else {
@@ -456,6 +457,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			if(data.status) {
+				$scope.bank.id = data.bnkId;
 				$scope.bank.name = data.name;
 			}
 			else {

@@ -268,7 +268,7 @@ class Db {
 	}
 
 	public function getIssuerByAccountRouting($account, $routing) {
-		$q = $this->db->prepare("SELECT name FROM issuers WHERE account = :account AND routing = :routing LIMIT 1");
+		$q = $this->db->prepare("SELECT issId, name FROM issuers WHERE account = :account AND routing = :routing LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':account', $account);
 		$q->bindParam(':routing', $routing);
@@ -278,6 +278,7 @@ class Db {
 		if($row) {
 			$this->send([
 				'status' => true,
+				'issId' => $row['issId'],
 				'name' => $row['name']
 			]);
 		}
