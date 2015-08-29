@@ -37,6 +37,31 @@ class Db {
 	//
 	//
 	// **************************************************
+	public function addBank($data) {
+		$account = $data->account;
+		$name = $data->name;
+
+		$q = $this->db->prepare("INSERT INTO banks (account, name) VALUES (:account, :name)");
+		$q->bindParam(':account', $account);
+		$q->bindParam(':name', $name);
+		$q->execute();
+
+		$bnkId = $this->db->lastInsertId();
+
+		if($bnkId) {
+			$this->send([
+				'status' => true,
+				'bnkId' => $bnkId,
+				'name' => $name
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function addCustomer($data) {
 		$firstname = $data->name['first'];
 		$lastname = $data->name['last'];

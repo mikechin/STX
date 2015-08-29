@@ -224,6 +224,33 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		'MICRFmtCode': '0'
 	};
 
+	$scope.bankAdd = function() {
+		var data = $scope.newBank;
+		data.account = process.MICR.bankNum;
+
+		var url = 'http://stx.localhost:8888/q/bank/add';
+		$http({
+			method: 'POST',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			data: data
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			if(data.status) {
+				$scope.bank.id = data.bnkId;
+				$scope.bank.name = data.name;
+				$scope.newBank.add = false;
+			}
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
+	};
+
 	$scope.customerAdd = function() {
 		var url = 'http://stx.localhost:8888/q/customer/add';
 		$http({
