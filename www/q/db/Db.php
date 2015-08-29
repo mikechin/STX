@@ -132,11 +132,26 @@ class Db {
 		$account = $data->account;
 		$routing = $data->routing;
 		$name = $data->name;
+		$address1 = $data->address1;
+		$address2 = $data->address2;
+		$city = $data->city;
+		$state = $data->state;
+		$zipcode = $data->zipcode;
+		$phone = $data->phone;
+		$email = $data->email;
 
-		$q = $this->db->prepare("INSERT INTO issuers (account, routing, name) VALUES (:account, :routing, :name)");
+
+		$q = $this->db->prepare("INSERT INTO issuers (account, routing, name, address1, address2, city, state, zipcode, phone, email) VALUES (:account, :routing, :name, :address1, :address2, :city, :state, :zipcode, :phone, :email)");
 		$q->bindParam(':account', $account);
 		$q->bindParam(':routing', $routing);
 		$q->bindParam(':name', $name);
+		$q->bindParam(':address1', $address1);
+		$q->bindParam(':address2', $address2);
+		$q->bindParam(':city', $city);
+		$q->bindParam(':state', $state);
+		$q->bindParam(':zipcode', $zipcode);
+		$q->bindParam(':phone', $phone);
+		$q->bindParam(':email', $email);
 		$q->execute();
 
 		$issId = $this->db->lastInsertId();
@@ -144,7 +159,8 @@ class Db {
 		if($issId) {
 			$this->send([
 				'status' => true,
-				'issId' => $issId
+				'issId' => $issId,
+				'name' => $name
 			]);
 		}
 		else {

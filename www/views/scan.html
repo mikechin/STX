@@ -216,18 +216,57 @@
 				</table>
 			</div>
 			<button class="confirm" ng-click="customerAdd()">Add</button>
-			<button class="cancel" ng-click="customerNewCancel()">Cancel</button>
+			<button class="cancel" ng-click="customerAddCancel()">Cancel</button>
 		</div>
 		<div class="section">
 			<h4>Issuer</h4>
 			<div class="option">
-				<label>Name</label>
-				<div ng-hide="issuer.edit">{{ issuer.name }}</div>
-				<div ng-show="issuer.edit">
-					<input ng-model="issuer.name" />
-					<button class="confirm" ng-click="issuerAdd()">Add</button>
+				<div ng-hide="newIssuer.add">
+					<label>Name</label>
+					<div>{{ issuer.name }}</div>
 				</div>
+				<div ng-show="newIssuer.add">No results.</div>
 			</div>
+		</div>
+		<div class="section" ng-show="newIssuer.add">
+			<h4>New Issuer</h4>
+			<div class="option">
+				<table>
+					<tr>
+						<td>Name</td>
+						<td><input ng-model="newIssuer.name" /></td>
+					</tr>
+					<tr>
+						<td>Address</td>
+						<td><input ng-model="newIssuer.address1" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input ng-model="newIssuer.address2" /></td>
+					</tr>
+					<tr>
+						<td>City</td>
+						<td><input ng-model="newIssuer.city" /></td>
+					</tr>
+					<tr>
+						<td>State</td>
+						<td><input ng-model="newIssuer.state" /></td>
+					</tr>
+					<tr>
+						<td>Zip</td>
+						<td><input ng-model="newIssuer.zipcode" /></td>
+					</tr>
+					<tr>
+						<td>Phone</td>
+						<td><input ng-model="newIssuer.phone" /></td>
+					</tr>
+					<tr>
+						<td>Email</td>
+						<td><input ng-model="newIssuer.email" /></td>
+					</tr>
+				</table>
+			</div>
+			<button class="confirm" ng-click="issuerAdd()">Add</button>
 		</div>
 		<div class="section">
 			<h4>Bank</h4>

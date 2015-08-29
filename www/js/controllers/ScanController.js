@@ -1,4 +1,4 @@
-stx.controller('ScanController', ['$scope', '$http', 'process', function($scope, $http, process) {
+stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($scope, $http, $q, process) {
 	'use strict';
 
 	// **************************************************
@@ -170,13 +170,24 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		city: '',
 		state: '',
 		zipcode: '',
-		phone: '',
-		comment: ''
+		phone: ''
 	};
 
 	$scope.issuer = {
+		id: '',
+		name: ''
+	};
+
+	$scope.newIssuer = {
+		add: false,
 		name: '',
-		edit: true
+		address1: '',
+		address2: '',
+		city: '',
+		state: '',
+		zipcode: '',
+		phone: '',
+		email: ''
 	};
 
 	$scope.Endorser = {
@@ -235,19 +246,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		});
 	};
 
-	$scope.customerEdit = function() {
-		$scope.customer = {
-			id: '',
-			name: {
-				first: '',
-				last: ''
-			},
-			search: false,
-			selected: false
-		};
-	};
-
-	$scope.customerNewCancel = function() {
+	$scope.customerAddCancel = function() {
 		$scope.newCustomer = {
 			add: false,
 			name: {
@@ -261,6 +260,18 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 			zipcode: '',
 			phone: '',
 			comment: ''
+		};
+	};
+
+	$scope.customerEdit = function() {
+		$scope.customer = {
+			id: '',
+			name: {
+				first: '',
+				last: ''
+			},
+			search: false,
+			selected: false
 		};
 	};
 
@@ -316,6 +327,10 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	};
 
 	$scope.issuerAdd = function() {
+		var data = $scope.newIssuer;
+		data.account = process.MICR.acct;
+		data.routing = process.MICR.transit;
+
 		var url = 'http://stx.localhost:8888/q/issuer/add';
 		$http({
 			method: 'POST',
@@ -324,16 +339,14 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			},
-			data: {
-				account: process.MICR.acct,
-				routing: process.MICR.transit,
-				name: $scope.issuer.name
-			}
+			data: data
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			if(data.status) {
-				$scope.issuer.edit = false;
+				$scope.issuer.id = data.issId;
+				$scope.issuer.name = data.name;
+				$scope.newIssuer.add = false;
 			}
 		}).
 		error(function(data, status, headers, config) {
@@ -366,10 +379,14 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 
 	$scope.scan = function() {
 		var data = _x2js.xml_str2json(_testData);
+		var promises = [];
+
 		process.start(data);
 		$scope.scannedData = process;
 
 		var url = 'http://stx.localhost:8888/q/issuer/' + process.MICR.acct + '/' + process.MICR.transit;
+		var getIssuers = $q.defer();
+		promises.push(getIssuers.promise);
 		$http({
 			method: 'GET',
 			url: url,
@@ -382,19 +399,21 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 			console.log('success.');
 			if(data.status) {
 				$scope.issuer.name = data.name;
-				$scope.issuer.edit = false;
 			}
 			else {
-				$scope.issuer.edit = true;
+				$scope.newIssuer.add = true;
 			}
 
-			$scope.panes.info = true;
+			getIssuers.resolve();
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
+			getIssuers.reject();
 		});
 
 		var url = 'http://stx.localhost:8888/q/bank/' + process.MICR.bankNum;
+		var getBanks = $q.defer();
+		promises.push(getBanks.promise);
 		$http({
 			method: 'GET',
 			url: url,
@@ -412,9 +431,16 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 			else {
 				$scope.bank.edit = true;
 			}
+
+			getBanks.resolve();
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
+			getBanks.reject();
+		});
+
+		$q.all(promises).then(function() {
+			$scope.panes.info = true;
 		});
 
 		/*
