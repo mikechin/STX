@@ -36,9 +36,14 @@ Flight::route('GET /customer/@id', function($id) {
 	$db->getCustomerById($id);
 });
 
-Flight::route('GET /customer/@firstname/@lastname', function($firstname, $lastname) {
+Flight::route('GET /customers/@firstname/@lastname', function($firstname, $lastname) {
 	$db = Flight::db();
-	$db->getCustomerByName($firstname, $lastname);
+	$db->getCustomersByName($firstname, $lastname);
+});
+
+Flight::route('GET /customers/@issId', function($issId) {
+	$db = Flight::db();
+	$db->getCustomersByIssuer($issId);
 });
 
 Flight::route('POST /check', function() {

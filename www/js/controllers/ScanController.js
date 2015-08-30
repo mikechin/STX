@@ -501,7 +501,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.customerSearch = function() {
-		var url = 'http://stx.localhost:8888/q/customer/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
+		var url = 'http://stx.localhost:8888/q/customers/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
 		$http({
 			method: 'GET',
 			url: url,
@@ -517,7 +517,26 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
+		});
+	};
 
+	$scope.customerSearchByCompany = function() {
+		var url = 'http://stx.localhost:8888/q/customers/' + $scope.issuer.id;
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			$scope.customers = data.customers;
+			$scope.customer.search = true;
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
 		});
 	};
 

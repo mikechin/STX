@@ -339,11 +339,46 @@ class Db {
 		}
 	}
 
-	public function getCustomerByName($firstname, $lastname) {
+	public function getCustomersByName($firstname, $lastname) {
 		$q = $this->db->prepare("SELECT cusId, firstname, lastname, photo FROM customers WHERE firstname = :firstname AND lastname = :lastname");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':firstname', $firstname);
 		$q->bindParam(':lastname', $lastname);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'cusId' => $row['cusId'],
+				'firstname' => $row['firstname'],
+				'lastname' => $row['lastname'],
+				'photo' => $row['photo']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'customers' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
+	public function getCustomersByIssuer($issId) {
+		$q = $this->db->prepare(
+			"SELECT DISTINCT checks.cusId, customers.firstname, customers.lastname, customers.photo
+			FROM checks
+			INNER JOIN customers ON checks.cusId = customers.cusId
+			WHERE issId = :issId"
+		);
+
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':issId', $issId);
 		$q->execute();
 
 		$data = [];

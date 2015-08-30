@@ -161,12 +161,14 @@
 			<h4>Customer</h4>
 			<div ng-hide="customer.selected">
 				<div class="option">
-					<label>Name</label>
+					<label>First Name</label>
 					<input ng-model="customer.name.first" />
+					<label>Last Name</label>
 					<input ng-model="customer.name.last" />
 				</div>
 				<button class="confirm" ng-click="customerSearch()">Search</button>
 				<button class="confirm" ng-click="customerNew()">New</button>
+				<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
 				<div ng-show="customer.search">
 					<div ng-hide="customers.length">
 						<span>No results.</span>
