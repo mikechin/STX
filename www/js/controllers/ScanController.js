@@ -145,6 +145,12 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		});
 
 		$q.all(promises).then(function() {
+			$scope.scanImages = {
+				// front: 'http://' + _stxIpAddress + process.image.front.url,
+				// back: 'http://' + _stxIpAddress + process.image.back.url
+				front: 'http://' + 'stx.localhost:8888' + process.image.front.url,
+				back: 'http://' + 'stx.localhost:8888' + process.image.back.url
+			}
 			$scope.panes.info = true;
 		});
 	}
@@ -291,6 +297,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		'DocFeed': 'MANUAL',
 		'DocFeedTimeout': '5000',
 		'MICRFmtCode': '0'
+	};
+
+	$scope.scanImages = {
+		front: '',
+		back: ''
 	};
 
 	$scope.bankAdd = function() {
@@ -508,6 +519,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.scan = function() {
+		/*
 		setOptions();
 
 		console.log('sending...');
@@ -528,11 +540,10 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		error(function(data, status, headers, config) {
 			console.log('fail - ' + status + '.');
 		});
+		*/
 
-		/*
 		var data = _x2js.xml_str2json(_testData);
 		processScan(data);
-		*/
 	};
 
 	$scope.toggleOptions = function() {
