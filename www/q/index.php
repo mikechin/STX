@@ -26,6 +26,11 @@ Flight::route('POST /customer/add', function() {
 	$db->addCustomer(Flight::request()->data);
 });
 
+Flight::route('POST /customer/photo', function() {
+	$db = Flight::db();
+	$db->addCustomer(Flight::request()->data);
+});
+
 Flight::route('GET /customer/@id', function($id) {
 	$db = Flight::db();
 	$db->getCustomerById($id);

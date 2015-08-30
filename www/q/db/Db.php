@@ -63,24 +63,72 @@ class Db {
 	}
 
 	public function addCustomer($data) {
+		$columns = 'firstname, lastname';
+		$values = ':firstname, :lastname';
+
 		$firstname = $data->name['first'];
 		$lastname = $data->name['last'];
-		$address1 = $data->address1;
-		$address2 = $data->address2;
-		$city = $data->city;
-		$state = $data->state;
-		$zipcode = $data->zipcode;
-		$phone = $data->phone;
+		$address1 = NULL;
+		$address2 = NULL;
+		$city = NULL;
+		$state = NULL;
+		$zipcode = NULL;
+		$phone = NULL;
+		$photo = NULL;
 
-		$q = $this->db->prepare("INSERT INTO customers (firstname, lastname, address1, address2, city, state, zipcode, phone) VALUES (:firstname, :lastname, :address1, :address2, :city, :state, :zipcode, :phone)");
+		if($data->address1 !== '') {
+			$address1 = $data->address1;
+			$columns .= ', address1';
+			$values .= ', :address1';
+		}
+		if($data->address2 !== '') {
+			$address2 = $data->address2;
+			$columns .= ', address2';
+			$values .= ', :address2';
+		}
+		if($data->city !== '') {
+			$city = $data->city;
+			$columns .= ', city';
+			$values .= ', :city';
+		}
+		if($data->state !== '') {
+			$state = $data->state;
+			$columns .= ', state';
+			$values .= ', :state';
+		}
+		if($data->zipcode !== '') {
+			$zipcode = $data->zipcode;
+			$columns .= ', zipcode';
+			$values .= ', :zipcode';
+		}
+		if($data->phone !== '') {
+			$phone = $data->phone;
+			$columns .= ', phone';
+			$values .= ', :phone';
+		}
+		if($data->photo !== null) {
+			$photo = $data->photo;
+			$columns .= ', photo';
+			$values .= ', :photo';
+		}
+
+		$q = $this->db->prepare("INSERT INTO customers ($columns) VALUES ($values)");
 		$q->bindParam(':firstname', $firstname);
 		$q->bindParam(':lastname', $lastname);
-		$q->bindParam(':address1', $address1);
-		$q->bindParam(':address2', $address2);
-		$q->bindParam(':city', $city);
-		$q->bindParam(':state', $state);
-		$q->bindParam(':zipcode', $zipcode);
-		$q->bindParam(':phone', $phone);
+		if($address1)
+			$q->bindParam(':address1', $address1);
+		if($address2)
+			$q->bindParam(':address2', $address2);
+		if($city)
+			$q->bindParam(':city', $city);
+		if($state)
+			$q->bindParam(':state', $state);
+		if($zipcode)
+			$q->bindParam(':zipcode', $zipcode);
+		if($phone)
+			$q->bindParam(':phone', $phone);
+		if($photo)
+			$q->bindParam(':photo', $photo);
 		$q->execute();
 
 		$cusId = $this->db->lastInsertId();
@@ -239,7 +287,7 @@ class Db {
 	}
 
 	public function getCustomerByName($firstname, $lastname) {
-		$q = $this->db->prepare("SELECT cusId, firstname, lastname FROM customers WHERE firstname = :firstname AND lastname = :lastname");
+		$q = $this->db->prepare("SELECT cusId, firstname, lastname, photo FROM customers WHERE firstname = :firstname AND lastname = :lastname");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':firstname', $firstname);
 		$q->bindParam(':lastname', $lastname);
@@ -250,7 +298,8 @@ class Db {
 			$data[] = [
 				'cusId' => $row['cusId'],
 				'firstname' => $row['firstname'],
-				'lastname' => $row['lastname']
+				'lastname' => $row['lastname'],
+				'photo' => $row['photo']
 			];
 		}
 

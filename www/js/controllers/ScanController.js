@@ -159,6 +159,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			first: '',
 			last: ''
 		},
+		photo: null,
 		search: false,
 		selected: false
 	};
@@ -174,7 +175,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		city: '',
 		state: '',
 		zipcode: '',
-		phone: ''
+		phone: '',
+		photo: null
 	};
 
 	$scope.issuer = {
@@ -252,28 +254,51 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.customerAdd = function() {
-		var url = 'http://stx.localhost:8888/q/customer/add';
-		$http({
-			method: 'POST',
-			url: url,
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			data: $scope.newCustomer
-		}).
-		success(function(data, status, headers, config) {
-			console.log('success.');
-			console.log(data);
-			$scope.customer.id = data.cusId;
-			$scope.customer.name.first = $scope.newCustomer.name.first;
-			$scope.customer.name.last = $scope.newCustomer.name.last;
-			$scope.newCustomer.add = false;
-			$scope.customer.selected = true;
-		}).
-		error(function(data, status, headers, config) {
-			console.log('error.');
+		var upload = $q.defer();
 
+		var ele = document.getElementById('upload-photo');
+		if(ele.files.length) {
+			var f = ele.files[0];
+			var r = new FileReader();
+
+			r.onloadend = function(e) {
+				var data = e.target.result;
+				$scope.newCustomer.photo = data;
+				upload.resolve();
+			};
+
+			r.readAsDataURL(f);
+		}
+		else {
+			upload.resolve();
+		}
+
+		$q.all([ upload.promise ]).then(function() {
+			console.log('photo uploaded.');
+
+			var url = 'http://stx.localhost:8888/q/customer/add';
+			$http({
+				method: 'POST',
+				url: url,
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				data: $scope.newCustomer
+			}).
+			success(function(data, status, headers, config) {
+				console.log('success.');
+				console.log(data);
+				$scope.customer.id = data.cusId;
+				$scope.customer.name.first = $scope.newCustomer.name.first;
+				$scope.customer.name.last = $scope.newCustomer.name.last;
+				$scope.customer.photo = $scope.newCustomer.photo;
+				$scope.newCustomer.add = false;
+				$scope.customer.selected = true;
+			}).
+			error(function(data, status, headers, config) {
+				console.log('error.');
+			});
 		});
 	};
 
@@ -290,8 +315,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			state: '',
 			zipcode: '',
 			phone: '',
-			comment: ''
+			comment: '',
+			photo: null
 		};
+
+		document.getElementById('upload-photo').value = '';
 	};
 
 	$scope.customerEdit = function() {
@@ -319,8 +347,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			state: '',
 			zipcode: '',
 			phone: '',
-			comment: ''
+			comment: '',
+			photo: null
 		};
+
+		document.getElementById('upload-photo').value = '';
 	};
 
 	$scope.customerSearch = function() {
