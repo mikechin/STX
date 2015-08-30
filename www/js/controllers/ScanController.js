@@ -6,7 +6,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	//
 	//
 	// **************************************************
-	var _stxIpAddress = '192.168.1.100';
+	// var _stxIpAddress = '192.168.1.100';
+	var _stxIpAddress = 'stx.localhost:8888';
 	var _x2js = new X2JS();
 	var _testData = '<?xml version="1.0" encoding="utf-8"?>'
 		+ '<DeviceInformation>'
@@ -146,10 +147,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 
 		$q.all(promises).then(function() {
 			$scope.scanImages = {
-				// front: 'http://' + _stxIpAddress + process.image.front.url,
-				// back: 'http://' + _stxIpAddress + process.image.back.url
-				front: 'http://' + 'stx.localhost:8888' + process.image.front.url,
-				back: 'http://' + 'stx.localhost:8888' + process.image.back.url
+				front: 'http://' + _stxIpAddress + process.image.front.url,
+				back: 'http://' + _stxIpAddress + process.image.back.url
 			}
 			$scope.panes.info = true;
 		});
@@ -499,15 +498,17 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		process.cusId = $scope.customer.id;
 		process.issId = $scope.issuer.id;
 		process.bnkId = $scope.bank.id;
+		process.stxUrl = 'http://' + _stxIpAddress;
+		process.image.FileType = $scope.ImageOptions.FileType;
 
 		$http({
 			method: 'POST',
 			url: 'http://stx.localhost:8888/q/check',
-			data: process,
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
-			}
+			},
+			data: process
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
@@ -515,6 +516,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
+			console.log(data);
 		});
 	};
 

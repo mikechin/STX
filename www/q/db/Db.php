@@ -154,6 +154,14 @@ class Db {
 		$MICR = $data->MICR;
 		$image = $data->image;
 
+		$q = $this->db->query("SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'checks' AND table_schema = DATABASE()");
+		$nextId = $q->fetch()['AUTO_INCREMENT'];
+
+		$chkImgPath = $_SERVER["DOCUMENT_ROOT"] . "/chkimg/$nextId";
+		mkdir($chkImgPath, 0755, true);
+		copy($data->stxUrl . $image['front']['url'], $chkImgPath . "/front." . $image['FileType']);
+		copy($data->stxUrl . $image['back']['url'], $chkImgPath . "/back." . $image['FileType']);
+
 		$q = $this->db->prepare("INSERT INTO checks (cusId, issId, bnkId, MICRAcct, MICRAmt, MICRAux, MICRBankNum, MICRChkType, MICRCountry, MICRDecode, MICREPC, MICRFont, MICROnUs, MICROut, MICRParseSts0, MICRParseSts1, MICRRaw, MICRSerNum, MICRTPC, MICRTransit, DocHeight, DocUnits, DocWidth, ImageSHA1Key1, ImageSHA1Key2, ImageSize1, ImageSize2, ImageURL1, ImageURL2) VALUES (:cusId, :issId, :bnkId, :MICRAcct, :MICRAmt, :MICRAux, :MICRBankNum, :MICRChkType, :MICRCountry, :MICRDecode, :MICREPC, :MICRFont, :MICROnUs, :MICROut, :MICRParseSts0, :MICRParseSts1, :MICRRaw, :MICRSerNum, :MICRTPC, :MICRTransit, :DocHeight, :DocUnits, :DocWidth, :ImageSHA1Key1, :ImageSHA1Key2, :ImageSize1, :ImageSize2, :ImageURL1, :ImageURL2)");
 		$q->bindParam(':cusId', $cusId);
 		$q->bindParam(':issId', $issId);
