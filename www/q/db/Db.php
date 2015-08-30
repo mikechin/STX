@@ -210,29 +210,74 @@ class Db {
 	}
 
 	public function addIssuer($data) {
+		$columns = 'account, routing, name';
+		$values = ':account, :routing, :name';
+
 		$account = $data->account;
 		$routing = $data->routing;
 		$name = $data->name;
-		$address1 = $data->address1;
-		$address2 = $data->address2;
-		$city = $data->city;
-		$state = $data->state;
-		$zipcode = $data->zipcode;
-		$phone = $data->phone;
-		$email = $data->email;
+		$address1 = NULL;
+		$address2 = NULL;
+		$city = NULL;
+		$state = NULL;
+		$zipcode = NULL;
+		$phone = NULL;
+		$email = NULL;
 
+		if($data->address1 !== '') {
+			$address1 = $data->address1;
+			$columns .= ', address1';
+			$values .= ', :address1';
+		}
+		if($data->address2 !== '') {
+			$address2 = $data->address2;
+			$columns .= ', address2';
+			$values .= ', :address2';
+		}
+		if($data->city !== '') {
+			$city = $data->city;
+			$columns .= ', city';
+			$values .= ', :city';
+		}
+		if($data->state !== '') {
+			$state = $data->state;
+			$columns .= ', state';
+			$values .= ', :state';
+		}
+		if($data->zipcode !== '') {
+			$zipcode = $data->zipcode;
+			$columns .= ', zipcode';
+			$values .= ', :zipcode';
+		}
+		if($data->phone !== '') {
+			$phone = $data->phone;
+			$columns .= ', phone';
+			$values .= ', :phone';
+		}
+		if($data->email !== '') {
+			$email = $data->email;
+			$columns .= ', email';
+			$values .= ', :email';
+		}
 
-		$q = $this->db->prepare("INSERT INTO issuers (account, routing, name, address1, address2, city, state, zipcode, phone, email) VALUES (:account, :routing, :name, :address1, :address2, :city, :state, :zipcode, :phone, :email)");
+		$q = $this->db->prepare("INSERT INTO issuers ($columns) VALUES ($values)");
 		$q->bindParam(':account', $account);
 		$q->bindParam(':routing', $routing);
 		$q->bindParam(':name', $name);
-		$q->bindParam(':address1', $address1);
-		$q->bindParam(':address2', $address2);
-		$q->bindParam(':city', $city);
-		$q->bindParam(':state', $state);
-		$q->bindParam(':zipcode', $zipcode);
-		$q->bindParam(':phone', $phone);
-		$q->bindParam(':email', $email);
+		if($address1)
+			$q->bindParam(':address1', $address1);
+		if($address2)
+			$q->bindParam(':address2', $address2);
+		if($city)
+			$q->bindParam(':city', $city);
+		if($state)
+			$q->bindParam(':state', $state);
+		if($zipcode)
+			$q->bindParam(':zipcode', $zipcode);
+		if($phone)
+			$q->bindParam(':phone', $phone);
+		if($email)
+			$q->bindParam(':email', $email);
 		$q->execute();
 
 		$issId = $this->db->lastInsertId();
