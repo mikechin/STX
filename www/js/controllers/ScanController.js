@@ -83,6 +83,75 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		}
 	};
 
+	function cleanup() {
+		$scope.customers = [];
+		$scope.scannedData = null;
+		$scope.showOptions = false;
+
+		$scope.bank = {
+			id: '',
+			name: ''
+		};
+
+		$scope.newBank = {
+			add: false,
+			name: ''
+		};
+
+		$scope.customer = {
+			id: '',
+			name: {
+				first: '',
+				last: ''
+			},
+			photo: null,
+			search: false,
+			selected: false
+		};
+
+		$scope.newCustomer = {
+			add: false,
+			name: {
+				first: '',
+				last: ''
+			},
+			address1: '',
+			address2: '',
+			city: '',
+			state: '',
+			zipcode: '',
+			phone: '',
+			photo: null
+		};
+
+		$scope.issuer = {
+			id: '',
+			name: ''
+		};
+
+		$scope.newIssuer = {
+			add: false,
+			name: '',
+			address1: '',
+			address2: '',
+			city: '',
+			state: '',
+			zipcode: '',
+			phone: '',
+			email: ''
+		};
+
+		$scope.panes = {
+			scan: true,
+			info: false
+		};
+
+		$scope.scanImages = {
+			front: '',
+			back: ''
+		};
+	};
+
 	function processScan(data) {
 		var promises = [];
 
@@ -513,6 +582,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			console.log(data);
+			cleanup();
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
