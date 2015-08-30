@@ -6,7 +6,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	//
 	//
 	// **************************************************
-	var _stxIpAddress = '192.168.1.101';
+	var _stxIpAddress = '192.168.1.100';
 	var _x2js = new X2JS();
 	var _testData = '<?xml version="1.0" encoding="utf-8"?>'
 		+ '<DeviceInformation>'
@@ -81,6 +81,73 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			}
 		}
 	};
+
+	function processScan(data) {
+		var promises = [];
+
+		process.start(data);
+		$scope.scannedData = process;
+
+		var url = 'http://stx.localhost:8888/q/issuer/' + process.MICR.acct + '/' + process.MICR.transit;
+		var getIssuers = $q.defer();
+		promises.push(getIssuers.promise);
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			if(data.status) {
+				$scope.issuer.id = data.issId;
+				$scope.issuer.name = data.name;
+			}
+			else {
+				$scope.newIssuer.add = true;
+			}
+
+			getIssuers.resolve();
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+			getIssuers.reject();
+		});
+
+		var url = 'http://stx.localhost:8888/q/bank/' + process.MICR.bankNum;
+		var getBanks = $q.defer();
+		promises.push(getBanks.promise);
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			if(data.status) {
+				$scope.bank.id = data.bnkId;
+				$scope.bank.name = data.name;
+			}
+			else {
+				$scope.newBank.add = true;
+			}
+
+			getBanks.resolve();
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+			getBanks.reject();
+		});
+
+		$q.all(promises).then(function() {
+			$scope.panes.info = true;
+		});
+	}
 
 	function setEndorser() {
 		_options.DeviceSettings.Endorser = {};
@@ -383,6 +450,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 				first: customer.firstname,
 				last: customer.lastname
 			},
+			photo: customer.photo,
 			search: false,
 			selected: true
 		};
@@ -440,81 +508,12 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.scan = function() {
-		var data = _x2js.xml_str2json(_testData);
-		var promises = [];
-
-		process.start(data);
-		$scope.scannedData = process;
-
-		var url = 'http://stx.localhost:8888/q/issuer/' + process.MICR.acct + '/' + process.MICR.transit;
-		var getIssuers = $q.defer();
-		promises.push(getIssuers.promise);
-		$http({
-			method: 'GET',
-			url: url,
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			}
-		}).
-		success(function(data, status, headers, config) {
-			console.log('success.');
-			if(data.status) {
-				$scope.issuer.id = data.issId;
-				$scope.issuer.name = data.name;
-			}
-			else {
-				$scope.newIssuer.add = true;
-			}
-
-			getIssuers.resolve();
-		}).
-		error(function(data, status, headers, config) {
-			console.log('error.');
-			getIssuers.reject();
-		});
-
-		var url = 'http://stx.localhost:8888/q/bank/' + process.MICR.bankNum;
-		var getBanks = $q.defer();
-		promises.push(getBanks.promise);
-		$http({
-			method: 'GET',
-			url: url,
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			}
-		}).
-		success(function(data, status, headers, config) {
-			console.log('success.');
-			if(data.status) {
-				$scope.bank.id = data.bnkId;
-				$scope.bank.name = data.name;
-			}
-			else {
-				$scope.newBank.add = true;
-			}
-
-			getBanks.resolve();
-		}).
-		error(function(data, status, headers, config) {
-			console.log('error.');
-			getBanks.reject();
-		});
-
-		$q.all(promises).then(function() {
-			$scope.panes.info = true;
-		});
-
 		/*
 		setOptions();
-
-		console.log(_options);
 
 		var dataSend = _x2js.json2xml_str(_options);
 
 		console.log('sending...');
-		console.log(dataSend);
 		_scan.data = dataSend;
 
 		$http({
@@ -534,6 +533,9 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			console.log('fail - ' + status + '.');
 		});
 		*/
+
+		var data = _x2js.xml_str2json(_testData);
+		processScan(data);
 	};
 
 	$scope.toggleOptions = function() {
