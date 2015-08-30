@@ -508,34 +508,31 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.scan = function() {
-		/*
 		setOptions();
 
-		var dataSend = _x2js.json2xml_str(_options);
-
 		console.log('sending...');
-		_scan.data = dataSend;
-
+		var dataSend = _x2js.json2xml_str(_options);
 		$http({
 			method: 'POST',
 			url: 'http://' + _stxIpAddress + '/Excella?DeviceScan',
 			headers: {
 				'Accept': 'application/xml',
 				'Content-Type': 'application/x-www-form-urlencoded'
-			}
+			},
+			data: dataSend
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success - ' + status + '.');
-			console.log(data);
-			console.log(_x2js.xml_str2json(data));
+			processScan(_x2js.xml_str2json(data));
 		}).
 		error(function(data, status, headers, config) {
 			console.log('fail - ' + status + '.');
 		});
-		*/
 
+		/*
 		var data = _x2js.xml_str2json(_testData);
 		processScan(data);
+		*/
 	};
 
 	$scope.toggleOptions = function() {
