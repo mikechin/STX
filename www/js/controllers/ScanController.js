@@ -98,31 +98,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			name: ''
 		};
 
-		$scope.customer = {
-			id: '',
-			name: {
-				first: '',
-				last: ''
-			},
-			photo: null,
-			search: false,
-			selected: false
-		};
-
-		$scope.newCustomer = {
-			add: false,
-			name: {
-				first: '',
-				last: ''
-			},
-			address1: '',
-			address2: '',
-			city: '',
-			state: '',
-			zipcode: '',
-			phone: '',
-			photo: null
-		};
+		initCustomer();
+		initNewCustomer();
 
 		$scope.issuer = {
 			id: '',
@@ -150,7 +127,38 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			front: '',
 			back: ''
 		};
-	};
+	}
+
+	function initCustomer() {
+		$scope.customer = {
+			id: '',
+			name: {
+				first: '',
+				last: ''
+			},
+			photo: null,
+			search: false,
+			selected: false
+		};
+	}
+
+	function initNewCustomer() {
+		$scope.newCustomer = {
+			add: false,
+			name: {
+				first: '',
+				last: ''
+			},
+			address1: '',
+			address2: '',
+			city: '',
+			state: '',
+			zipcode: '',
+			phone: '',
+			comment: '',
+			photo: null
+		};
+	}
 
 	function processScan(data) {
 		var promises = [];
@@ -439,8 +447,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 				$scope.customer.name.first = $scope.newCustomer.name.first;
 				$scope.customer.name.last = $scope.newCustomer.name.last;
 				$scope.customer.photo = $scope.newCustomer.photo;
-				$scope.newCustomer.add = false;
 				$scope.customer.selected = true;
+				$scope.newCustomer.add = false;
 			}).
 			error(function(data, status, headers, config) {
 				console.log('error.');
@@ -449,53 +457,17 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.customerAddCancel = function() {
-		$scope.newCustomer = {
-			add: false,
-			name: {
-				first: '',
-				last: ''
-			},
-			address1: '',
-			address2: '',
-			city: '',
-			state: '',
-			zipcode: '',
-			phone: '',
-			comment: '',
-			photo: null
-		};
-
+		initNewCustomer();
 		document.getElementById('upload-photo').value = '';
 	};
 
 	$scope.customerEdit = function() {
-		$scope.customer = {
-			id: '',
-			name: {
-				first: '',
-				last: ''
-			},
-			search: false,
-			selected: false
-		};
+		initCustomer();
 	};
 
 	$scope.customerNew = function() {
-		$scope.newCustomer = {
-			add: true,
-			name: {
-				first: '',
-				last: ''
-			},
-			address1: '',
-			address2: '',
-			city: '',
-			state: '',
-			zipcode: '',
-			phone: '',
-			comment: '',
-			photo: null
-		};
+		initNewCustomer();
+		$scope.newCustomer.add = true;
 
 		document.getElementById('upload-photo').value = '';
 	};
@@ -542,16 +514,13 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 
 	$scope.customerSelect = function(i) {
 		var customer = $scope.customers[i];
-		$scope.customer = {
-			id: customer.cusId,
-			name: {
-				first: customer.firstname,
-				last: customer.lastname
-			},
-			photo: customer.photo,
-			search: false,
-			selected: true
-		};
+
+		$scope.customer.id = customer.cusId;
+		$scope.customer.name.first = customer.firstname;
+		$scope.customer.name.last = customer.lastname;
+		$scope.customer.photo = customer.photo;
+		$scope.customer.search = false;
+		$scope.customer.selected = true;
 	};
 
 	$scope.issuerAdd = function() {
