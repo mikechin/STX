@@ -525,6 +525,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		$scope.customer.photo = customer.photo;
 		$scope.customer.search = false;
 		$scope.customer.selected = true;
+
+		$scope.customerForm.$invalid = false;
 	};
 
 	$scope.issuerAdd = function() {
@@ -561,6 +563,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		if(process.MICR.amt === '') {
 			$scope.scanForm.amount.$invalid = true;
 			$scope.scanForm.amount.$dirty = true;
+			save = false;
+		}
+
+		if($scope.customer.id === '') {
+			$scope.customerForm.$invalid = true;
 			save = false;
 		}
 
