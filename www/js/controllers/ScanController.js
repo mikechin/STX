@@ -556,6 +556,15 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.save = function() {
+		var save = true;
+
+		if(process.MICR.amt === '') {
+			$scope.scanForm.amount.$invalid = true;
+			$scope.scanForm.amount.$dirty = true;
+			save = false;
+		}
+
+		/*
 		process.cusId = $scope.customer.id;
 		process.issId = $scope.issuer.id;
 		process.bnkId = $scope.bank.id;
@@ -580,6 +589,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			console.log('error.');
 			console.log(data);
 		});
+		*/
 	};
 
 	$scope.scan = function() {

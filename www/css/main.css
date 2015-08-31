@@ -61,6 +61,10 @@ button.options {
 	width: 100%;
 }
 
+.has-error {
+	border-color: #a94442 !important;
+}
+
 .header {
 	margin-left: auto;
 	margin-right: auto;

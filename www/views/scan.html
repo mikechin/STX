@@ -130,32 +130,34 @@
 		</div>
 	</div>
 	<div ng-show="panes.info">
-		<div class="section">
-			<h4>Scanned Data</h4>
-			<div class="option">
-				<label>Amount</label>
-				<input ng-model="scannedData.MICR.amt" />
-			</div>
-			<div class="option">
-				<label>Account</label>
-				<div>{{ scannedData.MICR.acct }}</div>
-			</div>
-			<div class="option">
-				<label>Routing</label>
-				<div>{{ scannedData.MICR.transit }}</div>
-			</div>
-			<div class="option">
-				<label>Check Number</label>
-				<div>{{ scannedData.MICR.serNum }}</div>
-			</div>
-			<div class="option">
-				<label>Front</label>
-				<img ng-src="{{ scanImages.front }}" />
-			</div>
-			<div class="option">
-				<label>Back</label>
-				<img ng-src="{{ scanImages.back }}" />
-			</div>
+		<div class="section" ng-class="{'has-error': scanForm.amount.$invalid && scanForm.amount.$dirty}">
+			<ng-form name="scanForm">
+				<h4>Scanned Data</h4>
+				<div class="option">
+					<label>Amount</label>
+					<input class="form-control" name="amount" ng-model="scannedData.MICR.amt" required />
+				</div>
+				<div class="option">
+					<label>Account</label>
+					<div>{{ scannedData.MICR.acct }}</div>
+				</div>
+				<div class="option">
+					<label>Routing</label>
+					<div>{{ scannedData.MICR.transit }}</div>
+				</div>
+				<div class="option">
+					<label>Check Number</label>
+					<div>{{ scannedData.MICR.serNum }}</div>
+				</div>
+				<div class="option">
+					<label>Front</label>
+					<img ng-src="{{ scanImages.front }}" />
+				</div>
+				<div class="option">
+					<label>Back</label>
+					<img ng-src="{{ scanImages.back }}" />
+				</div>
+			</ng-form>
 		</div>
 		<div class="section">
 			<h4>Customer</h4>
