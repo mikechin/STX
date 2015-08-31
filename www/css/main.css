@@ -74,7 +74,11 @@ button.options {
 }
 
 img.check {
+	display: block;
 	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px;
 }
 
 .nav {
@@ -128,10 +132,19 @@ img.check {
 .section-header {
 	background-color: #f8f8f8;
 	border: 1px solid #c0c0c0;
-    font-size: 1.5em;
-    font-weight: bold;
+	font-size: 1.5em;
+	font-weight: bold;
 	margin-top: 20px;
-    padding: 20px;
+	padding: 20px;
+}
+
+.section .form-control {
+	margin: 10px 0 20px 10px;
+}
+
+.form-control input {
+	line-height: 1.5em;
+	font-size: 1.5em;
 }
 
 .section .option {
@@ -141,10 +154,24 @@ img.check {
 .option .value {
 	font-size: 1.5em;
 	font-weight: bold;
+	background-color: #e4edf4;
+	border-left: 3px solid #f90;
+	padding: 10px 0 10px 10px;
 }
 
 .section .title {
 	margin-left: 10px;
+}
+
+.stripes {
+	border-left: 3px solid #f90;
+	background: repeating-linear-gradient(
+		-45deg,
+		#111,
+		#111 5px,
+		#222 10px,
+		#222 20px
+	);
 }
 
 .sub-section {
