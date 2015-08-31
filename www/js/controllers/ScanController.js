@@ -477,6 +477,10 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.customerSearch = function() {
+		if($scope.customer.name.first === '' || $scope.customer.name.last === '') {
+			return;
+		}
+
 		var url = 'http://stx.localhost:8888/q/customers/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
 		$http({
 			method: 'GET',

@@ -169,9 +169,9 @@
 				<div ng-hide="customer.selected">
 					<div class="option">
 						<label>First Name</label>
-						<input ng-model="customer.name.first" />
+						<input name="firstname" ng-model="customer.name.first" />
 						<label>Last Name</label>
-						<input ng-model="customer.name.last" />
+						<input name="lastname" ng-model="customer.name.last" />
 					</div>
 					<button class="confirm" ng-click="customerSearch()">Search</button>
 					<button class="confirm" ng-click="customerNew()">New</button>
