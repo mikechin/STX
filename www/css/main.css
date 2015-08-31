@@ -81,6 +81,10 @@ img.check {
 	padding: 20px;
 }
 
+.ml-10 {
+	margin-left: 10px;
+}
+
 .nav {
 	height: 40px;
 	margin-left: auto;
@@ -139,7 +143,7 @@ img.check {
 }
 
 .section .form-control {
-	margin: 10px 0 20px 10px;
+	margin: 10px 0 20px 0;
 }
 
 .form-control input {
@@ -148,6 +152,10 @@ img.check {
 }
 
 .section .option {
+	margin: 10px;
+}
+
+.section .buttons {
 	margin: 10px;
 }
 

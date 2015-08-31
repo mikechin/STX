@@ -168,14 +168,25 @@
 			<ng-form name="customerForm">
 				<div ng-hide="customer.selected">
 					<div class="option">
-						<label>First Name</label>
-						<input name="firstname" ng-model="customer.name.first" />
-						<label>Last Name</label>
-						<input name="lastname" ng-model="customer.name.last" />
+						<div class="pull-left">
+							<label>First Name</label>
+							<div class="form-control">
+								<input name="firstname" ng-model="customer.name.first" />
+							</div>
+						</div>
+						<div class="pull-left ml-10">
+							<label>Last Name</label>
+							<div class="form-control">
+								<input name="lastname" ng-model="customer.name.last" />
+							</div>
+						</div>
+						<div class="clear"></div>
 					</div>
-					<button class="confirm" ng-click="customerSearch()">Search</button>
-					<button class="confirm" ng-click="customerNew()">New</button>
-					<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
+					<div class="buttons">
+						<button class="confirm" ng-click="customerSearch()">Search</button>
+						<button class="confirm" ng-click="customerNew()">New</button>
+						<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
+					</div>
 					<div ng-show="customer.search">
 						<div ng-hide="customers.length">
 							<span>No results.</span>
