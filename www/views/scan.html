@@ -130,72 +130,80 @@
 		</div>
 	</div>
 	<div ng-show="panes.info">
-		<div class="section" ng-class="{'has-error': scanForm.amount.$invalid && scanForm.amount.$dirty}">
+		<div class="section-header">
+			<span>Scanned Data</span>
+		</div>
+		<div class="section" ng-class="{ 'has-error': scanForm.amount.$invalid && scanForm.amount.$dirty }">
 			<ng-form name="scanForm">
-				<h4>Scanned Data</h4>
 				<div class="option">
 					<label>Amount</label>
-					<input class="form-control" name="amount" ng-model="scannedData.MICR.amt" required />
+					<div class="form-control">
+						<input name="amount" ng-model="scannedData.MICR.amt" required />
+					</div>
 				</div>
 				<div class="option">
 					<label>Account</label>
-					<div>{{ scannedData.MICR.acct }}</div>
+					<div class="value">{{ scannedData.MICR.acct }}</div>
 				</div>
 				<div class="option">
 					<label>Routing</label>
-					<div>{{ scannedData.MICR.transit }}</div>
+					<div class="value">{{ scannedData.MICR.transit }}</div>
 				</div>
 				<div class="option">
 					<label>Check Number</label>
-					<div>{{ scannedData.MICR.serNum }}</div>
+					<div class="value">{{ scannedData.MICR.serNum }}</div>
 				</div>
 				<div class="option">
-					<label>Front</label>
-					<img ng-src="{{ scanImages.front }}" />
+					<img class="check" ng-src="{{ scanImages.front }}" />
 				</div>
 				<div class="option">
-					<label>Back</label>
-					<img ng-src="{{ scanImages.back }}" />
+					<img class="check" ng-src="{{ scanImages.back }}" />
 				</div>
 			</ng-form>
 		</div>
-		<div class="section">
-			<h4>Customer</h4>
-			<div ng-hide="customer.selected">
-				<div class="option">
-					<label>First Name</label>
-					<input ng-model="customer.name.first" />
-					<label>Last Name</label>
-					<input ng-model="customer.name.last" />
-				</div>
-				<button class="confirm" ng-click="customerSearch()">Search</button>
-				<button class="confirm" ng-click="customerNew()">New</button>
-				<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
-				<div ng-show="customer.search">
-					<div ng-hide="customers.length">
-						<span>No results.</span>
+		<div class="section-header">
+			<span>Customer</span>
+		</div>
+		<div class="section" ng-class="{ 'has-error': customerForm.$invalid }">
+			<ng-form name="customerForm">
+				<div ng-hide="customer.selected">
+					<div class="option">
+						<label>First Name</label>
+						<input ng-model="customer.name.first" />
+						<label>Last Name</label>
+						<input ng-model="customer.name.last" />
 					</div>
-					<div class="option" ng-repeat="c in customers">
-						<div ng-if="c.photo">
-							<img ng-src="{{ c.photo }}" />
+					<button class="confirm" ng-click="customerSearch()">Search</button>
+					<button class="confirm" ng-click="customerNew()">New</button>
+					<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
+					<div ng-show="customer.search">
+						<div ng-hide="customers.length">
+							<span>No results.</span>
 						</div>
-						<div>{{ c.cusId }} {{ c.firstname }} {{ c.lastname }}</div>
-						<button class="confirm" ng-click="customerSelect($index)">Select</button>
+						<div class="option" ng-repeat="c in customers">
+							<div ng-if="c.photo">
+								<img ng-src="{{ c.photo }}" />
+							</div>
+							<div>{{ c.cusId }} {{ c.firstname }} {{ c.lastname }}</div>
+							<button class="confirm" ng-click="customerSelect($index)">Select</button>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div ng-show="customer.selected">
-				<div class="option">
-					<label>Name</label>
-					<img ng-src="{{ customer.photo }}" />
-					<div>{{ customer.id }} {{ customer.name.first }} {{ customer.name.last }}</div>
+				<div ng-show="customer.selected">
+					<div class="option">
+						<label>Name</label>
+						<img ng-src="{{ customer.photo }}" />
+						<div>{{ customer.id }} {{ customer.name.first }} {{ customer.name.last }}</div>
+					</div>
+					<button class="confirm" ng-click="customerClear()">Clear</button>
+					<button class="confirm" ng-click="customerEdit()">Edit</button>
 				</div>
-				<button class="confirm" ng-click="customerClear()">Clear</button>
-				<button class="confirm" ng-click="customerEdit()">Edit</button>
-			</div>
+			</ng-form>
+		</div>
+		<div class="section-header" ng-show="newCustomer.add">
+			<span>New Customer</span>
 		</div>
 		<div class="section" ng-show="newCustomer.add">
-			<h4>New Customer</h4>
 			<div class="option">
 				<input type="file" id="upload-photo" />
 				<table>
@@ -236,8 +244,10 @@
 			<button class="confirm" ng-click="customerAdd()">Add</button>
 			<button class="cancel" ng-click="customerAddCancel()">Cancel</button>
 		</div>
+		<div class="section-header">
+			<span>Issuer</span>
+		</div>
 		<div class="section">
-			<h4>Issuer</h4>
 			<div class="option">
 				<div ng-hide="newIssuer.add">
 					<label>Name</label>
@@ -246,8 +256,10 @@
 				<div ng-show="newIssuer.add">No results.</div>
 			</div>
 		</div>
+		<div class="section-header" ng-show="newIssuer.add">
+			<span>New Issuer</span>
+		</div>
 		<div class="section" ng-show="newIssuer.add">
-			<h4>New Issuer</h4>
 			<div class="option">
 				<table>
 					<tr>
@@ -286,8 +298,10 @@
 			</div>
 			<button class="confirm" ng-click="issuerAdd()">Add</button>
 		</div>
+		<div class="section-header">
+			<span>Bank</span>
+		</div>
 		<div class="section">
-			<h4>Bank</h4>
 			<div class="option">
 				<div ng-hide="newBank.add">
 					<label>Name</label>
@@ -296,8 +310,10 @@
 				<div ng-show="newBank.add">No results.</div>
 			</div>
 		</div>
+		<div class="section-header" ng-show="newBank.add">
+			<span>New Bank</span>
+		</div>
 		<div class="section" ng-show="newBank.add">
-			<h4>New Bank</h4>
 			<div class="option">
 				<table>
 					<tr>
