@@ -221,6 +221,16 @@ img.check {
 	margin-left: 10px;
 }
 
+table.new-customer {
+}
+
+table.new-customer tr {
+}
+
+table.new-customer td {
+	padding: 0 10px 5px 0;
+}
+
 .view {
 	margin-left: auto;
 	margin-right: auto;
