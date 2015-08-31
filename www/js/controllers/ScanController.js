@@ -521,6 +521,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.customerSelect = function(i) {
+		initNewCustomer();
 		var customer = $scope.customers[i];
 
 		$scope.customer.id = customer.cusId;
