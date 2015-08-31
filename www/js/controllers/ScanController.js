@@ -461,8 +461,12 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		document.getElementById('upload-photo').value = '';
 	};
 
-	$scope.customerEdit = function() {
+	$scope.customerClear = function() {
 		initCustomer();
+		initNewCustomer();
+	};
+
+	$scope.customerEdit = function() {
 	};
 
 	$scope.customerNew = function() {
