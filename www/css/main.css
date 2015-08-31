@@ -128,11 +128,6 @@ img.check {
 	float: left;
 }
 
-.section {
-	border: 1px solid #c0c0c0;
-	padding: 20px; 20px 20px 20px;
-}
-
 .section-header {
 	background-color: #f8f8f8;
 	border: 1px solid #c0c0c0;
@@ -140,6 +135,15 @@ img.check {
 	font-weight: bold;
 	margin-top: 20px;
 	padding: 20px;
+}
+
+.section {
+	border: 1px solid #c0c0c0;
+	padding: 20px; 20px 20px 20px;
+}
+
+.section .buttons {
+	margin: 10px;
 }
 
 .section .form-control {
@@ -155,16 +159,47 @@ img.check {
 	margin: 10px;
 }
 
-.section .buttons {
-	margin: 10px;
-}
-
 .option .value {
 	font-size: 1.5em;
 	font-weight: bold;
 	background-color: #e4edf4;
 	border-left: 3px solid #f90;
 	padding: 10px 0 10px 10px;
+}
+
+.section .no-results {
+	font-weight: bold;
+}
+
+.section .search-results {
+	margin: 20px 0 20px 0;
+	padding: 20px 0 0 40px;
+	border-top: 3px solid #ccc;
+}
+
+.section .search-result {
+	margin-bottom: 20px;
+}
+
+.search-result .photo {
+	float: left;
+	margin-right: 10px;
+}
+
+.search-result .photo img {
+	max-width: 150px;
+	max-height: 150px;
+}
+
+.search-result .info {
+	float: left;
+	margin-right: 10px;
+}
+
+.info .name {
+}
+
+.search-result a.select {
 }
 
 .section .title {
