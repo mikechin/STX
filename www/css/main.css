@@ -61,12 +61,23 @@ button.options {
 	width: 100%;
 }
 
+.info-msg {
+	color: #246;
+	background-color: #e2eef9;
+	border: 1px solid #bac6d3;
+}
+
+.error-msg {
+	background-color: #fcdede
+	border-color: #d2b2b2;
+}
+
 .has-error {
-	border-color: #a94442 !important;
+	border: 2px solid #a94442 !important;
 }
 
 .has-error .form-input {
-	border-color: #a94442;
+	border: 2px solid #a94442;
 }
 
 .header {

@@ -699,32 +699,32 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			save = false;
 		}
 
-		/*
-		process.cusId = $scope.customer.id;
-		process.issId = $scope.issuer.id;
-		process.bnkId = $scope.bank.id;
-		process.stxUrl = 'http://' + _stxIpAddress;
-		process.image.FileType = $scope.ImageOptions.FileType;
+		if(save) {
+			process.cusId = $scope.customer.id;
+			process.issId = $scope.issuer.id;
+			process.bnkId = $scope.bank.id;
+			process.stxUrl = 'http://' + _stxIpAddress;
+			process.image.FileType = $scope.ImageOptions.FileType;
 
-		$http({
-			method: 'POST',
-			url: 'http://stx.localhost:8888/q/check',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			data: process
-		}).
-		success(function(data, status, headers, config) {
-			console.log('success.');
-			console.log(data);
-			cleanup();
-		}).
-		error(function(data, status, headers, config) {
-			console.log('error.');
-			console.log(data);
-		});
-		*/
+			$http({
+				method: 'POST',
+				url: 'http://stx.localhost:8888/q/check',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				data: process
+			}).
+			success(function(data, status, headers, config) {
+				console.log('success.');
+				console.log(data);
+				cleanup();
+			}).
+			error(function(data, status, headers, config) {
+				console.log('error.');
+				console.log(data);
+			});
+		}
 	};
 
 	$scope.scan = function() {
