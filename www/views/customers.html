@@ -1,43 +1,44 @@
 <div class="content">
 	<div class="section">
-		<div ng-hide="customer.selected">
-			<div class="option">
-				<div class="pull-left">
-					<label>First Name</label>
-					<div class="form-control">
-						<input type="text" ng-model="customer.name.first" />
-					</div>
+		<div class="option">
+			<div class="pull-left">
+				<label>First Name</label>
+				<div class="form-control">
+					<input type="text" ng-model="customer.name.first" />
 				</div>
-				<div class="pull-left ml-10">
-					<label>Last Name</label>
-					<div class="form-control">
-						<input type="text" ng-model="customer.name.last" />
-					</div>
+			</div>
+			<div class="pull-left ml-10">
+				<label>Last Name</label>
+				<div class="form-control">
+					<input type="text" ng-model="customer.name.last" />
 				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="buttons">
+			<button class="confirm" ng-click="customerSearch()">Search</button>
+		</div>
+		<div class="search-results" ng-show="customer.search">
+			<div class="no-results" ng-hide="customers.length">
+				<span>No results.</span>
+			</div>
+			<div class="search-result" ng-repeat="c in customers">
+				<a href="" class="select" ng-click="customerSelect($index)">
+					<div class="photo">
+						<img ng-show="c.photo" ng-src="{{ c.photo }}" />
+						<img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
+					</div>
+					<div class="info">
+						<div class="name">{{ c.firstname }} {{ c.lastname }}</div>
+					</div>
+				</a>
 				<div class="clear"></div>
 			</div>
-			<div class="buttons">
-				<button class="confirm" ng-click="customerSearch()">Search</button>
-				<button class="confirm" ng-click="customerNew()">New</button>
-				<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
-			</div>
-			<div class="search-results" ng-show="customer.search">
-				<div class="no-results" ng-hide="customers.length">
-					<span>No results.</span>
-				</div>
-				<div class="search-result" ng-repeat="c in customers">
-					<a href="" class="select" ng-click="customerSelect($index)">
-						<div class="photo">
-							<img ng-show="c.photo" ng-src="{{ c.photo }}" />
-							<img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
-						</div>
-						<div class="info">
-							<div class="name">{{ c.firstname }} {{ c.lastname }}</div>
-						</div>
-					</a>
-					<div class="clear"></div>
-				</div>
-			</div>
+		</div>
+	</div>
+	<div class="section">
+		<div class="option" ng-repeat="c in checks">
+			<span>{{ c.created }}</span>
 		</div>
 	</div>
 </div>

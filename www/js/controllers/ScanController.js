@@ -565,9 +565,6 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		initNewCustomer();
 	};
 
-	$scope.customerEdit = function() {
-	};
-
 	$scope.customerNew = function() {
 		initNewCustomer();
 		$scope.newCustomer.add = true;

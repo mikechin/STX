@@ -7,6 +7,7 @@ stx.config(['$routeProvider', function($routeProvider) {
 			templateUrl: 'views/scan.html'
 		}).
 		when('/customers', {
+			controller: 'CustomersController',
 			templateUrl: 'views/customers.html'
 		}).
 		otherwise({
