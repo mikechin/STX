@@ -225,7 +225,7 @@
 		</div>
 		<div class="section" ng-show="newCustomer.add">
 			<div class="option">
-				<table class="new-customer">
+				<table class="new-entry">
 					<tr>
 						<td>Photo</td>
 						<td><input type="file" id="upload-photo" /></td>
@@ -277,7 +277,9 @@
 					<label>Name</label>
 					<div>{{ issuer.name }}</div>
 				</div>
-				<div ng-show="newIssuer.add">No results.</div>
+				<div class="no-results" ng-show="newIssuer.add">
+					<span>No results.</span>
+				</div>
 			</div>
 		</div>
 		<div class="section-header" ng-show="newIssuer.add">
@@ -285,7 +287,7 @@
 		</div>
 		<div class="section" ng-show="newIssuer.add">
 			<div class="option">
-				<table>
+				<table class="new-entry">
 					<tr>
 						<td>Name</td>
 						<td><input ng-model="newIssuer.name" /></td>
@@ -331,7 +333,9 @@
 					<label>Name</label>
 					<div>{{ bank.name }}</div>
 				</div>
-				<div ng-show="newBank.add">No results.</div>
+				<div class="no-results" ng-show="newBank.add">
+					<span>No results.</span>
+				</div>
 			</div>
 		</div>
 		<div class="section-header" ng-show="newBank.add">
@@ -339,7 +343,7 @@
 		</div>
 		<div class="section" ng-show="newBank.add">
 			<div class="option">
-				<table>
+				<table class="new-entry">
 					<tr>
 						<td>Name</td>
 						<td><input ng-model="newBank.name" /></td>
