@@ -576,6 +576,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			save = false;
 		}
 
+		if($scope.issuer.id === '') {
+			$scope.issuerForm.$invalid = true;
+			save = false;
+		}
+
 		/*
 		process.cusId = $scope.customer.id;
 		process.issId = $scope.issuer.id;

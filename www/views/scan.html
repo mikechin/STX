@@ -271,16 +271,18 @@
 		<div class="section-header">
 			<span>Issuer</span>
 		</div>
-		<div class="section">
-			<div class="option">
-				<div ng-hide="newIssuer.add">
-					<label>Name</label>
-					<div>{{ issuer.name }}</div>
+		<div class="section" ng-class="{ 'has-error': issuerForm.$invalid }">
+			<ng-form name="issuerForm">
+				<div class="option">
+					<div ng-hide="newIssuer.add">
+						<label>Name</label>
+						<div>{{ issuer.name }}</div>
+					</div>
+					<div class="no-results" ng-show="newIssuer.add">
+						<span>No results.</span>
+					</div>
 				</div>
-				<div class="no-results" ng-show="newIssuer.add">
-					<span>No results.</span>
-				</div>
-			</div>
+			</ng-form>
 		</div>
 		<div class="section-header" ng-show="newIssuer.add">
 			<span>New Issuer</span>
