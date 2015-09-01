@@ -230,23 +230,23 @@
 					</tr>
 					<tr ng-class="{ 'has-error': customerForm.firstname.$invalid && customerForm.firstname.$dirty }">
 						<td>First Name</td>
-						<td><input name="firstname" class="form-input" ng-model="newCustomer.name.first" required /></td>
+						<td><input type="text" name="firstname" class="form-input" ng-model="newCustomer.name.first" required /></td>
 					</tr>
 					<tr ng-class="{ 'has-error': customerForm.lastname.$invalid && customerForm.lastname.$dirty }">
 						<td>Last Name</td>
-						<td><input name="lastname" class="form-input" ng-model="newCustomer.name.last" required /></td>
+						<td><input type="text" name="lastname" class="form-input" ng-model="newCustomer.name.last" required /></td>
 					</tr>
 					<tr>
 						<td>Address</td>
-						<td><input name="address1" ng-model="newCustomer.address1" /></td>
+						<td><input type="text" name="address1" ng-model="newCustomer.address1" /></td>
 					</tr>
 					<tr>
 						<td></td>
-						<td><input name="address2" ng-model="newCustomer.address2" /></td>
+						<td><input type="text" name="address2" ng-model="newCustomer.address2" /></td>
 					</tr>
 					<tr>
 						<td>City</td>
-						<td><input name="city" ng-model="newCustomer.city" /></td>
+						<td><input type="text" name="city" ng-model="newCustomer.city" /></td>
 					</tr>
 					<tr>
 						<td>State</td>
@@ -258,11 +258,11 @@
 					</tr>
 					<tr>
 						<td>Zipcode</td>
-						<td><input name="zipcode" ng-model="newCustomer.zipcode" /></td>
+						<td><input type="number" name="zipcode" ng-model="newCustomer.zipcode" /></td>
 					</tr>
 					<tr>
 						<td>Phone</td>
-						<td><input name="phone" ng-model="newCustomer.phone" /></td>
+						<td><input type="number" name="phone" ng-model="newCustomer.phone" /></td>
 					</tr>
 				</table>
 			</ng-form>
