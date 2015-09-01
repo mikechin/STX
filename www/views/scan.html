@@ -249,7 +249,11 @@
 					</tr>
 					<tr>
 						<td>State</td>
-						<td><input ng-model="newCustomer.state" /></td>
+						<td>
+							<select ng-model="newCustomer.state">
+								<option ng-repeat="state in usStates" value="{{ state.abbreviation }}">{{ state.name }}</option>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td>Zip</td>
@@ -304,7 +308,11 @@
 					</tr>
 					<tr>
 						<td>State</td>
-						<td><input ng-model="newIssuer.state" /></td>
+						<td>
+							<select ng-model="newIssuer.state">
+								<option ng-repeat="state in usStates" value="{{ state.abbreviation }}">{{ state.name }}</option>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td>Zip</td>
