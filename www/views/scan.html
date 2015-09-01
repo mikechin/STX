@@ -164,67 +164,65 @@
 		<div class="section-header">
 			<span>Customer</span>
 		</div>
-		<div class="section" ng-class="{ 'has-error': customerForm.$invalid }">
-			<ng-form name="customerForm">
-				<div ng-hide="customer.selected">
-					<div class="option">
-						<div class="pull-left">
-							<label>First Name</label>
-							<div class="form-control">
-								<input name="firstname" ng-model="customer.name.first" />
-							</div>
+		<div class="section" ng-class="{ 'has-error': customer.invalid }">
+			<div ng-hide="customer.selected">
+				<div class="option">
+					<div class="pull-left">
+						<label>First Name</label>
+						<div class="form-control">
+							<input ng-model="customer.name.first" />
 						</div>
-						<div class="pull-left ml-10">
-							<label>Last Name</label>
-							<div class="form-control">
-								<input name="lastname" ng-model="customer.name.last" />
-							</div>
+					</div>
+					<div class="pull-left ml-10">
+						<label>Last Name</label>
+						<div class="form-control">
+							<input ng-model="customer.name.last" />
 						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="buttons">
+					<button class="confirm" ng-click="customerSearch()">Search</button>
+					<button class="confirm" ng-click="customerNew()">New</button>
+					<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
+				</div>
+				<div class="search-results" ng-show="customer.search">
+					<div class="no-results" ng-hide="customers.length">
+						<span>No results.</span>
+					</div>
+					<div class="search-result" ng-repeat="c in customers">
+						<a href="" class="select" ng-click="customerSelect($index)">
+							<div class="photo">
+								<img ng-show="c.photo" ng-src="{{ c.photo }}" />
+								<img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
+							</div>
+							<div class="info">
+								<div class="name">{{ c.firstname }} {{ c.lastname }}</div>
+							</div>
+						</a>
 						<div class="clear"></div>
 					</div>
-					<div class="buttons">
-						<button class="confirm" ng-click="customerSearch()">Search</button>
-						<button class="confirm" ng-click="customerNew()">New</button>
-						<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
-					</div>
-					<div class="search-results" ng-show="customer.search">
-						<div class="no-results" ng-hide="customers.length">
-							<span>No results.</span>
-						</div>
-						<div class="search-result" ng-repeat="c in customers">
-							<a href="" class="select" ng-click="customerSelect($index)">
-								<div class="photo">
-									<img ng-show="c.photo" ng-src="{{ c.photo }}" />
-									<img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
-								</div>
-								<div class="info">
-									<div class="name">{{ c.firstname }} {{ c.lastname }}</div>
-								</div>
-							</a>
-							<div class="clear"></div>
-						</div>
-					</div>
 				</div>
-				<div ng-show="customer.selected">
-					<div class="search-result">
-						<div class="photo">
-							<img ng-show="customer.photo" ng-src="{{ customer.photo }}" />
-							<img ng-hide="customer.photo" ng-src="assets/img/no_image_available.jpg" />
-						</div>
-						<div class="info">
-							<div class="name">{{ customer.name.first }} {{ customer.name.last }}</div>
-						</div>
-						<div class="clear"></div>
+			</div>
+			<div ng-show="customer.selected">
+				<div class="search-result">
+					<div class="photo">
+						<img ng-show="customer.photo" ng-src="{{ customer.photo }}" />
+						<img ng-hide="customer.photo" ng-src="assets/img/no_image_available.jpg" />
 					</div>
-					<button class="confirm" ng-click="customerClear()">Clear</button>
+					<div class="info">
+						<div class="name">{{ customer.name.first }} {{ customer.name.last }}</div>
+					</div>
+					<div class="clear"></div>
 				</div>
-			</ng-form>
+				<button class="confirm" ng-click="customerClear()">Clear</button>
+			</div>
 		</div>
 		<div class="section-header" ng-show="newCustomer.add">
 			<span>New Customer</span>
 		</div>
 		<div class="section" ng-show="newCustomer.add">
-			<div class="option">
+			<ng-form name="customerForm">
 				<table class="new-entry">
 					<tr>
 						<td>Photo</td>
@@ -262,7 +260,7 @@
 						<td><input ng-model="newCustomer.phone" /></td>
 					</tr>
 				</table>
-			</div>
+			</ng-form>
 			<div class="buttons">
 				<button class="confirm" ng-click="customerAdd()">Add</button>
 				<button class="cancel" ng-click="customerAddCancel()">Cancel</button>
@@ -271,24 +269,22 @@
 		<div class="section-header">
 			<span>Issuer</span>
 		</div>
-		<div class="section" ng-class="{ 'has-error': issuerForm.$invalid }">
-			<ng-form name="issuerForm">
-				<div class="option">
-					<div ng-hide="newIssuer.add">
-						<label>Name</label>
-						<div>{{ issuer.name }}</div>
-					</div>
-					<div class="no-results" ng-show="newIssuer.add">
-						<span>No results.</span>
-					</div>
+		<div class="section" ng-class="{ 'has-error': issuer.invalid }">
+			<div class="option">
+				<div ng-hide="newIssuer.add">
+					<label>Name</label>
+					<div>{{ issuer.name }}</div>
 				</div>
-			</ng-form>
+				<div class="no-results" ng-show="newIssuer.add">
+					<span>No results.</span>
+				</div>
+			</div>
 		</div>
 		<div class="section-header" ng-show="newIssuer.add">
 			<span>New Issuer</span>
 		</div>
 		<div class="section" ng-show="newIssuer.add">
-			<div class="option">
+			<ng-form name="issuerForm">
 				<table class="new-entry">
 					<tr>
 						<td>Name</td>
@@ -323,13 +319,15 @@
 						<td><input ng-model="newIssuer.email" /></td>
 					</tr>
 				</table>
+			</ng-form>
+			<div class="buttons">
+				<button class="confirm" ng-click="issuerAdd()">Add</button>
 			</div>
-			<button class="confirm" ng-click="issuerAdd()">Add</button>
 		</div>
 		<div class="section-header">
 			<span>Bank</span>
 		</div>
-		<div class="section">
+		<div class="section" ng-class="{ 'has-error': bank.invalid }">
 			<div class="option">
 				<div ng-hide="newBank.add">
 					<label>Name</label>
@@ -344,15 +342,17 @@
 			<span>New Bank</span>
 		</div>
 		<div class="section" ng-show="newBank.add">
-			<div class="option">
+			<ng-form name="bankForm">
 				<table class="new-entry">
 					<tr>
 						<td>Name</td>
 						<td><input ng-model="newBank.name" /></td>
 					</tr>
 				</table>
+			</ng-form>
+			<div class="buttons">
+				<button class="confirm" ng-click="bankAdd()">Add</button>
 			</div>
-			<button class="confirm" ng-click="bankAdd()">Add</button>
 		</div>
 		<button class="confirm" ng-click="save()">Save</button>
 	</div>

@@ -90,7 +90,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 
 		$scope.bank = {
 			id: '',
-			name: ''
+			name: '',
+			invalid: false
 		};
 
 		$scope.newBank = {
@@ -103,7 +104,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 
 		$scope.issuer = {
 			id: '',
-			name: ''
+			name: '',
+			invalid: false
 		};
 
 		$scope.newIssuer = {
@@ -138,7 +140,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			},
 			photo: null,
 			search: false,
-			selected: false
+			selected: false,
+			invalid: false
 		};
 	}
 
@@ -294,7 +297,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 
 	$scope.bank = {
 		id: '',
-		name: ''
+		name: '',
+		invalid: false
 	};
 
 	$scope.newBank = {
@@ -310,7 +314,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		},
 		photo: null,
 		search: false,
-		selected: false
+		selected: false,
+		invalid: false
 	};
 
 	$scope.newCustomer = {
@@ -330,7 +335,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 
 	$scope.issuer = {
 		id: '',
-		name: ''
+		name: '',
+		invalid: false
 	};
 
 	$scope.newIssuer = {
@@ -531,7 +537,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		$scope.customer.search = false;
 		$scope.customer.selected = true;
 
-		$scope.customerForm.$invalid = false;
+		$scope.customer.invalid = false;
 	};
 
 	$scope.issuerAdd = function() {
@@ -572,12 +578,17 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		}
 
 		if($scope.customer.id === '') {
-			$scope.customerForm.$invalid = true;
+			$scope.customer.invalid = true;
 			save = false;
 		}
 
 		if($scope.issuer.id === '') {
-			$scope.issuerForm.$invalid = true;
+			$scope.issuer.invalid = true;
+			save = false;
+		}
+
+		if($scope.bank.id === '') {
+			$scope.bank.invalid = true;
 			save = false;
 		}
 
