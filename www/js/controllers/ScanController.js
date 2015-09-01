@@ -620,6 +620,20 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.issuerAdd = function() {
+		if($scope.issuerForm.$invalid) {
+			var cont = true;
+
+			if($scope.newIssuer.name === '') {
+				$scope.issuerForm.name.$invalid = true;
+				$scope.issuerForm.name.$dirty = true;
+				cont = false;
+			}
+
+			if(!cont) {
+				return;
+			}
+		}
+
 		var data = $scope.newIssuer;
 		data.account = process.MICR.acct;
 		data.routing = process.MICR.transit;

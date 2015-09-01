@@ -291,21 +291,21 @@
 		<div class="section" ng-show="newIssuer.add">
 			<ng-form name="issuerForm">
 				<table class="new-entry">
-					<tr>
+					<tr ng-class="{ 'has-error': issuerForm.name.$invalid && issuerForm.name.$dirty }">
 						<td>Name</td>
-						<td><input ng-model="newIssuer.name" /></td>
+						<td><input type="text" name="name" class="form-input" ng-model="newIssuer.name" required /></td>
 					</tr>
 					<tr>
 						<td>Address</td>
-						<td><input ng-model="newIssuer.address1" /></td>
+						<td><input type="text" ng-model="newIssuer.address1" /></td>
 					</tr>
 					<tr>
 						<td></td>
-						<td><input ng-model="newIssuer.address2" /></td>
+						<td><input type="text" ng-model="newIssuer.address2" /></td>
 					</tr>
 					<tr>
 						<td>City</td>
-						<td><input ng-model="newIssuer.city" /></td>
+						<td><input type="text" ng-model="newIssuer.city" /></td>
 					</tr>
 					<tr>
 						<td>State</td>
@@ -317,15 +317,15 @@
 					</tr>
 					<tr>
 						<td>Zip</td>
-						<td><input ng-model="newIssuer.zipcode" /></td>
+						<td><input type="number" ng-model="newIssuer.zipcode" /></td>
 					</tr>
 					<tr>
 						<td>Phone</td>
-						<td><input ng-model="newIssuer.phone" /></td>
+						<td><input type="number" ng-model="newIssuer.phone" /></td>
 					</tr>
 					<tr>
 						<td>Email</td>
-						<td><input ng-model="newIssuer.email" /></td>
+						<td><input type="email" ng-model="newIssuer.email" /></td>
 					</tr>
 				</table>
 			</ng-form>
