@@ -446,6 +446,20 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	];
 
 	$scope.bankAdd = function() {
+		if($scope.bankForm.$invalid) {
+			var cont = true;
+
+			if($scope.newBank.name === '') {
+				$scope.bankForm.name.$invalid = true;
+				$scope.bankForm.name.$dirty = true;
+				cont = false;
+			}
+
+			if(!cont) {
+				return;
+			}
+		}
+
 		var data = $scope.newBank;
 		data.account = process.MICR.bankNum;
 

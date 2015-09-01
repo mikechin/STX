@@ -353,9 +353,9 @@
 		<div class="section" ng-show="newBank.add">
 			<ng-form name="bankForm">
 				<table class="new-entry">
-					<tr>
+					<tr ng-class="{ 'has-error': bankForm.name.$invalid && bankForm.name.$dirty }">
 						<td>Name</td>
-						<td><input ng-model="newBank.name" /></td>
+						<td><input type="text" name="name" class="form-input" ng-model="newBank.name" required /></td>
 					</tr>
 				</table>
 			</ng-form>
