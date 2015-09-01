@@ -227,41 +227,42 @@
 					<tr>
 						<td>Photo</td>
 						<td><input type="file" id="upload-photo" /></td>
-					<tr>
-						<td>First Name</td>
-						<td><input ng-model="newCustomer.name.first" /></td>
 					</tr>
-					<tr>
+					<tr ng-class="{ 'has-error': customerForm.firstname.$invalid && customerForm.firstname.$dirty }">
+						<td>First Name</td>
+						<td><input name="firstname" class="form-input" ng-model="newCustomer.name.first" required /></td>
+					</tr>
+					<tr ng-class="{ 'has-error': customerForm.lastname.$invalid && customerForm.lastname.$dirty }">
 						<td>Last Name</td>
-						<td><input ng-model="newCustomer.name.last" /></td>
+						<td><input name="lastname" class="form-input" ng-model="newCustomer.name.last" required /></td>
 					</tr>
 					<tr>
 						<td>Address</td>
-						<td><input ng-model="newCustomer.address1" /></td>
+						<td><input name="address1" ng-model="newCustomer.address1" /></td>
 					</tr>
 					<tr>
 						<td></td>
-						<td><input ng-model="newCustomer.address2" /></td>
+						<td><input name="address2" ng-model="newCustomer.address2" /></td>
 					</tr>
 					<tr>
 						<td>City</td>
-						<td><input ng-model="newCustomer.city" /></td>
+						<td><input name="city" ng-model="newCustomer.city" /></td>
 					</tr>
 					<tr>
 						<td>State</td>
 						<td>
-							<select ng-model="newCustomer.state">
+							<select name="state" ng-model="newCustomer.state">
 								<option ng-repeat="state in usStates" value="{{ state.abbreviation }}">{{ state.name }}</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<td>Zip</td>
-						<td><input ng-model="newCustomer.zipcode" /></td>
+						<td>Zipcode</td>
+						<td><input name="zipcode" ng-model="newCustomer.zipcode" /></td>
 					</tr>
 					<tr>
 						<td>Phone</td>
-						<td><input ng-model="newCustomer.phone" /></td>
+						<td><input name="phone" ng-model="newCustomer.phone" /></td>
 					</tr>
 				</table>
 			</ng-form>

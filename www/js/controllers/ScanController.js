@@ -146,6 +146,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	}
 
 	function initNewCustomer() {
+		$scope.customerForm.firstname.$invalid = false;
+		$scope.customerForm.firstname.$dirty = false;
+		$scope.customerForm.lastname.$invalid = false;
+		$scope.customerForm.lastname.$dirty = false;
+
 		$scope.newCustomer = {
 			add: false,
 			name: {
@@ -468,6 +473,26 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.customerAdd = function() {
+		if($scope.customerForm.$invalid) {
+			var cont = true;
+
+			if($scope.newCustomer.name.first === '') {
+				$scope.customerForm.firstname.$invalid = true;
+				$scope.customerForm.firstname.$dirty = true;
+				cont = false;
+			}
+
+			if($scope.newCustomer.name.last === '') {
+				$scope.customerForm.lastname.$invalid = true;
+				$scope.customerForm.lastname.$dirty = true;
+				cont = false;
+			}
+
+			if(!cont) {
+				return;
+			}
+		}
+
 		var upload = $q.defer();
 
 		var ele = document.getElementById('upload-photo');
