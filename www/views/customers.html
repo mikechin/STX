@@ -1,23 +1,25 @@
 <div class="content">
 	<div class="section">
-		<div class="option">
-			<div class="pull-left">
-				<label>First Name</label>
-				<div class="form-control">
-					<input type="text" ng-model="customer.name.first" />
+		<ng-form name="customerForm">
+			<div class="option">
+				<div class="pull-left">
+					<label>First Name</label>
+					<div class="form-control" ng-class="{ 'has-error': customerForm.firstname.$invalid && customerForm.firstname.$dirty }">
+						<input type="text" name="firstname" ng-model="customer.name.first" required />
+					</div>
 				</div>
-			</div>
-			<div class="pull-left ml-10">
-				<label>Last Name</label>
-				<div class="form-control">
-					<input type="text" ng-model="customer.name.last" />
+				<div class="pull-left ml-10">
+					<label>Last Name</label>
+					<div class="form-control" ng-class="{ 'has-error': customerForm.lastname.$invalid && customerForm.lastname.$dirty }">
+						<input type="text" name="lastname" ng-model="customer.name.last" required />
+					</div>
 				</div>
+				<div class="clear"></div>
 			</div>
-			<div class="clear"></div>
-		</div>
-		<div class="buttons">
-			<button class="confirm" ng-click="customerSearch()">Search</button>
-		</div>
+			<div class="buttons">
+				<button class="confirm" ng-click="customerSearch()">Search</button>
+			</div>
+		</ng-form>
 		<div class="search-results" ng-show="customer.search">
 			<div class="no-results" ng-hide="customers.length">
 				<span>No results.</span>

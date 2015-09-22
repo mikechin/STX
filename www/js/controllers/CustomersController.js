@@ -42,6 +42,16 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 
 	$scope.customerSearch = function() {
 		if($scope.customer.name.first === '' || $scope.customer.name.last === '') {
+			if($scope.customer.name.first === '') {
+				$scope.customerForm.firstname.$invalid = true;
+				$scope.customerForm.firstname.$dirty = true;
+			}
+
+			if($scope.customer.name.last === '') {
+				$scope.customerForm.lastname.$invalid = true;
+				$scope.customerForm.lastname.$dirty = true;
+			}
+
 			return;
 		}
 
