@@ -1,4 +1,7 @@
 <div class="content">
+	<div class="section-header">
+		<span>Search Customers</span>
+	</div>
 	<div class="section">
 		<ng-form name="customerForm">
 			<div class="option">
@@ -38,9 +41,37 @@
 			</div>
 		</div>
 	</div>
-	<div class="section" ng-show="customer.search || customer.selected">
+	<div class="section-header" ng-show="customer.selected">
+		<span>Checks</span>
+	</div>
+	<div class="section" ng-show="customer.selected">
 		<div class="option" ng-repeat="c in checks">
-			<span>{{ c.created }}</span>
+			<div class="option">
+				<label>Date Scanned</label>
+				<div class="value">{{ c.created }}</div>
+			</div>
+			<div class="option">
+				<label>Amount</label>
+				<div class="value">${{ c.amt }}</div>
+			</div>
+			<div class="option">
+				<label>Account</label>
+				<div class="value">{{ c.acct }}</div>
+			</div>
+			<div class="option">
+				<label>Routing</label>
+				<div class="value">{{ c.transit }}</div>
+			</div>
+			<div class="option">
+				<label>Check Number</label>
+				<div class="value">{{ c.serNum }}</div>
+			</div>
+			<div class="option stripes">
+				<img class="check" ng-src="chkimg/{{ c.chkId }}/front.JPG" />
+			</div>
+			<div class="option stripes">
+				<img class="check" ng-src="chkimg/{{ c.chkId }}/back.JPG" />
+			</div>
 		</div>
 	</div>
 </div>

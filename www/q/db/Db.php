@@ -320,7 +320,7 @@ class Db {
 
 	public function getChecksByCustomerId($id) {
 		$q = $this->db->prepare(
-			"SELECT chkId, issId, bnkId, created_at, MICRAmt
+			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
 			FROM checks
 			WHERE cusId = :id"
 		);
@@ -336,7 +336,10 @@ class Db {
 				'issId' => $row['issId'],
 				'bnkId' => $row['bnkId'],
 				'created' => $row['created_at'],
-				'amount' => $row['MICRAmt']
+				'acct' => $row['MICRAcct'],
+				'amt' => $row['MICRAmt'],
+				'transit' => $row['MICRTransit'],
+				'serNum' => $row['MICRSerNum']
 			];
 		}
 
