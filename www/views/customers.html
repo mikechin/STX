@@ -36,7 +36,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="section">
+	<div class="section" ng-show="customer.search || customer.selected">
 		<div class="option" ng-repeat="c in checks">
 			<span>{{ c.created }}</span>
 		</div>
