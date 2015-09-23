@@ -1,0 +1,27 @@
+<div class="content">
+	<div class="section-header">
+		<span>Search Customers</span>
+	</div>
+	<div class="section">
+		<ng-form name="reportForm">
+			<div class="option">
+				<div class="pull-left">
+					<label>Start Date</label>
+					<div class="form-control" ng-class="{ 'has-error': reportForm.start.$invalid && reportForm.start.$dirty }">
+						<input type="date" name="start" ng-model="report.start" required />
+					</div>
+				</div>
+				<div class="pull-left ml-10">
+					<label>End Date</label>
+					<div class="form-control" ng-class="{ 'has-error': reportForm.end.$invalid && reportForm.end.$dirty }">
+						<input type="date" name="end" ng-model="report.end" required />
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="buttons">
+				<button class="confirm" ng-click="generateReport()">Search</button>
+			</div>
+		</ng-form>
+	</div>
+</div>
