@@ -10,6 +10,7 @@
 		<script src="js/main.js"></script>
 		<script src="js/controllers/CustomersController.js"></script>
 		<script src="js/controllers/NavController.js"></script>
+		<script src="js/controllers/ReportsController.js"></script>
 		<script src="js/controllers/ScanController.js"></script>
 		<script src="js/factories/ProcessFactory.js"></script>
 		<base href="/">
@@ -20,6 +21,7 @@
 		<div class="nav" ng-controller="NavController">
 			<a href="#/scan" ng-class="{ active: isActive('/scan') }"><div>scan</div></a>
 			<a href="#/customers" ng-class="{ active: isActive('/customers') }"><div>customers</div></a>
+			<a href="#/reports" ng-class="{ active: isActive('/reports') }"><div>reports</div></a>
 		</div>
 		<div class="view" ng-view>
 		</div>

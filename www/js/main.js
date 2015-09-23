@@ -10,6 +10,10 @@ stx.config(['$routeProvider', function($routeProvider) {
 			controller: 'CustomersController',
 			templateUrl: 'views/customers.html'
 		}).
+		when('/reports', {
+			controller: 'ReportsController',
+			templateUrl: 'views/reports.html'
+		}).
 		otherwise({
 			redirectTo: '/scan'
 		});
