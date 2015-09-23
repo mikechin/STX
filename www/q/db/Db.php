@@ -463,6 +463,45 @@ class Db {
 			]);
 		}
 	}
+
+	public function getReportByRange($start, $end) {
+		$q = $this->db->prepare(
+			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
+			FROM checks
+			WHERE created_at BETWEEN :start AND :end"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':start', $start);
+		$q->bindParam(':end', $end);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'status' => true,
+				'chkId' => $row['chkId'],
+				'issId' => $row['issId'],
+				'bnkId' => $row['bnkId'],
+				'created' => $row['created_at'],
+				'acct' => $row['MICRAcct'],
+				'amt' => $row['MICRAmt'],
+				'transit' => $row['MICRTransit'],
+				'serNum' => $row['MICRSerNum']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'checks' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
 }
 
 ?>
