@@ -1,4 +1,4 @@
-stx.controller('ReportsController', ['$scope', '$http', function($scope, $http) {
+stx.controller('ReportsController', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
 	'use strict';
 
 	// **************************************************
@@ -46,5 +46,26 @@ stx.controller('ReportsController', ['$scope', '$http', function($scope, $http) 
 			$scope.reportForm.end.$dirty = true;
 			return;
 		}
+
+		var start = $filter('date')($scope.report.start, 'yyyy-MM-dd 00:00:00');
+		var end = $filter('date')($scope.report.end, 'yyyy-MM-dd 23:59:59');
+
+		var url = 'http://stx.localhost:8888/q/report/' + start + '/' + end;
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			$scope.report.results = data.checks;
+			$scope.report.search = true;
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
 	};
 }]);
