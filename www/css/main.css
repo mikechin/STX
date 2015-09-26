@@ -40,6 +40,38 @@ button.options {
 	padding: 20px;
 }
 
+.check-list {
+}
+
+.check-list .item {
+	border-bottom: 1px solid #000;
+	padding: 10px 0 10px 0;
+	overflow: hidden;
+}
+
+.check-list .item .data {
+	float: left;
+	width: 30%;
+}
+
+.check-list .item .data label {
+	font-size: 1em;
+	color: #bd9655;
+}
+
+.check-list .item .data .value {
+	font-size: 2em;
+}
+
+.check-list .item .image {
+	float: right;
+	width: 65%;
+}
+
+.check-list .item .image img {
+	max-width: 600px;
+}
+
 .clear {
 	clear: both;
 }
