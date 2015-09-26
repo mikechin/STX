@@ -45,7 +45,10 @@
 		<span>Checks</span>
 	</div>
 	<div class="section" ng-show="customer.selected">
-		<div class="check-list" ng-repeat="c in checks">
+		<div class="no-results" ng-hide="checks.length">
+			<span>No results.</span>
+		</div>
+		<div class="check-list" ng-show="checks.length" ng-repeat="c in checks">
 			<div class="item">
 				<div class="data">
 					<label>Date Scanned</label>
