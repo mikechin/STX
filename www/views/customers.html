@@ -29,12 +29,17 @@
 			</div>
 			<div class="search-result" ng-repeat="c in customers">
 				<a href="" class="select" ng-click="customerSelect($index)">
-					<div class="photo">
-						<img ng-show="c.photo" ng-src="{{ c.photo }}" />
-						<img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
-					</div>
-					<div class="info">
-						<div class="name">{{ c.firstname }} {{ c.lastname }}</div>
+					<div class="result">
+						<div class="photo">
+							<img ng-show="c.photo" ng-src="{{ c.photo }}" />
+							<img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
+						</div>
+						<div class="info">
+							<div class="name">{{ c.firstname }} {{ c.lastname }}</div>
+							<div class="address">{{ c.address1 }} {{ c.address2 }}</div>
+							<div class="city">{{ c.city }}, {{ c.state }} {{ c.zipcode }}</div>
+							<div class="phone">{{ c.phone }}</div>
+						</div>
 					</div>
 				</a>
 				<div class="clear"></div>

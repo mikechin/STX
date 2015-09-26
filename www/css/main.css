@@ -271,22 +271,26 @@ img.check {
 	margin-bottom: 20px;
 }
 
-.search-result .photo {
+.search-result .result {
+	overflow: hidden;
+}
+
+.search-result .result .photo {
 	float: left;
 	margin-right: 10px;
 }
 
-.search-result .photo img {
+.search-result .result .photo img {
 	max-width: 150px;
 	max-height: 150px;
 }
 
-.search-result .info {
+.search-result .result .info {
 	float: left;
-	margin-right: 10px;
 }
 
-.info .name {
+.search-result .result .info .name {
+	font-size: 1.5em;
 }
 
 .search-result a.select {
