@@ -6,8 +6,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	//
 	//
 	// **************************************************
-	// var _stxIpAddress = '192.168.1.100';
-	var _stxIpAddress = 'stx.localhost:8888';
+	var _stxIpAddress = '192.168.1.100';
+	// var _stxIpAddress = 'stx.localhost:8888';
 	var _x2js = new X2JS();
 	var _testData = '<?xml version="1.0" encoding="utf-8"?>'
 		+ '<DeviceInformation>'
@@ -725,7 +725,6 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	};
 
 	$scope.scan = function() {
-		/*
 		setOptions();
 
 		console.log('sending...');
@@ -746,10 +745,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		error(function(data, status, headers, config) {
 			console.log('fail - ' + status + '.');
 		});
-		*/
 
+		/*
 		var data = _x2js.xml_str2json(_testData);
 		processScan(data);
+		*/
 	};
 
 	$scope.toggleOptions = function() {
