@@ -2,8 +2,10 @@
 	<div ng-show="panes.scan">
 		<button class="confirm" ng-click="scan()">Scan</button>
 		<button class="options" ng-click="toggleOptions()">Options</button>
+		<div class="section-header" ng-show="showOptions">
+			<span>Process Options</span>
+		</div>
 		<div class="section" ng-show="showOptions">
-			<h4>Process Options</h4>
 			<div class="option">
 				<label>ReadMICR</label>
 				<select ng-model="ProcessOptions.ReadMICR">
@@ -40,8 +42,10 @@
 				</select>
 			</div>
 		</div>
+		<div class="section-header" ng-show="showOptions">
+			<span>Image Options</span>
+		</div>
 		<div class="section" ng-show="showOptions">
-			<h4>Image Options</h4>
 			<div class="option">
 				<label>Sides</label>
 				<select ng-model="ImageOptions.Num">
