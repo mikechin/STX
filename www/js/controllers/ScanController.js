@@ -367,7 +367,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 
 	$scope.ImageOptions = {
 		'Num': '2',
-		'ImageColor': 'GRAY8',
+		'ImageColor': 'COL24',
 		'Resolution': '200x200',
 		'Compression': 'JPEG',
 		'FileType': 'JPG'
