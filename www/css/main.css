@@ -15,7 +15,7 @@ a:active {
 }
 
 body {
-	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 1em;
 }
 
@@ -82,11 +82,88 @@ button.options {
 }
 
 .header {
+	border-bottom: 1px solid #000;
 	margin-left: auto;
 	margin-right: auto;
 	max-width: 1500px;
 	min-width: 820px;
+	overflow: hidden;
 	width: 100%;
+}
+
+.header .company-name {
+	float: left;
+	width: 60%;
+}
+
+.header .company-name a {
+	display: inline-block;
+	float: left;
+	height: 100%;
+	text-align: center;
+	padding: 20px;
+	border-bottom: 2px solid #fff;
+}
+
+.header .company-name a:link {
+	color: #000;
+	text-decoration: none;
+}
+
+.header .company-name a:visited {
+	color: #000;
+	text-decoration: none;
+}
+
+.header .company-name a:hover {
+	color: #000;
+	text-decoration: none;
+}
+
+.header .company-name a:active {
+	color: #000;
+	text-decoration: none;
+}
+
+.header .company-name a div {
+	padding-top: 10px;
+}
+
+.header .nav {
+	float: right;
+	width: 30%;
+}
+
+.header .nav a {
+	display: inline-block;
+	float: right;
+	height: 100%;
+	text-align: center;
+	padding: 20px;
+}
+
+.header .nav a:link {
+	color: #000;
+	text-decoration: none;
+}
+
+.header .nav a:visited {
+	color: #000;
+	text-decoration: none;
+}
+
+.header .nav a:hover {
+	color: #000;
+	text-decoration: none;
+}
+
+.header .nav a:active {
+	color: #000;
+	text-decoration: none;
+}
+
+.header .nav a div {
+	padding-top: 10px;
 }
 
 img.check {
@@ -99,47 +176,6 @@ img.check {
 
 .ml-10 {
 	margin-left: 10px;
-}
-
-.nav {
-	background-color: #ddd;
-	height: 40px;
-	margin-left: auto;
-	margin-right: auto;
-	max-width: 1500px;
-	min-width: 820px;
-	width: 100%;
-}
-
-.nav a {
-	display: inline-block;
-	height: 100%;
-	text-align: center;
-	padding: 0 10px 0 10px;
-}
-
-.nav a:link {
-	color: #333;
-	text-decoration: none;
-}
-
-.nav a:visited {
-	color: #333;
-	text-decoration: none;
-}
-
-.nav a:hover {
-	color: #333;
-	text-decoration: none;
-}
-
-.nav a:active {
-	color: #333;
-	text-decoration: none;
-}
-
-.nav a div {
-	padding-top: 10px;
 }
 
 .pull-right {
