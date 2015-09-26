@@ -271,25 +271,25 @@ img.check {
 	margin-bottom: 20px;
 }
 
-.search-result .result {
+.search-result .customer-result {
 	overflow: hidden;
 }
 
-.search-result .result .photo {
+.search-result .customer-result .photo {
 	float: left;
 	margin-right: 10px;
 }
 
-.search-result .result .photo img {
+.search-result .customer-result .photo img {
 	max-width: 150px;
 	max-height: 150px;
 }
 
-.search-result .result .info {
+.search-result .customer-result .info {
 	float: left;
 }
 
-.search-result .result .info .name {
+.search-result .customer-result .info .name {
 	font-size: 1.5em;
 }
 

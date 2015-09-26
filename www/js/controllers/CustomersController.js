@@ -80,6 +80,12 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 		$scope.customer.id = customer.cusId;
 		$scope.customer.name.first = customer.firstname;
 		$scope.customer.name.last = customer.lastname;
+		$scope.customer.address1 = customer.address1;
+		$scope.customer.address2 = customer.address2;
+		$scope.customer.city = customer.city;
+		$scope.customer.state = customer.state;
+		$scope.customer.zipcode = customer.zipcode;
+		$scope.customer.phone = customer.phone;
 		$scope.customer.photo = customer.photo;
 		$scope.customer.search = false;
 		$scope.customer.selected = true;

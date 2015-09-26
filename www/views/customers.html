@@ -29,7 +29,7 @@
 			</div>
 			<div class="search-result" ng-repeat="c in customers">
 				<a href="" class="select" ng-click="customerSelect($index)">
-					<div class="result">
+					<div class="customer-result">
 						<div class="photo">
 							<img ng-show="c.photo" ng-src="{{ c.photo }}" />
 							<img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
@@ -44,6 +44,26 @@
 				</a>
 				<div class="clear"></div>
 			</div>
+		</div>
+	</div>
+	<div class="section-header" ng-show="customer.selected">
+		<span>Customer</span>
+	</div>
+	<div class="section" ng-show="customer.selected">
+		<div class="search-result">
+			<div class="customer-result">
+				<div class="photo">
+					<img ng-show="customer.photo" ng-src="{{ customer.photo }}" />
+					<img ng-hide="customer.photo" ng-src="assets/img/no_image_available.jpg" />
+				</div>
+				<div class="info">
+					<div class="name">{{ customer.name.first }} {{ customer.name.last }}</div>
+					<div class="address">{{ customer.address1 }} {{ customer.address2 }}</div>
+					<div class="city">{{ customer.city }}, {{ customer.state }} {{ customer.zipcode }}</div>
+					<div class="phone">{{ customer.phone }}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
 		</div>
 	</div>
 	<div class="section-header" ng-show="customer.selected">
