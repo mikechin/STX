@@ -378,7 +378,11 @@ class Db {
 	}
 
 	public function getCustomersByName($firstname, $lastname) {
-		$q = $this->db->prepare("SELECT cusId, firstname, lastname, photo FROM customers WHERE firstname = :firstname AND lastname = :lastname");
+		$q = $this->db->prepare(
+			"SELECT cusId, firstname, lastname, photo, address1, address2, city, state, zipcode, phone
+			FROM customers
+			WHERE firstname = :firstname AND lastname = :lastname"
+		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':firstname', $firstname);
 		$q->bindParam(':lastname', $lastname);
@@ -390,7 +394,13 @@ class Db {
 				'cusId' => $row['cusId'],
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
-				'photo' => $row['photo']
+				'photo' => $row['photo'],
+				'address1' => $row['address1'],
+				'address2' => $row['address2'],
+				'city' => $row['city'],
+				'state' => $row['state'],
+				'zipcode' => $row['zipcode'],
+				'phone' => $row['phone']
 			];
 		}
 
