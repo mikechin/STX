@@ -1,4 +1,4 @@
-stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($scope, $http, $q, process) {
+stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configuration', function($scope, $http, $q, process, configuration) {
 	'use strict';
 
 	// **************************************************
@@ -6,73 +6,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 	//
 	//
 	// **************************************************
-	var _stxIpAddress = '192.168.1.100';
-	// var _stxIpAddress = 'stx.localhost:8888';
 	var _x2js = new X2JS();
-	var _testData = '<?xml version="1.0" encoding="utf-8"?>'
-		+ '<DeviceInformation>'
-		+ '	<CommandStatus>'
-		+ '		<BadData>NONE</BadData>'
-		+ '		<CheckDS>F</CheckDS>'
-		+ '		<KVErrCnt>0</KVErrCnt>'
-		+ '		<ResponseType>CHECK</ResponseType>'
-		+ '		<ReturnCode>0</ReturnCode>'
-		+ '		<ReturnMsg>OK</ReturnMsg>'
-		+ '	</CommandStatus>'
-		+ '	<DeviceStatus>'
-		+ '		<AccessGuide>LATCHED</AccessGuide>'
-		+ '		<AutoFeeder>NOTSUP</AutoFeeder>'
-		+ '		<FrontInk>OK</FrontInk>'
-		+ '		<FrontPrinter>PRESENT</FrontPrinter>'
-		+ '		<IDFeeder>EMPTY</IDFeeder>'
-		+ '		<Ink>OK</Ink>'
-		+ '		<LED1>NNNN</LED1>'
-		+ '		<LED2>GGGG</LED2>'
-		+ '		<LED3>NNNN</LED3>'
-		+ '		<Lamp1>OK</Lamp1>'
-		+ '		<Lamp2>OK</Lamp2>'
-		+ '		<ManualFeeder>EMPTY</ManualFeeder>'
-		+ '		<Path>OK</Path>'
-		+ '		<Printer>PRESENT</Printer>'
-		+ '		<RTCBattery>OK</RTCBattery>'
-		+ '		<RawSensors>384</RawSensors>'
-		+ '		<ScanCalibStatus>FACTORY</ScanCalibStatus>'
-		+ '		<SnsrCalibStatus>FACTORY</SnsrCalibStatus>'
-		+ '		<StartTimeout>4000</StartTimeout>'
-		+ '		<State>ONLINE</State>'
-		+ '	</DeviceStatus>'
-		+ '	<DocInfo>'
-		+ '		<DocHeight>3650</DocHeight>'
-		+ '		<DocUnits>ENGLISH</DocUnits>'
-		+ '		<DocWidth>8320</DocWidth>'
-		+ '		<MICRAcct>7163942209</MICRAcct>'
-		+ '		<MICRAmt></MICRAmt>'
-		+ '		<MICRAux>22602194</MICRAux>'
-		+ '		<MICRBankNum>1329</MICRBankNum>'
-		+ '		<MICRChkType>BUSINESS</MICRChkType>'
-		+ '		<MICRCountry>USA</MICRCountry>'
-		+ '		<MICRDecode>OK</MICRDecode>'
-		+ '		<MICREPC></MICREPC>'
-		+ '		<MICRFont>E13B</MICRFont>'
-		+ '		<MICROnUs> 7163942209U</MICROnUs>'
-		+ '		<MICROut>U22602194U T072413298T 7163942209U/0100</MICROut>'
-		+ '		<MICRParseSts0>0100</MICRParseSts0>'
-		+ '		<MICRParseSts1>11</MICRParseSts1>'
-		+ '		<MICRRaw>U22602194U T072413298T 7163942209U</MICRRaw>'
-		+ '		<MICRSerNum>22602194</MICRSerNum>'
-		+ '		<MICRTPC></MICRTPC>'
-		+ '		<MICRTransit>072413298</MICRTransit>'
-		+ '	</DocInfo>'
-		+ '	<ImageInfo>'
-		+ '		<ImageSHA1Key1>NONE</ImageSHA1Key1>'
-		+ '		<ImageSHA1Key2>NONE</ImageSHA1Key2>'
-		+ '		<ImageSize1>129537</ImageSize1>'
-		+ '		<ImageSize2>80138</ImageSize2>'
-		+ '		<ImageURL1>/chkimg/FRONT200GRAY8_1.JPG</ImageURL1>'
-		+ '		<ImageURL2>/chkimg/BACK200GRAY8_2.JPG</ImageURL2>'
-		+ '		<Number>2</Number>'
-		+ '	</ImageInfo>'
-		+ '</DeviceInformation>';
 
 	var _options = {
 		'DeviceSettings': {
@@ -232,8 +166,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 
 		$q.all(promises).then(function() {
 			$scope.scanImages = {
-				front: 'http://' + _stxIpAddress + process.image.front.url,
-				back: 'http://' + _stxIpAddress + process.image.back.url
+				front: 'http://' + configuration.device.url + process.image.front.url,
+				back: 'http://' + configuration.device.url + process.image.back.url
 			}
 			$scope.panes.info = true;
 		});
@@ -700,7 +634,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 			process.cusId = $scope.customer.id;
 			process.issId = $scope.issuer.id;
 			process.bnkId = $scope.bank.id;
-			process.stxUrl = 'http://' + _stxIpAddress;
+			process.stxUrl = 'http://' + configuration.device.url;
 			process.image.FileType = $scope.ImageOptions.FileType;
 
 			$http({
@@ -731,7 +665,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		var dataSend = _x2js.json2xml_str(_options);
 		$http({
 			method: 'POST',
-			url: 'http://' + _stxIpAddress + '/Excella?DeviceScan',
+			url: 'http://' + configuration.device.url + '/Excella?DeviceScan',
 			headers: {
 				'Accept': 'application/xml',
 				'Content-Type': 'application/x-www-form-urlencoded'
@@ -747,7 +681,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', function($
 		});
 
 		/*
-		var data = _x2js.xml_str2json(_testData);
+		var data = _x2js.xml_str2json(configuration.testData);
 		processScan(data);
 		*/
 	};
