@@ -21,6 +21,17 @@ class Db {
 		echo json_encode($data);
 	}
 
+	private function saveImage($src, $des) {
+		// cUrl way outperforms copy().
+		$ch = curl_init($src);
+		$fp = fopen($des, 'wb');
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_exec($ch);
+		curl_close($ch);
+		fclose($fp);
+	}
+
 	function __construct($user, $pass) {
 		try {
 			$this->db = new PDO( "mysql:host=localhost; dbname=stx_core", $user, $pass );
@@ -159,8 +170,8 @@ class Db {
 
 		$chkImgPath = $_SERVER["DOCUMENT_ROOT"] . "/chkimg/$nextId";
 		mkdir($chkImgPath, 0755, true);
-		copy($data->stxUrl . $image['front']['url'], $chkImgPath . "/front." . $image['FileType']);
-		copy($data->stxUrl . $image['back']['url'], $chkImgPath . "/back." . $image['FileType']);
+		$this->saveImage($data->stxUrl . $image['front']['url'], $chkImgPath . "/front." . $image['FileType']);
+		$this->saveImage($data->stxUrl . $image['back']['url'], $chkImgPath . "/back." . $image['FileType']);
 
 		$q = $this->db->prepare("INSERT INTO checks (cusId, issId, bnkId, MICRAcct, MICRAmt, MICRAux, MICRBankNum, MICRChkType, MICRCountry, MICRDecode, MICREPC, MICRFont, MICROnUs, MICROut, MICRParseSts0, MICRParseSts1, MICRRaw, MICRSerNum, MICRTPC, MICRTransit, DocHeight, DocUnits, DocWidth, ImageSHA1Key1, ImageSHA1Key2, ImageSize1, ImageSize2, ImageURL1, ImageURL2) VALUES (:cusId, :issId, :bnkId, :MICRAcct, :MICRAmt, :MICRAux, :MICRBankNum, :MICRChkType, :MICRCountry, :MICRDecode, :MICREPC, :MICRFont, :MICROnUs, :MICROut, :MICRParseSts0, :MICRParseSts1, :MICRRaw, :MICRSerNum, :MICRTPC, :MICRTransit, :DocHeight, :DocUnits, :DocWidth, :ImageSHA1Key1, :ImageSHA1Key2, :ImageSize1, :ImageSize2, :ImageURL1, :ImageURL2)");
 		$q->bindParam(':cusId', $cusId);
