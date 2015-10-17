@@ -659,6 +659,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	};
 
 	$scope.scan = function() {
+		/*
 		setOptions();
 
 		console.log('sending...');
@@ -679,11 +680,10 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		error(function(data, status, headers, config) {
 			console.log('fail - ' + status + '.');
 		});
+		*/
 
-		/*
 		var data = _x2js.xml_str2json(configuration.testData);
 		processScan(data);
-		*/
 	};
 
 	$scope.toggleOptions = function() {
