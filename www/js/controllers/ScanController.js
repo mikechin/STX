@@ -659,31 +659,32 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	};
 
 	$scope.scan = function() {
-		/*
-		setOptions();
+		if(!configuration.testing) {
+			setOptions();
 
-		console.log('sending...');
-		var dataSend = _x2js.json2xml_str(_options);
-		$http({
-			method: 'POST',
-			url: 'http://' + configuration.device.url + '/Excella?DeviceScan',
-			headers: {
-				'Accept': 'application/xml',
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			data: dataSend
-		}).
-		success(function(data, status, headers, config) {
-			console.log('success - ' + status + '.');
-			processScan(_x2js.xml_str2json(data));
-		}).
-		error(function(data, status, headers, config) {
-			console.log('fail - ' + status + '.');
-		});
-		*/
-
-		var data = _x2js.xml_str2json(configuration.testData);
-		processScan(data);
+			console.log('sending...');
+			var dataSend = _x2js.json2xml_str(_options);
+			$http({
+				method: 'POST',
+				url: 'http://' + configuration.device.url + '/Excella?DeviceScan',
+				headers: {
+					'Accept': 'application/xml',
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				data: dataSend
+			}).
+			success(function(data, status, headers, config) {
+				console.log('success - ' + status + '.');
+				processScan(_x2js.xml_str2json(data));
+			}).
+			error(function(data, status, headers, config) {
+				console.log('fail - ' + status + '.');
+			});
+		}
+		else {
+			var data = _x2js.xml_str2json(configuration.testData);
+			processScan(data);
+		}
 	};
 
 	$scope.toggleOptions = function() {

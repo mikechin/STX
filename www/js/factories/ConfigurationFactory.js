@@ -2,9 +2,10 @@ stx.factory('configuration', ['$q', function($q) {
 	'use strict';
 
 	function Configuration() {
+		this.testing = true;
+
 		this.device = {
-			url: '192.168.1.101'
-			// url: 'stx.localhost:8888'
+			url: this.testing ? 'stx.localhost:8888' : '192.168.1.101'
 		};
 
 		this.testData = '<?xml version="1.0" encoding="utf-8"?>'
