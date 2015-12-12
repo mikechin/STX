@@ -257,6 +257,12 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		invalid: false
 	};
 
+	$scope.edit = {
+		acct: false,
+		routing: false,
+		checkNum: false
+	};
+
 	$scope.newCustomer = {
 		add: false,
 		name: {
@@ -562,6 +568,16 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		$scope.customer.selected = true;
 
 		$scope.customer.invalid = false;
+	};
+
+	$scope.edit = function(area) {
+		$scope.edit[area] = !$scope.edit[area];
+	};
+
+	$scope.inputKeyDown = function(event, area) {
+		if(event.which === 13) {
+			$scope.edit(area);
+		}
 	};
 
 	$scope.issuerAdd = function() {
