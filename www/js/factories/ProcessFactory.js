@@ -2,6 +2,10 @@ stx.factory('process', ['$q', function($q) {
 	'use strict';
 
 	function Process() {
+		this.cusId = null;
+		this.issId = null;
+		this.bnkId = null;
+
 		this.doc = {
 			height: null,
 			units: null,
@@ -43,8 +47,6 @@ stx.factory('process', ['$q', function($q) {
 	}
 
 	Process.prototype.start = function(data) {
-		console.log(data);
-
 		var docInfo = data.DeviceInformation.DocInfo;
 
 		this.doc.height = docInfo.DocHeight;

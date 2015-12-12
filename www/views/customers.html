@@ -1,0 +1,96 @@
+<div class="content">
+	<div class="section-header">
+		<span>Search Customers</span>
+	</div>
+	<div class="section">
+		<ng-form name="customerForm">
+			<div class="option">
+				<div class="pull-left">
+					<label>First Name</label>
+					<div class="form-control" ng-class="{ 'has-error': customerForm.firstname.$invalid && customerForm.firstname.$dirty }">
+						<input type="text" name="firstname" ng-model="customer.name.first" required />
+					</div>
+				</div>
+				<div class="pull-left ml-10">
+					<label>Last Name</label>
+					<div class="form-control" ng-class="{ 'has-error': customerForm.lastname.$invalid && customerForm.lastname.$dirty }">
+						<input type="text" name="lastname" ng-model="customer.name.last" required />
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="buttons">
+				<button class="confirm" ng-click="customerSearch()">Search</button>
+			</div>
+		</ng-form>
+		<div class="search-results" ng-show="customer.search">
+			<div class="no-results" ng-hide="customers.length">
+				<span>No results.</span>
+			</div>
+			<div class="search-result" ng-repeat="c in customers">
+				<a href="" class="select" ng-click="customerSelect($index)">
+					<div class="customer-result">
+						<div class="photo">
+							<img ng-show="c.photo" ng-src="{{ c.photo }}" />
+							<img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
+						</div>
+						<div class="info">
+							<div class="name">{{ c.firstname }} {{ c.lastname }}</div>
+							<div class="address">{{ c.address1 }} {{ c.address2 }}</div>
+							<div class="city">{{ c.city }}, {{ c.state }} {{ c.zipcode }}</div>
+							<div class="phone">{{ c.phone }}</div>
+						</div>
+					</div>
+				</a>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+	<div class="section-header" ng-show="customer.selected">
+		<span>Customer</span>
+	</div>
+	<div class="section" ng-show="customer.selected">
+		<div class="search-result">
+			<div class="customer-result">
+				<div class="photo">
+					<img ng-show="customer.photo" ng-src="{{ customer.photo }}" />
+					<img ng-hide="customer.photo" ng-src="assets/img/no_image_available.jpg" />
+				</div>
+				<div class="info">
+					<div class="name">{{ customer.name.first }} {{ customer.name.last }}</div>
+					<div class="address">{{ customer.address1 }} {{ customer.address2 }}</div>
+					<div class="city">{{ customer.city }}, {{ customer.state }} {{ customer.zipcode }}</div>
+					<div class="phone">{{ customer.phone }}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="section-header" ng-show="customer.selected">
+		<span>Checks</span>
+	</div>
+	<div class="section" ng-show="customer.selected">
+		<div class="no-results" ng-hide="checks.length">
+			<span>No results.</span>
+		</div>
+		<div class="check-list" ng-show="checks.length" ng-repeat="c in checks">
+			<div class="item">
+				<div class="data">
+					<label>Date Scanned</label>
+					<div class="value">{{ c.created }}</div>
+					<label>Amount</label>
+					<div class="value">${{ c.amt }}</div>
+					<label>Account</label>
+					<div class="value">{{ c.acct }}</div>
+					<label>Routing</label>
+					<div class="value">{{ c.transit }}</div>
+					<label>Check Number</label>
+					<div class="value">{{ c.serNum }}</div>
+				</div>
+				<div class="image">
+					<img ng-src="chkimg/{{ c.chkId }}/front.JPG" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
