@@ -1,4 +1,4 @@
-stx.controller('ScanController', ['$scope', '$http', 'process', function($scope, $http, process) {
+stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configuration', function($scope, $http, $q, process, configuration) {
 	'use strict';
 
 	// **************************************************
@@ -6,72 +6,7 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	//
 	//
 	// **************************************************
-	var _stxIpAddress = '192.168.1.101';
 	var _x2js = new X2JS();
-	var _testData = '<?xml version="1.0" encoding="utf-8"?>'
-				 + '<DeviceInformation>'
-				 + '	<CommandStatus>'
-				 + '		<BadData>NONE</BadData>'
-				 + '		<CheckDS>F</CheckDS>'
-				 + '		<KVErrCnt>0</KVErrCnt>'
-				 + '		<ResponseType>CHECK</ResponseType>'
-				 + '		<ReturnCode>0</ReturnCode>'
-				 + '		<ReturnMsg>OK</ReturnMsg>'
-				 + '	</CommandStatus>'
-				 + '	<DeviceStatus>'
-				 + '		<AccessGuide>LATCHED</AccessGuide>'
-				 + '		<AutoFeeder>NOTSUP</AutoFeeder>'
-				 + '		<FrontInk>OK</FrontInk>'
-				 + '		<FrontPrinter>PRESENT</FrontPrinter>'
-				 + '		<IDFeeder>EMPTY</IDFeeder>'
-				 + '		<Ink>OK</Ink>'
-				 + '		<LED1>NNNN</LED1>'
-				 + '		<LED2>GGGG</LED2>'
-				 + '		<LED3>NNNN</LED3>'
-				 + '		<Lamp1>OK</Lamp1>'
-				 + '		<Lamp2>OK</Lamp2>'
-				 + '		<ManualFeeder>EMPTY</ManualFeeder>'
-				 + '		<Path>OK</Path>'
-				 + '		<Printer>PRESENT</Printer>'
-				 + '		<RTCBattery>OK</RTCBattery>'
-				 + '		<RawSensors>384</RawSensors>'
-				 + '		<ScanCalibStatus>FACTORY</ScanCalibStatus>'
-				 + '		<SnsrCalibStatus>FACTORY</SnsrCalibStatus>'
-				 + '		<StartTimeout>4000</StartTimeout>'
-				 + '		<State>ONLINE</State>'
-				 + '	</DeviceStatus>'
-				 + '	<DocInfo>'
-				 + '		<DocHeight>3650</DocHeight>'
-				 + '		<DocUnits>ENGLISH</DocUnits>'
-				 + '		<DocWidth>8320</DocWidth>'
-				 + '		<MICRAcct>7163942209</MICRAcct>'
-				 + '		<MICRAmt></MICRAmt>'
-				 + '		<MICRAux>22602194</MICRAux>'
-				 + '		<MICRBankNum>1329</MICRBankNum>'
-				 + '		<MICRChkType>BUSINESS</MICRChkType>'
-				 + '		<MICRCountry>USA</MICRCountry>'
-				 + '		<MICRDecode>OK</MICRDecode>'
-				 + '		<MICREPC></MICREPC>'
-				 + '		<MICRFont>E13B</MICRFont>'
-				 + '		<MICROnUs> 7163942209U</MICROnUs>'
-				 + '		<MICROut>U22602194U T072413298T 7163942209U/0100</MICROut>'
-				 + '		<MICRParseSts0>0100</MICRParseSts0>'
-				 + '		<MICRParseSts1>11</MICRParseSts1>'
-				 + '		<MICRRaw>U22602194U T072413298T 7163942209U</MICRRaw>'
-				 + '		<MICRSerNum>22602194</MICRSerNum>'
-				 + '		<MICRTPC></MICRTPC>'
-				 + '		<MICRTransit>072413298</MICRTransit>'
-				 + '	</DocInfo>'
-				 + '	<ImageInfo>'
-				 + '		<ImageSHA1Key1>NONE</ImageSHA1Key1>'
-				 + '		<ImageSHA1Key2>NONE</ImageSHA1Key2>'
-				 + '		<ImageSize1>129537</ImageSize1>'
-				 + '		<ImageSize2>80138</ImageSize2>'
-				 + '		<ImageURL1>/chkimg/FRONT200GRAY8_1.JPG</ImageURL1>'
-				 + '		<ImageURL2>/chkimg/BACK200GRAY8_2.JPG</ImageURL2>'
-				 + '		<Number>2</Number>'
-				 + '	</ImageInfo>'
-				 + '</DeviceInformation>';
 
 	var _options = {
 		'DeviceSettings': {
@@ -82,23 +17,161 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		}
 	};
 
-	var _scan = {
-		method: 'POST',
-		url: 'http://' + _stxIpAddress + '/Excella?DeviceScan',
-		headers: {
-			'Accept': 'application/xml',
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}
-	};
+	function cleanup() {
+		$scope.customers = [];
+		$scope.scannedData = null;
+		$scope.showOptions = false;
 
-	var _storeCheck = {
-		method: 'POST',
-		url: 'http://stx.localhost:8888/q/check',
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json'
-		}
-	};
+		$scope.bank = {
+			id: '',
+			name: '',
+			invalid: false
+		};
+
+		$scope.newBank = {
+			add: false,
+			name: ''
+		};
+
+		initCustomer();
+		initNewCustomer();
+
+		$scope.issuer = {
+			id: '',
+			name: '',
+			invalid: false
+		};
+
+		$scope.newIssuer = {
+			add: false,
+			name: '',
+			address1: '',
+			address2: '',
+			city: '',
+			state: '',
+			zipcode: '',
+			phone: '',
+			email: ''
+		};
+
+		$scope.panes = {
+			scan: true,
+			info: false
+		};
+
+		$scope.scanImages = {
+			front: '',
+			back: ''
+		};
+	}
+
+	function initCustomer() {
+		$scope.customer = {
+			id: '',
+			name: {
+				first: '',
+				last: ''
+			},
+			photo: null,
+			search: false,
+			selected: false,
+			invalid: false
+		};
+	}
+
+	function initNewCustomer() {
+		$scope.customerForm.firstname.$invalid = false;
+		$scope.customerForm.firstname.$dirty = false;
+		$scope.customerForm.lastname.$invalid = false;
+		$scope.customerForm.lastname.$dirty = false;
+
+		$scope.newCustomer = {
+			add: false,
+			name: {
+				first: '',
+				last: ''
+			},
+			address1: '',
+			address2: '',
+			city: '',
+			state: '',
+			zipcode: '',
+			phone: '',
+			comment: '',
+			photo: null
+		};
+	}
+
+	function processScan(data) {
+		var promises = [];
+
+		process.start(data);
+		$scope.scannedData = process;
+
+		var url = 'http://stx.localhost:8888/q/issuer/' + process.MICR.acct + '/' + process.MICR.transit;
+		var getIssuers = $q.defer();
+		promises.push(getIssuers.promise);
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			if(data.status) {
+				$scope.issuer.id = data.issId;
+				$scope.issuer.name = data.name;
+			}
+			else {
+				$scope.newIssuer.add = true;
+			}
+
+			getIssuers.resolve();
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+			getIssuers.reject();
+		});
+
+		var url = 'http://stx.localhost:8888/q/bank/' + process.MICR.bankNum;
+		var getBanks = $q.defer();
+		promises.push(getBanks.promise);
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			if(data.status) {
+				$scope.bank.id = data.bnkId;
+				$scope.bank.name = data.name;
+			}
+			else {
+				$scope.newBank.add = true;
+			}
+
+			getBanks.resolve();
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+			getBanks.reject();
+		});
+
+		$q.all(promises).then(function() {
+			$scope.scanImages = {
+				front: 'http://' + configuration.device.url + process.image.front.url,
+				back: 'http://' + configuration.device.url + process.image.back.url
+			}
+			$scope.panes.info = true;
+		});
+	}
 
 	function setEndorser() {
 		_options.DeviceSettings.Endorser = {};
@@ -157,7 +230,71 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 	//
 	//
 	// **************************************************
+	$scope.customers = [];
+	$scope.scannedData = null;
 	$scope.showOptions = false;
+
+	$scope.bank = {
+		id: '',
+		name: '',
+		invalid: false
+	};
+
+	$scope.newBank = {
+		add: false,
+		name: ''
+	};
+
+	$scope.customer = {
+		id: '',
+		name: {
+			first: '',
+			last: ''
+		},
+		photo: null,
+		search: false,
+		selected: false,
+		invalid: false
+	};
+
+	$scope.edit = {
+		acct: false,
+		routing: false,
+		checkNum: false
+	};
+
+	$scope.newCustomer = {
+		add: false,
+		name: {
+			first: '',
+			last: ''
+		},
+		address1: '',
+		address2: '',
+		city: '',
+		state: '',
+		zipcode: '',
+		phone: '',
+		photo: null
+	};
+
+	$scope.issuer = {
+		id: '',
+		name: '',
+		invalid: false
+	};
+
+	$scope.newIssuer = {
+		add: false,
+		name: '',
+		address1: '',
+		address2: '',
+		city: '',
+		state: '',
+		zipcode: '',
+		phone: '',
+		email: ''
+	};
 
 	$scope.Endorser = {
 		'PrintData': '',
@@ -170,10 +307,15 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 
 	$scope.ImageOptions = {
 		'Num': '2',
-		'ImageColor': 'GRAY8',
+		'ImageColor': 'COL24',
 		'Resolution': '200x200',
 		'Compression': 'JPEG',
 		'FileType': 'JPG'
+	};
+
+	$scope.panes = {
+		scan: true,
+		info: false
 	};
 
 	$scope.ProcessOptions = {
@@ -184,45 +326,381 @@ stx.controller('ScanController', ['$scope', '$http', 'process', function($scope,
 		'MICRFmtCode': '0'
 	};
 
-	$scope.scan = function() {
-		var data = _x2js.xml_str2json(_testData);
-		process.start(data);
+	$scope.scanImages = {
+		front: '',
+		back: ''
+	};
 
-		console.log(process.doc);
-		console.log(process.MICR);
-		console.log(process.image);
+	$scope.usStates = [
+		{ name: 'ALABAMA', abbreviation: 'AL' },
+		{ name: 'ALASKA', abbreviation: 'AK' },
+		{ name: 'ARIZONA', abbreviation: 'AZ' },
+		{ name: 'ARKANSAS', abbreviation: 'AR' },
+		{ name: 'CALIFORNIA', abbreviation: 'CA' },
+		{ name: 'COLORADO', abbreviation: 'CO' },
+		{ name: 'CONNECTICUT', abbreviation: 'CT' },
+		{ name: 'DELAWARE', abbreviation: 'DE' },
+		{ name: 'DISTRICT OF COLUMBIA', abbreviation: 'DC' },
+		{ name: 'FLORIDA', abbreviation: 'FL' },
+		{ name: 'GEORGIA', abbreviation: 'GA' },
+		{ name: 'HAWAII', abbreviation: 'HI' },
+		{ name: 'IDAHO', abbreviation: 'ID' },
+		{ name: 'ILLINOIS', abbreviation: 'IL' },
+		{ name: 'INDIANA', abbreviation: 'IN' },
+		{ name: 'IOWA', abbreviation: 'IA' },
+		{ name: 'KANSAS', abbreviation: 'KS' },
+		{ name: 'KENTUCKY', abbreviation: 'KY' },
+		{ name: 'LOUISIANA', abbreviation: 'LA' },
+		{ name: 'MAINE', abbreviation: 'ME' },
+		{ name: 'MARYLAND', abbreviation: 'MD' },
+		{ name: 'MASSACHUSETTS', abbreviation: 'MA' },
+		{ name: 'MICHIGAN', abbreviation: 'MI' },
+		{ name: 'MINNESOTA', abbreviation: 'MN' },
+		{ name: 'MISSISSIPPI', abbreviation: 'MS' },
+		{ name: 'MISSOURI', abbreviation: 'MO' },
+		{ name: 'MONTANA', abbreviation: 'MT' },
+		{ name: 'NEBRASKA', abbreviation: 'NE' },
+		{ name: 'NEVADA', abbreviation: 'NV' },
+		{ name: 'NEW HAMPSHIRE', abbreviation: 'NH' },
+		{ name: 'NEW JERSEY', abbreviation: 'NJ' },
+		{ name: 'NEW MEXICO', abbreviation: 'NM' },
+		{ name: 'NEW YORK', abbreviation: 'NY' },
+		{ name: 'NORTH CAROLINA', abbreviation: 'NC' },
+		{ name: 'NORTH DAKOTA', abbreviation: 'ND' },
+		{ name: 'OHIO', abbreviation: 'OH' },
+		{ name: 'OKLAHOMA', abbreviation: 'OK' },
+		{ name: 'OREGON', abbreviation: 'OR' },
+		{ name: 'PENNSYLVANIA', abbreviation: 'PA' },
+		{ name: 'RHODE ISLAND', abbreviation: 'RI' },
+		{ name: 'SOUTH CAROLINA', abbreviation: 'SC' },
+		{ name: 'SOUTH DAKOTA', abbreviation: 'SD' },
+		{ name: 'TENNESSEE', abbreviation: 'TN' },
+		{ name: 'TEXAS', abbreviation: 'TX' },
+		{ name: 'UTAH', abbreviation: 'UT' },
+		{ name: 'VERMONT', abbreviation: 'VT' },
+		{ name: 'VIRGINIA', abbreviation: 'VA' },
+		{ name: 'WASHINGTON', abbreviation: 'WA' },
+		{ name: 'WEST VIRGINIA', abbreviation: 'WV' },
+		{ name: 'WISCONSIN', abbreviation: 'WI' },
+		{ name: 'WYOMING', abbreviation: 'WY' }
+	];
 
-		_storeCheck.data = process;
+	$scope.bankAdd = function() {
+		if($scope.bankForm.$invalid) {
+			var cont = true;
 
-		console.log(_storeCheck);
-		$http(_storeCheck).
+			if($scope.newBank.name === '') {
+				$scope.bankForm.name.$invalid = true;
+				$scope.bankForm.name.$dirty = true;
+				cont = false;
+			}
+
+			if(!cont) {
+				return;
+			}
+		}
+
+		var data = $scope.newBank;
+		data.account = process.MICR.bankNum;
+
+		var url = 'http://stx.localhost:8888/q/bank/add';
+		$http({
+			method: 'POST',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			data: data
+		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
-			console.log(data);
+			if(data.status) {
+				$scope.bank.id = data.bnkId;
+				$scope.bank.name = data.name;
+				$scope.newBank.add = false;
+			}
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
 		});
-		/*
-		setOptions();
+	};
 
-		console.log(_options);
+	$scope.customerAdd = function() {
+		if($scope.customerForm.$invalid) {
+			var cont = true;
 
-		var dataSend = _x2js.json2xml_str(_options);
+			if($scope.newCustomer.name.first === '') {
+				$scope.customerForm.firstname.$invalid = true;
+				$scope.customerForm.firstname.$dirty = true;
+				cont = false;
+			}
 
-		console.log('sending...');
-		console.log(dataSend);
-		_scan.data = dataSend;
-		$http(_scan).
+			if($scope.newCustomer.name.last === '') {
+				$scope.customerForm.lastname.$invalid = true;
+				$scope.customerForm.lastname.$dirty = true;
+				cont = false;
+			}
+
+			if(!cont) {
+				return;
+			}
+		}
+
+		var upload = $q.defer();
+
+		var ele = document.getElementById('upload-photo');
+		if(ele.files.length) {
+			var f = ele.files[0];
+			var r = new FileReader();
+
+			r.onloadend = function(e) {
+				var data = e.target.result;
+				$scope.newCustomer.photo = data;
+				upload.resolve();
+			};
+
+			r.readAsDataURL(f);
+		}
+		else {
+			upload.resolve();
+		}
+
+		$q.all([ upload.promise ]).then(function() {
+			console.log('photo uploaded.');
+
+			var url = 'http://stx.localhost:8888/q/customer/add';
+			$http({
+				method: 'POST',
+				url: url,
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				data: $scope.newCustomer
+			}).
+			success(function(data, status, headers, config) {
+				console.log('success.');
+				console.log(data);
+				$scope.customer.id = data.cusId;
+				$scope.customer.name.first = $scope.newCustomer.name.first;
+				$scope.customer.name.last = $scope.newCustomer.name.last;
+				$scope.customer.photo = $scope.newCustomer.photo;
+				$scope.customer.selected = true;
+				$scope.newCustomer.add = false;
+			}).
+			error(function(data, status, headers, config) {
+				console.log('error.');
+			});
+		});
+	};
+
+	$scope.customerAddCancel = function() {
+		initNewCustomer();
+		document.getElementById('upload-photo').value = '';
+	};
+
+	$scope.customerClear = function() {
+		initCustomer();
+		initNewCustomer();
+	};
+
+	$scope.customerNew = function() {
+		initNewCustomer();
+		$scope.newCustomer.add = true;
+
+		document.getElementById('upload-photo').value = '';
+	};
+
+	$scope.customerSearch = function() {
+		if($scope.customer.name.first === '' || $scope.customer.name.last === '') {
+			return;
+		}
+
+		var url = 'http://stx.localhost:8888/q/customers/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
 		success(function(data, status, headers, config) {
-			console.log('success - ' + status + '.');
-			console.log(data);
-			console.log(_x2js.xml_str2json(data));
+			console.log('success.');
+			$scope.customers = data.customers;
+			$scope.customer.search = true;
 		}).
 		error(function(data, status, headers, config) {
-			console.log('fail - ' + status + '.');
+			console.log('error.');
 		});
-		*/
+	};
+
+	$scope.customerSearchByCompany = function() {
+		var url = 'http://stx.localhost:8888/q/customers/' + $scope.issuer.id;
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			$scope.customers = data.customers;
+			$scope.customer.search = true;
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
+	};
+
+	$scope.customerSelect = function(i) {
+		initNewCustomer();
+		var customer = $scope.customers[i];
+
+		$scope.customer.id = customer.cusId;
+		$scope.customer.name.first = customer.firstname;
+		$scope.customer.name.last = customer.lastname;
+		$scope.customer.photo = customer.photo;
+		$scope.customer.search = false;
+		$scope.customer.selected = true;
+
+		$scope.customer.invalid = false;
+	};
+
+	$scope.edit = function(area) {
+		$scope.edit[area] = !$scope.edit[area];
+	};
+
+	$scope.inputKeyDown = function(event, area) {
+		if(event.which === 13) {
+			$scope.edit(area);
+		}
+	};
+
+	$scope.issuerAdd = function() {
+		if($scope.issuerForm.$invalid) {
+			var cont = true;
+
+			if($scope.newIssuer.name === '') {
+				$scope.issuerForm.name.$invalid = true;
+				$scope.issuerForm.name.$dirty = true;
+				cont = false;
+			}
+
+			if(!cont) {
+				return;
+			}
+		}
+
+		var data = $scope.newIssuer;
+		data.account = process.MICR.acct;
+		data.routing = process.MICR.transit;
+
+		var url = 'http://stx.localhost:8888/q/issuer/add';
+		$http({
+			method: 'POST',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			data: data
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			if(data.status) {
+				$scope.issuer.id = data.issId;
+				$scope.issuer.name = data.name;
+				$scope.newIssuer.add = false;
+			}
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
+	};
+
+	$scope.save = function() {
+		var save = true;
+
+		if(process.MICR.amt === '') {
+			$scope.scanForm.amount.$invalid = true;
+			$scope.scanForm.amount.$dirty = true;
+			save = false;
+		}
+
+		if($scope.customer.id === '') {
+			$scope.customer.invalid = true;
+			save = false;
+		}
+
+		if($scope.issuer.id === '') {
+			$scope.issuer.invalid = true;
+			save = false;
+		}
+
+		if($scope.bank.id === '') {
+			$scope.bank.invalid = true;
+			save = false;
+		}
+
+		if(save) {
+			process.cusId = $scope.customer.id;
+			process.issId = $scope.issuer.id;
+			process.bnkId = $scope.bank.id;
+			process.stxUrl = 'http://' + configuration.device.url;
+			process.image.FileType = $scope.ImageOptions.FileType;
+
+			$http({
+				method: 'POST',
+				url: 'http://stx.localhost:8888/q/check',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				data: process
+			}).
+			success(function(data, status, headers, config) {
+				console.log('success.');
+				console.log(data);
+				cleanup();
+			}).
+			error(function(data, status, headers, config) {
+				console.log('error.');
+				console.log(data);
+			});
+		}
+	};
+
+	$scope.scan = function() {
+		if(!configuration.testing) {
+			setOptions();
+
+			console.log('sending...');
+			var dataSend = _x2js.json2xml_str(_options);
+			$http({
+				method: 'POST',
+				url: 'http://' + configuration.device.url + '/Excella?DeviceScan',
+				headers: {
+					'Accept': 'application/xml',
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				data: dataSend
+			}).
+			success(function(data, status, headers, config) {
+				console.log('success - ' + status + '.');
+				processScan(_x2js.xml_str2json(data));
+			}).
+			error(function(data, status, headers, config) {
+				console.log('fail - ' + status + '.');
+			});
+		}
+		else {
+			var data = _x2js.xml_str2json(configuration.testData);
+			processScan(data);
+		}
 	};
 
 	$scope.toggleOptions = function() {

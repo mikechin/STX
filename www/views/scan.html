@@ -1,130 +1,390 @@
 <div class="content">
-	<button class="scan" ng-click="scan()">Scan</button>
-	<button class="options" ng-click="toggleOptions()">Options</button>
-	<div class="section" ng-show="showOptions">
-		<h4>Process Options</h4>
-		<div class="option">
-			<label>ReadMICR</label>
-			<select ng-model="ProcessOptions.ReadMICR">
-				<option value="E13B">E13B</option>
-				<option value="CMC7">CMC7</option>
-				<option value="ALL">Auto-detect</option>
-				<option value="NO">None</option>
-			</select>
+	<div ng-show="panes.scan">
+		<button class="confirm" ng-click="scan()">Scan</button>
+		<button class="options" ng-click="toggleOptions()">Options</button>
+		<div class="section-header" ng-show="showOptions">
+			<span>Process Options</span>
 		</div>
-		<div class="option">
-			<label>Endorse</label>
-			<select ng-model="ProcessOptions.Endorse">
-				<option value="BACK">Back</option>
-				<option value="FRONT">Front</option>
-				<option value="BOTH">Both</option>
-				<option value="NO">None</option>
-			</select>
+		<div class="section" ng-show="showOptions">
+			<div class="option">
+				<label>ReadMICR</label>
+				<select ng-model="ProcessOptions.ReadMICR">
+					<option value="E13B">E13B</option>
+					<option value="CMC7">CMC7</option>
+					<option value="ALL">Auto-detect</option>
+					<option value="NO">None</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>Endorse</label>
+				<select ng-model="ProcessOptions.Endorse">
+					<option value="BACK">Back</option>
+					<option value="FRONT">Front</option>
+					<option value="BOTH">Both</option>
+					<option value="NO">None</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>DocFeed</label>
+				<select ng-model="ProcessOptions.DocFeed">
+					<option value="ALL">All</option>
+					<option value="MANUAL">Manual</option>
+					<option value="ID">ID</option>
+					<option value="MSR">MSR</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>Timeout</label>
+				<select ng-model="ProcessOptions.DocFeedTimeout">
+					<option value="1000">1</option>
+					<option value="5000">5</option>
+					<option value="10000">10</option>
+				</select>
+			</div>
 		</div>
-		<div class="option">
-			<label>DocFeed</label>
-			<select ng-model="ProcessOptions.DocFeed">
-				<option value="ALL">All</option>
-				<option value="MANUAL">Manual</option>
-				<option value="ID">ID</option>
-				<option value="MSR">MSR</option>
-			</select>
+		<div class="section-header" ng-show="showOptions">
+			<span>Image Options</span>
 		</div>
-		<div class="option">
-			<label>Timeout</label>
-			<select ng-model="ProcessOptions.DocFeedTimeout">
-				<option value="1000">1</option>
-				<option value="5000">5</option>
-				<option value="10000">10</option>
-			</select>
+		<div class="section" ng-show="showOptions">
+			<div class="option">
+				<label>Sides</label>
+				<select ng-model="ImageOptions.Num">
+					<option value="1">Front</option>
+					<option value="2">Front and Back</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>Color</label>
+				<select ng-model="ImageOptions.ImageColor">
+					<option value="BW">Black and white</option>
+					<option value="GRAY8">8-bit grayscale</option>
+					<option value="COL24">24-bit color</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>Resolution</label>
+				<select ng-model="ImageOptions.Resolution">
+					<option value="100x100">100x100 DPI</option>
+					<option value="200x200">200x200 DPI</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>Compression</label>
+				<select ng-model="ImageOptions.Compression">
+					<option value="GROUP4">Group4</option>
+					<option value="JPEG">JPEG</option>
+					<option value="NONE">None</option>
+				</select>
+			</div>
+			<div class="option">
+				<label>File Type</label>
+				<select ng-model="ImageOptions.FileType">
+					<option value="TIF">tiff</option>
+					<option value="JPG">jpg</option>
+					<option value="BMP">bmp</option>
+				</select>
+			</div>
+		</div>
+		<div class="section" ng-if="ProcessOptions.Endorse !== 'NO'">
+			<h4>Endorse Options</h4>
+			<div class="title" ng-if="ProcessOptions.Endorse === 'BACK' || ProcessOptions.Endorse === 'BOTH'">Back</div>
+			<div class="sub-section" ng-if="ProcessOptions.Endorse === 'BACK' || ProcessOptions.Endorse === 'BOTH'">
+				<div class="option">
+					<label>Message</label>
+					<input ng-model="Endorser.PrintData" />
+				</div>
+				<div class="option">
+					<label>Font</label>
+					<select ng-model="Endorser.PrintFont">
+						<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
+						<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
+					</select>
+				</div>
+				<div class="option">
+					<label>Style</label>
+					<select ng-model="Endorser.PrintStyle">
+						<option value="BOLD">Bold</option>
+						<option value="NORMAL">Normal</option>
+						<option value="WIDE">Wide</option>
+					</select>
+				</div>
+			</div>
+			<div class="title" ng-if="ProcessOptions.Endorse === 'FRONT' || ProcessOptions.Endorse === 'BOTH'">Front</div>
+			<div class="sub-section" ng-if="ProcessOptions.Endorse === 'FRONT' || ProcessOptions.Endorse === 'BOTH'">
+				<div class="option">
+					<label>Front Message</label>
+					<input ng-model="Endorser.PrintFrontData" />
+				</div>
+				<div class="option">
+					<label>Front Font</label>
+					<select ng-model="Endorser.PrintFrontFont">
+						<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
+						<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
+					</select>
+				</div>
+				<div class="option">
+					<label>Front Style</label>
+					<select ng-model="Endorser.PrintFrontStyle">
+						<option value="BOLD">Bold</option>
+						<option value="NORMAL">Normal</option>
+						<option value="WIDE">Wide</option>
+					</select>
+				</div>
+			</div>
 		</div>
 	</div>
-	<div class="section" ng-show="showOptions">
-		<h4>Image Options</h4>
-		<div class="option">
-			<label>Sides</label>
-			<select ng-model="ImageOptions.Num">
-				<option value="1">Front</option>
-				<option value="2">Front and Back</option>
-			</select>
+	<div ng-show="panes.info">
+		<div class="section-header">
+			<span>Scanned Data</span>
 		</div>
-		<div class="option">
-			<label>Color</label>
-			<select ng-model="ImageOptions.ImageColor">
-				<option value="BW">Black and white</option>
-				<option value="GRAY8">8-bit grayscale</option>
-				<option value="COL24">24-bit color</option>
-			</select>
+		<div class="section" ng-class="{ 'has-error': scanForm.amount.$invalid && scanForm.amount.$dirty }">
+			<ng-form name="scanForm">
+				<div class="option">
+					<label>Amount</label>
+					<div class="form-control">
+						<input type="number" name="amount" ng-model="scannedData.MICR.amt" required />
+					</div>
+				</div>
+				<div class="option">
+					<label>Account</label>
+					<button class="edit" ng-click="edit('acct')">Edit</button>
+					<div class="value" ng-if="!edit.acct">
+						<span>{{ scannedData.MICR.acct }}</span>
+					</div>
+					<div class="form-control-edit value" ng-if="edit.acct">
+						<input type="text" name="acct" ng-model="scannedData.MICR.acct" ng-keydown="inputKeyDown($event, 'acct')" />
+					</div>
+				</div>
+				<div class="option">
+					<label>Routing</label>
+					<button class="edit" ng-click="edit('routing')">Edit</button>
+					<div class="value" ng-if="!edit.routing">
+						<span>{{ scannedData.MICR.transit }}</span>
+					</div>
+					<div class="form-control-edit value" ng-if="edit.routing">
+						<input type="text" name="acct" ng-model="scannedData.MICR.transit" ng-keydown="inputKeyDown($event, 'routing')" />
+					</div>
+				</div>
+				<div class="option">
+					<label>Check Number</label>
+					<button class="edit" ng-click="edit('checkNum')">Edit</button>
+					<div class="value" ng-if="!edit.checkNum">
+						<span>{{ scannedData.MICR.serNum }}</span>
+					</div>
+					<div class="form-control-edit value" ng-if="edit.checkNum">
+						<input type="text" name="acct" ng-model="scannedData.MICR.serNum" ng-keydown="inputKeyDown($event, 'checkNum')" />
+					</div>
+				</div>
+				<div class="option stripes">
+					<img class="check" ng-src="{{ scanImages.front }}" />
+				</div>
+				<div class="option stripes">
+					<img class="check" ng-src="{{ scanImages.back }}" />
+				</div>
+			</ng-form>
 		</div>
-		<div class="option">
-			<label>Resolution</label>
-			<select ng-model="ImageOptions.Resolution">
-				<option value="100x100">100x100 DPI</option>
-				<option value="200x200">200x200 DPI</option>
-			</select>
+		<div class="section-header">
+			<span>Customer</span>
 		</div>
-		<div class="option">
-			<label>Compression</label>
-			<select ng-model="ImageOptions.Compression">
-				<option value="GROUP4">Group4</option>
-				<option value="JPEG">JPEG</option>
-				<option value="NONE">None</option>
-			</select>
-		</div>
-		<div class="option">
-			<label>File Type</label>
-			<select ng-model="ImageOptions.FileType">
-				<option value="TIF">tiff</option>
-				<option value="JPG">jpg</option>
-				<option value="BMP">bmp</option>
-			</select>
-		</div>
-	</div>
-	<div class="section" ng-if="ProcessOptions.Endorse !== 'NO'">
-		<h4>Endorse Options</h4>
-		<div class="title" ng-if="ProcessOptions.Endorse === 'BACK' || ProcessOptions.Endorse === 'BOTH'">Back</div>
-		<div class="sub-section" ng-if="ProcessOptions.Endorse === 'BACK' || ProcessOptions.Endorse === 'BOTH'">
-			<div class="option">
-				<label>Message</label>
-				<input ng-model="Endorser.PrintData" />
+		<div class="section" ng-class="{ 'has-error': customer.invalid }">
+			<div ng-hide="customer.selected">
+				<div class="option">
+					<div class="pull-left">
+						<label>First Name</label>
+						<div class="form-control">
+							<input type="text" ng-model="customer.name.first" />
+						</div>
+					</div>
+					<div class="pull-left ml-10">
+						<label>Last Name</label>
+						<div class="form-control">
+							<input type="text" ng-model="customer.name.last" />
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="buttons">
+					<button class="confirm" ng-click="customerSearch()">Search</button>
+					<button class="confirm" ng-click="customerNew()">New</button>
+					<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
+				</div>
+				<div class="search-results" ng-show="customer.search">
+					<div class="no-results" ng-hide="customers.length">
+						<span>No results.</span>
+					</div>
+					<div class="search-result" ng-repeat="c in customers">
+						<a href="" class="select" ng-click="customerSelect($index)">
+							<div class="photo">
+								<img ng-show="c.photo" ng-src="{{ c.photo }}" />
+								<img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
+							</div>
+							<div class="info">
+								<div class="name">{{ c.firstname }} {{ c.lastname }}</div>
+							</div>
+						</a>
+						<div class="clear"></div>
+					</div>
+				</div>
 			</div>
-			<div class="option">
-				<label>Font</label>
-				<select ng-model="Endorser.PrintFont">
-					<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
-					<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
-				</select>
-			</div>
-			<div class="option">
-				<label>Style</label>
-				<select ng-model="Endorser.PrintStyle">
-					<option value="BOLD">Bold</option>
-					<option value="NORMAL">Normal</option>
-					<option value="WIDE">Wide</option>
-				</select>
+			<div ng-show="customer.selected">
+				<div class="search-result">
+					<div class="photo">
+						<img ng-show="customer.photo" ng-src="{{ customer.photo }}" />
+						<img ng-hide="customer.photo" ng-src="assets/img/no_image_available.jpg" />
+					</div>
+					<div class="info">
+						<div class="name">{{ customer.name.first }} {{ customer.name.last }}</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<button class="confirm" ng-click="customerClear()">Clear</button>
 			</div>
 		</div>
-		<div class="title" ng-if="ProcessOptions.Endorse === 'FRONT' || ProcessOptions.Endorse === 'BOTH'">Front</div>
-		<div class="sub-section" ng-if="ProcessOptions.Endorse === 'FRONT' || ProcessOptions.Endorse === 'BOTH'">
-			<div class="option">
-				<label>Front Message</label>
-				<input ng-model="Endorser.PrintFrontData" />
-			</div>
-			<div class="option">
-				<label>Front Font</label>
-				<select ng-model="Endorser.PrintFrontFont">
-					<option value="INTFONT1">Font 1 (5x7 bitmap)</option>
-					<option value="INTFONT2">Font 2 (7x10 bitmap)</option>
-				</select>
-			</div>
-			<div class="option">
-				<label>Front Style</label>
-				<select ng-model="Endorser.PrintFrontStyle">
-					<option value="BOLD">Bold</option>
-					<option value="NORMAL">Normal</option>
-					<option value="WIDE">Wide</option>
-				</select>
+		<div class="section-header" ng-show="newCustomer.add">
+			<span>New Customer</span>
+		</div>
+		<div class="section" ng-show="newCustomer.add">
+			<ng-form name="customerForm">
+				<table class="new-entry">
+					<tr>
+						<td>Photo</td>
+						<td><input type="file" id="upload-photo" /></td>
+					</tr>
+					<tr ng-class="{ 'has-error': customerForm.firstname.$invalid && customerForm.firstname.$dirty }">
+						<td>First Name</td>
+						<td><input type="text" name="firstname" class="form-input" ng-model="newCustomer.name.first" required /></td>
+					</tr>
+					<tr ng-class="{ 'has-error': customerForm.lastname.$invalid && customerForm.lastname.$dirty }">
+						<td>Last Name</td>
+						<td><input type="text" name="lastname" class="form-input" ng-model="newCustomer.name.last" required /></td>
+					</tr>
+					<tr>
+						<td>Address</td>
+						<td><input type="text" name="address1" ng-model="newCustomer.address1" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="text" name="address2" ng-model="newCustomer.address2" /></td>
+					</tr>
+					<tr>
+						<td>City</td>
+						<td><input type="text" name="city" ng-model="newCustomer.city" /></td>
+					</tr>
+					<tr>
+						<td>State</td>
+						<td>
+							<select name="state" ng-model="newCustomer.state">
+								<option ng-repeat="state in usStates" value="{{ state.abbreviation }}">{{ state.name }}</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Zipcode</td>
+						<td><input type="number" name="zipcode" ng-model="newCustomer.zipcode" /></td>
+					</tr>
+					<tr>
+						<td>Phone</td>
+						<td><input type="number" name="phone" ng-model="newCustomer.phone" /></td>
+					</tr>
+				</table>
+			</ng-form>
+			<div class="buttons">
+				<button class="confirm" ng-click="customerAdd()">Add</button>
+				<button class="cancel" ng-click="customerAddCancel()">Cancel</button>
 			</div>
 		</div>
+		<div class="section-header">
+			<span>Issuer</span>
+		</div>
+		<div class="section" ng-class="{ 'has-error': issuer.invalid }">
+			<div class="option">
+				<div ng-hide="newIssuer.add">
+					<label>Name</label>
+					<div>{{ issuer.name }}</div>
+				</div>
+				<div class="no-results" ng-show="newIssuer.add">
+					<span>No results.</span>
+				</div>
+			</div>
+		</div>
+		<div class="section-header" ng-show="newIssuer.add">
+			<span>New Issuer</span>
+		</div>
+		<div class="section" ng-show="newIssuer.add">
+			<ng-form name="issuerForm">
+				<table class="new-entry">
+					<tr ng-class="{ 'has-error': issuerForm.name.$invalid && issuerForm.name.$dirty }">
+						<td>Name</td>
+						<td><input type="text" name="name" class="form-input" ng-model="newIssuer.name" required /></td>
+					</tr>
+					<tr>
+						<td>Address</td>
+						<td><input type="text" ng-model="newIssuer.address1" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="text" ng-model="newIssuer.address2" /></td>
+					</tr>
+					<tr>
+						<td>City</td>
+						<td><input type="text" ng-model="newIssuer.city" /></td>
+					</tr>
+					<tr>
+						<td>State</td>
+						<td>
+							<select ng-model="newIssuer.state">
+								<option ng-repeat="state in usStates" value="{{ state.abbreviation }}">{{ state.name }}</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Zip</td>
+						<td><input type="number" ng-model="newIssuer.zipcode" /></td>
+					</tr>
+					<tr>
+						<td>Phone</td>
+						<td><input type="number" ng-model="newIssuer.phone" /></td>
+					</tr>
+					<tr>
+						<td>Email</td>
+						<td><input type="text" ng-model="newIssuer.email" /></td>
+					</tr>
+				</table>
+			</ng-form>
+			<div class="buttons">
+				<button class="confirm" ng-click="issuerAdd()">Add</button>
+			</div>
+		</div>
+		<div class="section-header">
+			<span>Bank</span>
+		</div>
+		<div class="section" ng-class="{ 'has-error': bank.invalid }">
+			<div class="option">
+				<div ng-hide="newBank.add">
+					<label>Name</label>
+					<div>{{ bank.name }}</div>
+				</div>
+				<div class="no-results" ng-show="newBank.add">
+					<span>No results.</span>
+				</div>
+			</div>
+		</div>
+		<div class="section-header" ng-show="newBank.add">
+			<span>New Bank</span>
+		</div>
+		<div class="section" ng-show="newBank.add">
+			<ng-form name="bankForm">
+				<table class="new-entry">
+					<tr ng-class="{ 'has-error': bankForm.name.$invalid && bankForm.name.$dirty }">
+						<td>Name</td>
+						<td><input type="text" name="name" class="form-input" ng-model="newBank.name" required /></td>
+					</tr>
+				</table>
+			</ng-form>
+			<div class="buttons">
+				<button class="confirm" ng-click="bankAdd()">Add</button>
+			</div>
+		</div>
+		<button class="confirm" ng-click="save()">Save</button>
 	</div>
 </div>
