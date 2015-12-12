@@ -33,6 +33,14 @@ button.cancel {
 	padding: 20px;
 }
 
+button.edit {
+	background-color: #8ac007;
+	border: none;
+	color: #ffffff;
+	height: 100%;
+	float: right;
+}
+
 button.options {
 	background-color: #e0e0e0;
 	border: none;
@@ -243,6 +251,11 @@ img.check {
 .form-control input {
 	line-height: 1.5em;
 	font-size: 1.5em;
+}
+
+.form-control-edit input {
+	line-height: 1.5em;
+	font-size: 1em;
 }
 
 .section .option {

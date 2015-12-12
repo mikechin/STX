@@ -147,15 +147,33 @@
 				</div>
 				<div class="option">
 					<label>Account</label>
-					<div class="value">{{ scannedData.MICR.acct }}</div>
+					<button class="edit" ng-click="edit('acct')">Edit</button>
+					<div class="value" ng-if="!edit.acct">
+						<span>{{ scannedData.MICR.acct }}</span>
+					</div>
+					<div class="form-control-edit value" ng-if="edit.acct">
+						<input type="text" name="acct" ng-model="scannedData.MICR.acct" ng-keydown="inputKeyDown($event, 'acct')" />
+					</div>
 				</div>
 				<div class="option">
 					<label>Routing</label>
-					<div class="value">{{ scannedData.MICR.transit }}</div>
+					<button class="edit" ng-click="edit('routing')">Edit</button>
+					<div class="value" ng-if="!edit.routing">
+						<span>{{ scannedData.MICR.transit }}</span>
+					</div>
+					<div class="form-control-edit value" ng-if="edit.routing">
+						<input type="text" name="acct" ng-model="scannedData.MICR.transit" ng-keydown="inputKeyDown($event, 'routing')" />
+					</div>
 				</div>
 				<div class="option">
 					<label>Check Number</label>
-					<div class="value">{{ scannedData.MICR.serNum }}</div>
+					<button class="edit" ng-click="edit('checkNum')">Edit</button>
+					<div class="value" ng-if="!edit.checkNum">
+						<span>{{ scannedData.MICR.serNum }}</span>
+					</div>
+					<div class="form-control-edit value" ng-if="edit.checkNum">
+						<input type="text" name="acct" ng-model="scannedData.MICR.serNum" ng-keydown="inputKeyDown($event, 'checkNum')" />
+					</div>
 				</div>
 				<div class="option stripes">
 					<img class="check" ng-src="{{ scanImages.front }}" />
