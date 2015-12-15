@@ -485,6 +485,34 @@ class Db {
 		}
 	}
 
+	public function getIssuersByName($name) {
+		$search = "%$name%";
+		$q = $this->db->prepare("SELECT issId, name FROM issuers WHERE name LIKE :name");
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':name', $search);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'issId' => $row['issId'],
+				'name' => $row['name']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'issuers' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function getReportByRange($start, $end) {
 		$q = $this->db->prepare(
 			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
