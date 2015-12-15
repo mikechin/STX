@@ -487,7 +487,11 @@ class Db {
 
 	public function getIssuersByName($name) {
 		$search = "%$name%";
-		$q = $this->db->prepare("SELECT issId, name FROM issuers WHERE name LIKE :name");
+		$q = $this->db->prepare(
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode
+			FROM issuers
+			WHERE name LIKE :name"
+		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':name', $search);
 		$q->execute();
@@ -496,7 +500,14 @@ class Db {
 		while($row = $q->fetch()) {
 			$data[] = [
 				'issId' => $row['issId'],
-				'name' => $row['name']
+				'account' => $row['account'],
+				'routing' => $row['routing'],
+				'name' => $row['name'],
+				'address1' => $row['address1'],
+				'address2' => $row['address2'],
+				'city' => $row['city'],
+				'state' => $row['state'],
+				'zipcode' => $row['zipcode']
 			];
 		}
 
