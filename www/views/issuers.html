@@ -5,10 +5,34 @@
 	<div class="section">
 		<ng-form name="issuersForm">
 			<div class="option">
+				<div class="pull-left">
+					<label>Name</label>
+					<div class="form-control" ng-class="{ 'has-error': issuersForm.name.$invalid && issuersForm.name.$dirty }">
+						<input type="text" name="name" ng-model="issuer.name" required />
+					</div>
+				</div>
+				<div class="clear"></div>
 			</div>
 			<div class="buttons">
 				<button class="confirm" ng-click="issuersSearch()">Search</button>
 			</div>
 		</ng-form>
+		<div class="search-results" ng-show="issuer.search">
+			<div class="no-results" ng-hide="issuers.length">
+				<span>No results.</span>
+			</div>
+			<div class="search-result" ng-repeat="i in issuers">
+				<a href="" class="select" ng-click="issuerSelect($index)">
+					<div class="issuer-result">
+						<div class="info">
+							<div class="name">{{ i.name }}</div>
+							<div class="address">{{ i.address1 }} {{ i.address2 }}</div>
+							<div class="city">{{ i.city }}, {{ i.state }} {{ i.zipcode }}</div>
+						</div>
+					</div>
+				</a>
+				<div class="clear"></div>
+			</div>
+		</div>
 	</div>
 </div>
