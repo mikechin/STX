@@ -306,6 +306,18 @@ img.check {
 	font-size: 1.5em;
 }
 
+.search-result .issuer-result {
+	overflow: hidden;
+}
+
+.search-result .issuer-result .info {
+	float: left;
+}
+
+.search-result .issuer-result .info .name {
+	font-size: 1.5em;
+}
+
 .search-result a.select {
 }
 
