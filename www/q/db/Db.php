@@ -524,6 +524,84 @@ class Db {
 		}
 	}
 
+	public function getIssuersByAccount($account) {
+		$q = $this->db->prepare(
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode
+			FROM issuers
+			WHERE account = :account"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':account', $account);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'issId' => $row['issId'],
+				'account' => $row['account'],
+				'routing' => $row['routing'],
+				'name' => $row['name'],
+				'address1' => $row['address1'],
+				'address2' => $row['address2'],
+				'city' => $row['city'],
+				'state' => $row['state'],
+				'zipcode' => $row['zipcode']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'issuers' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
+	public function getIssuersByNameAccount($name, $account) {
+		$search = "%$name%";
+		$q = $this->db->prepare(
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode
+			FROM issuers
+			WHERE account = :account AND name LIKE :name"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':account', $account);
+		$q->bindParam(':name', $search);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'issId' => $row['issId'],
+				'account' => $row['account'],
+				'routing' => $row['routing'],
+				'name' => $row['name'],
+				'address1' => $row['address1'],
+				'address2' => $row['address2'],
+				'city' => $row['city'],
+				'state' => $row['state'],
+				'zipcode' => $row['zipcode']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'issuers' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function getReportByRange($start, $end) {
 		$q = $this->db->prepare(
 			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
