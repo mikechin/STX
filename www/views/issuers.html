@@ -7,8 +7,19 @@
 			<div class="option">
 				<div class="pull-left">
 					<label>Name</label>
+					<button class="edit" ng-click="cleanInput('name')" ng-show="issuer.name">X</button>
 					<div class="form-control" ng-class="{ 'has-error': issuersForm.name.$invalid && issuersForm.name.$dirty }">
 						<input type="text" name="name" ng-model="issuer.name" required />
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="option">
+				<div class="pull-left">
+					<label>Account Number</label>
+					<button class="edit" ng-click="cleanInput('account')" ng-show="issuer.account">X</button>
+					<div class="form-control" ng-class="{ 'has-error': issuersForm.account.$invalid && issuersForm.account.$dirty }">
+						<input type="text" name="account" ng-model="issuer.account" required />
 					</div>
 				</div>
 				<div class="clear"></div>
