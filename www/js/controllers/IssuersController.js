@@ -12,28 +12,34 @@ stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) 
 	//
 	//
 	// **************************************************
-	$scope.issuer = {
-		id: '',
+	$scope.search = {
 		name: '',
 		account: '',
 		search: false
 	};
 
+	$scope.issuer = {
+		id: '',
+		name: '',
+		account: '',
+		selected: false
+	};
+
 	$scope.issuers = [];
 
 	$scope.cleanInput = function(input) {
-		$scope.issuer[input] = '';
+		$scope.search[input] = '';
 		$scope.issuersForm[input].$dirty = false;
 	};
 
 	$scope.issuersSearch = function() {
-		if(!$scope.issuer.name && !$scope.issuer.account) {
-			if(!$scope.issuer.name) {
+		if(!$scope.search.name && !$scope.search.account) {
+			if(!$scope.search.name) {
 				$scope.issuersForm.name.$invalid = true;
 				$scope.issuersForm.name.$dirty = true;
 			}
 
-			if(!$scope.issuer.account) {
+			if(!$scope.search.account) {
 				$scope.issuersForm.account.$invalid = true;
 				$scope.issuersForm.account.$dirty = true;
 			}
@@ -46,14 +52,14 @@ stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) 
 		}
 
 		var url = 'http://stx.localhost:8888/q/issuers/';
-		if($scope.issuer.name !== '' && $scope.issuer.account !== '') {
-			url += $scope.issuer.name + '/' + $scope.issuer.account;
+		if($scope.search.name !== '' && $scope.search.account !== '') {
+			url += $scope.search.name + '/' + $scope.search.account;
 		}
-		else if($scope.issuer.name !== '') {
-			url += $scope.issuer.name;
+		else if($scope.search.name !== '') {
+			url += $scope.search.name;
 		}
 		else {
-			url += 'acct/' + $scope.issuer.account;
+			url += 'acct/' + $scope.search.account;
 		}
 
 		$http({
@@ -67,7 +73,38 @@ stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) 
 			success(function(data, status, headers, config) {
 			console.log('success.');
 			$scope.issuers = data.issuers;
-			$scope.issuer.search = true;
+			$scope.search.search = true;
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
+	};
+
+	$scope.issuerSelect = function(i) {
+		var issuer = $scope.issuers[i];
+
+		$scope.issuer.id = issuer.issId;
+		$scope.issuer.name = issuer.name;
+		$scope.issuer.address1 = issuer.address1;
+		$scope.issuer.address2 = issuer.address2;
+		$scope.issuer.city = issuer.city;
+		$scope.issuer.state = issuer.state;
+		$scope.issuer.zipcode = issuer.zipcode;
+		$scope.search.search = false;
+		$scope.issuer.selected = true;
+
+		var url = 'http://stx.localhost:8888/q/checks/issuer/' + $scope.issuer.id;
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			$scope.checks = data.checks;
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');

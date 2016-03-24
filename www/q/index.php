@@ -22,9 +22,12 @@ Flight::route('GET /bank/@id', function($id) {
 });
 
 Flight::route('GET /checks/@type/@id', function($type, $id) {
+	$db = Flight::db();
 	if($type === 'customer') {
-		$db = Flight::db();
 		$db->getChecksByCustomerId($id);
+	}
+	else if($type = 'issuer') {
+		$db->getChecksByIssuerId($id);
 	}
 	else {
 		header("HTTP/1.1 401 Unauthorized");
