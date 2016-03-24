@@ -367,6 +367,44 @@ class Db {
 		}
 	}
 
+	public function getChecksByIssuerId($id) {
+		$q = $this->db->prepare(
+			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
+			FROM checks
+			WHERE issId = :id"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'status' => true,
+				'chkId' => $row['chkId'],
+				'issId' => $row['issId'],
+				'bnkId' => $row['bnkId'],
+				'created' => $row['created_at'],
+				'acct' => $row['MICRAcct'],
+				'amt' => $row['MICRAmt'],
+				'transit' => $row['MICRTransit'],
+				'serNum' => $row['MICRSerNum']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'checks' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function getCustomerById($id) {
 		$q = $this->db->prepare("SELECT firstname, lastname FROM customers WHERE cusId = :id LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
