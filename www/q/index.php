@@ -90,11 +90,6 @@ Flight::route('POST /customer/add', function() {
 	$db->addCustomer(Flight::request()->data);
 });
 
-Flight::route('POST /customer/photo', function() {
-	$db = Flight::db();
-	$db->addCustomer(Flight::request()->data);
-});
-
 Flight::route('POST /check', function() {
 	$db = Flight::db();
 	$db->addCheck(Flight::request()->data);
@@ -103,6 +98,16 @@ Flight::route('POST /check', function() {
 Flight::route('POST /issuer/add', function() {
 	$db = Flight::db();
 	$db->addIssuer(Flight::request()->data);
+});
+
+// **************************************************
+// put.
+//
+//
+// **************************************************
+Flight::route('PUT /customer/update/@id', function($id) {
+	$db = Flight::db();
+	$db->updateCustomer($id, Flight::request()->data);
 });
 
 Flight::start();
