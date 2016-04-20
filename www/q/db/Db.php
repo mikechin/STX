@@ -678,6 +678,81 @@ class Db {
 			]);
 		}
 	}
+
+	public function updateCustomer($id, $data) {
+		$values = 'firstname = :firstname, lastname = :lastname';
+
+		$firstname = $data->name['first'];
+		$lastname = $data->name['last'];
+		$address1 = NULL;
+		$address2 = NULL;
+		$city = NULL;
+		$state = NULL;
+		$zipcode = NULL;
+		$phone = NULL;
+		$photo = NULL;
+
+		if($data->address1 !== '') {
+			$address1 = $data->address1;
+			$values .= ', address1 = :address1';
+		}
+		if($data->address2 !== '') {
+			$address2 = $data->address2;
+			$values .= ', address2 = :address2';
+		}
+		if($data->city !== '') {
+			$city = $data->city;
+			$values .= ', city = :city';
+		}
+		if($data->state !== '') {
+			$state = $data->state;
+			$values .= ', state = :state';
+		}
+		if($data->zipcode !== '') {
+			$zipcode = $data->zipcode;
+			$values .= ', zipcode = :zipcode';
+		}
+		if($data->phone !== '') {
+			$phone = $data->phone;
+			$values .= ', phone = :phone';
+		}
+		if($data->photo !== null) {
+			$photo = $data->photo;
+			$values .= ', photo = :photo';
+		}
+
+		$q = $this->db->prepare("UPDATE customers SET $values WHERE cusId = :id");
+		$q->bindParam(':firstname', $firstname);
+		$q->bindParam(':lastname', $lastname);
+		if($address1)
+			$q->bindParam(':address1', $address1);
+		if($address2)
+			$q->bindParam(':address2', $address2);
+		if($city)
+			$q->bindParam(':city', $city);
+		if($state)
+			$q->bindParam(':state', $state);
+		if($zipcode)
+			$q->bindParam(':zipcode', $zipcode);
+		if($phone)
+			$q->bindParam(':phone', $phone);
+		if($photo)
+			$q->bindParam(':photo', $photo);
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		if($q->rowCount() > 0) {
+			$this->send([
+				'status' => true,
+				'cusId' => $id,
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
 }
 
 ?>
