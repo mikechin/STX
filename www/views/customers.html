@@ -52,6 +52,7 @@
 	<div class="section" ng-show="customer.selected">
 		<div class="search-result">
 			<div class="customer-result">
+				<button class="edit" ng-click="customerEdit()">Edit</button>
 				<div class="photo">
 					<img ng-show="customer.photo" ng-src="{{ customer.photo }}" />
 					<img ng-hide="customer.photo" ng-src="assets/img/no_image_available.jpg" />
@@ -66,6 +67,7 @@
 			<div class="clear"></div>
 		</div>
 	</div>
+	<customers-info type="edit" show="customer.edit" customer="editCustomer"></customers-info>
 	<div class="section-header" ng-show="customer.selected">
 		<span>Checks</span>
 	</div>

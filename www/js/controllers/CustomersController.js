@@ -37,7 +37,27 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 		photo: null,
 		search: false,
 		selected: false,
+		edit: false,
 		invalid: false
+	};
+
+	$scope.customerEdit = function() {
+		$scope.editCustomer = {
+			id: $scope.customer.id,
+			photo: $scope.customer.photo,
+			name: {
+				first: $scope.customer.name.first,
+				last: $scope.customer.name.last
+			},
+			address1: $scope.customer.address1,
+			address2: $scope.customer.address2,
+			city: $scope.customer.city,
+			state: $scope.customer.state,
+			phone: $scope.customer.phone,
+			zipcode: parseInt($scope.customer.zipcode)
+		};
+
+		$scope.customer.edit = true;
 	};
 
 	$scope.customerSearch = function() {
@@ -65,7 +85,7 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 			}
 		}).
 		success(function(data, status, headers, config) {
-			console.log('success.');
+			console.log('success.', data);
 			$scope.customers = data.customers;
 			$scope.customer.search = true;
 		}).
