@@ -19,8 +19,12 @@ stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $ht
         if(scope.type === 'add') {
           initC();
           scope.add = true;
+          scope.edit = false;
         }
-        else {
+
+        if(scope.type === 'edit') {
+          scope.c = scope.customer;
+          scope.add = false;
           scope.edit = true;
         }
       }
@@ -114,7 +118,7 @@ stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $ht
       //
       //
       // **************************************************
-      scope.add = function() {
+      scope.insert = function() {
         uploadPhoto().then(function() {
           var url = 'http://stx.localhost:8888/q/customer/add';
           $http({
@@ -145,8 +149,6 @@ stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $ht
       };
 
       scope.update = function() {
-        scope.c = angular.copy(scope.customer);
-
         uploadPhoto().then(function() {
           var url = 'http://stx.localhost:8888/q/customer/update/' + scope.customer.id;
           $http({
@@ -160,6 +162,8 @@ stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $ht
           }).
           success(function(data, status, headers, config) {
             console.log('success update.', data);
+            updateCustomer();
+            scope.customer.edit = false;
           }).
           error(function(data, status, headers, config) {
             console.log('error.');
