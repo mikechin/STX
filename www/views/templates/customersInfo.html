@@ -1,5 +1,6 @@
 <div class="section-header" ng-show="show">
-  <span>Edit Customer</span>
+  <span ng-show="add">New Customer</span>
+  <span ng-show="edit">Edit Customer</span>
 </div>
 <div class="section" ng-show="show">
   <ng-form name="editForm">
@@ -7,50 +8,52 @@
       <tr>
         <td>Photo</td>
         <td><input type="file" id="upload-photo" /></td>
-        <img ng-show="customer.photo" ng-src="{{ customer.photo }}" />
-        <img ng-hide="customer.photo" src="assets/img/no_image_available.jpg" />
+        <div ng-show="edit">
+          <img ng-show="c.photo" ng-src="{{ c.photo }}" />
+          <img ng-hide="c.photo" src="assets/img/no_image_available.jpg" />
+        </div>
       </tr>
       <tr ng-class="{ 'has-error': editForm.firstname.$invalid && editForm.firstname.$dirty }">
         <td>First Name</td>
-        <td><input type="text" name="firstname" class="form-input" ng-model="customer.name.first" required /></td>
+        <td><input type="text" name="firstname" class="form-input" ng-model="c.name.first" required /></td>
       </tr>
       <tr ng-class="{ 'has-error': editForm.lastname.$invalid && editForm.lastname.$dirty }">
         <td>Last Name</td>
-        <td><input type="text" name="lastname" class="form-input" ng-model="customer.name.last" required /></td>
+        <td><input type="text" name="lastname" class="form-input" ng-model="c.name.last" required /></td>
       </tr>
       <tr>
         <td>Address</td>
-        <td><input type="text" name="address1" ng-model="customer.address1" /></td>
+        <td><input type="text" name="address1" ng-model="c.address1" /></td>
       </tr>
       <tr>
         <td></td>
-        <td><input type="text" name="address2" ng-model="customer.address2" /></td>
+        <td><input type="text" name="address2" ng-model="c.address2" /></td>
       </tr>
       <tr>
         <td>City</td>
-        <td><input type="text" name="city" ng-model="customer.city" /></td>
+        <td><input type="text" name="city" ng-model="c.city" /></td>
       </tr>
       <tr>
         <td>State</td>
         <td>
-          <select name="state" ng-model="customer.state">
+          <select name="state" ng-model="c.state">
             <option ng-repeat="state in usStates" value="{{ state.abbreviation }}">{{ state.name }}</option>
           </select>
         </td>
       </tr>
       <tr>
         <td>Zipcode</td>
-        <td><input type="number" name="zipcode" ng-model="customer.zipcode" /></td>
+        <td><input type="number" name="zipcode" ng-model="c.zipcode" /></td>
       </tr>
       <tr>
         <td>Phone</td>
-        <td><input type="number" name="phone" ng-model="customer.phone" /></td>
+        <td><input type="number" name="phone" ng-model="c.phone" /></td>
       </tr>
     </table>
   </ng-form>
   <div class="buttons">
     <button class="confirm" ng-click="add()" ng-show="add">Add</button>
-    <button class="confirm" ng-click="update()" ng-show="update">Update</button>
+    <button class="confirm" ng-click="update()" ng-show="edit">Update</button>
     <button class="cancel" ng-click="cancel()">Cancel</button>
   </div>
 </div>
