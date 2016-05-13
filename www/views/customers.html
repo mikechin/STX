@@ -8,13 +8,13 @@
 				<div class="pull-left">
 					<label>First Name</label>
 					<div class="form-control" ng-class="{ 'has-error': customerForm.firstname.$invalid && customerForm.firstname.$dirty }">
-						<input type="text" name="firstname" ng-model="customer.name.first" required />
+						<input type="text" name="firstname" ng-model="search.name.first" required />
 					</div>
 				</div>
 				<div class="pull-left ml-10">
 					<label>Last Name</label>
 					<div class="form-control" ng-class="{ 'has-error': customerForm.lastname.$invalid && customerForm.lastname.$dirty }">
-						<input type="text" name="lastname" ng-model="customer.name.last" required />
+						<input type="text" name="lastname" ng-model="search.name.last" required />
 					</div>
 				</div>
 				<div class="clear"></div>

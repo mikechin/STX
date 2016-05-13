@@ -43,6 +43,13 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 		add: false
 	};
 
+	$scope.search = {
+		name: {
+			first: '',
+			last: ''
+		}
+	};
+
 	$scope.customerNew = function() {
 		$scope.customer.add = true;
 		$scope.customer.edit = false;
@@ -62,13 +69,13 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 		$scope.customer.add = false;
 		$scope.customer.edit = false;
 
-		if($scope.customer.name.first === '' || $scope.customer.name.last === '') {
-			if($scope.customer.name.first === '') {
+		if($scope.search.name.first === '' || $scope.search.name.last === '') {
+			if($scope.search.name.first === '') {
 				$scope.customerForm.firstname.$invalid = true;
 				$scope.customerForm.firstname.$dirty = true;
 			}
 
-			if($scope.customer.name.last === '') {
+			if($scope.search.name.last === '') {
 				$scope.customerForm.lastname.$invalid = true;
 				$scope.customerForm.lastname.$dirty = true;
 			}
@@ -76,7 +83,7 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 			return;
 		}
 
-		var url = 'http://stx.localhost:8888/q/customers/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
+		var url = 'http://stx.localhost:8888/q/customers/' + $scope.search.name.first + '/' + $scope.search.name.last;
 		$http({
 			method: 'GET',
 			url: url,
