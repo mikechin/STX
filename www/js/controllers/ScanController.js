@@ -34,7 +34,6 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		};
 
 		initCustomer();
-		initNewCustomer();
 
 		$scope.issuer = {
 			id: '',
@@ -75,30 +74,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 			photo: null,
 			search: false,
 			selected: false,
-			invalid: false
-		};
-	}
-
-	function initNewCustomer() {
-		$scope.customerForm.firstname.$invalid = false;
-		$scope.customerForm.firstname.$dirty = false;
-		$scope.customerForm.lastname.$invalid = false;
-		$scope.customerForm.lastname.$dirty = false;
-
-		$scope.newCustomer = {
-			add: false,
-			name: {
-				first: '',
-				last: ''
-			},
-			address1: '',
-			address2: '',
-			city: '',
-			state: '',
-			zipcode: '',
-			phone: '',
-			comment: '',
-			photo: null
+			invalid: false,
+			add: false
 		};
 	}
 
@@ -254,28 +231,14 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		photo: null,
 		search: false,
 		selected: false,
-		invalid: false
+		invalid: false,
+		add: false
 	};
 
 	$scope.edit = {
 		acct: false,
 		routing: false,
 		checkNum: false
-	};
-
-	$scope.newCustomer = {
-		add: false,
-		name: {
-			first: '',
-			last: ''
-		},
-		address1: '',
-		address2: '',
-		city: '',
-		state: '',
-		zipcode: '',
-		phone: '',
-		photo: null
 	};
 
 	$scope.issuer = {
@@ -331,60 +294,6 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		back: ''
 	};
 
-	$scope.usStates = [
-		{ name: 'ALABAMA', abbreviation: 'AL' },
-		{ name: 'ALASKA', abbreviation: 'AK' },
-		{ name: 'ARIZONA', abbreviation: 'AZ' },
-		{ name: 'ARKANSAS', abbreviation: 'AR' },
-		{ name: 'CALIFORNIA', abbreviation: 'CA' },
-		{ name: 'COLORADO', abbreviation: 'CO' },
-		{ name: 'CONNECTICUT', abbreviation: 'CT' },
-		{ name: 'DELAWARE', abbreviation: 'DE' },
-		{ name: 'DISTRICT OF COLUMBIA', abbreviation: 'DC' },
-		{ name: 'FLORIDA', abbreviation: 'FL' },
-		{ name: 'GEORGIA', abbreviation: 'GA' },
-		{ name: 'HAWAII', abbreviation: 'HI' },
-		{ name: 'IDAHO', abbreviation: 'ID' },
-		{ name: 'ILLINOIS', abbreviation: 'IL' },
-		{ name: 'INDIANA', abbreviation: 'IN' },
-		{ name: 'IOWA', abbreviation: 'IA' },
-		{ name: 'KANSAS', abbreviation: 'KS' },
-		{ name: 'KENTUCKY', abbreviation: 'KY' },
-		{ name: 'LOUISIANA', abbreviation: 'LA' },
-		{ name: 'MAINE', abbreviation: 'ME' },
-		{ name: 'MARYLAND', abbreviation: 'MD' },
-		{ name: 'MASSACHUSETTS', abbreviation: 'MA' },
-		{ name: 'MICHIGAN', abbreviation: 'MI' },
-		{ name: 'MINNESOTA', abbreviation: 'MN' },
-		{ name: 'MISSISSIPPI', abbreviation: 'MS' },
-		{ name: 'MISSOURI', abbreviation: 'MO' },
-		{ name: 'MONTANA', abbreviation: 'MT' },
-		{ name: 'NEBRASKA', abbreviation: 'NE' },
-		{ name: 'NEVADA', abbreviation: 'NV' },
-		{ name: 'NEW HAMPSHIRE', abbreviation: 'NH' },
-		{ name: 'NEW JERSEY', abbreviation: 'NJ' },
-		{ name: 'NEW MEXICO', abbreviation: 'NM' },
-		{ name: 'NEW YORK', abbreviation: 'NY' },
-		{ name: 'NORTH CAROLINA', abbreviation: 'NC' },
-		{ name: 'NORTH DAKOTA', abbreviation: 'ND' },
-		{ name: 'OHIO', abbreviation: 'OH' },
-		{ name: 'OKLAHOMA', abbreviation: 'OK' },
-		{ name: 'OREGON', abbreviation: 'OR' },
-		{ name: 'PENNSYLVANIA', abbreviation: 'PA' },
-		{ name: 'RHODE ISLAND', abbreviation: 'RI' },
-		{ name: 'SOUTH CAROLINA', abbreviation: 'SC' },
-		{ name: 'SOUTH DAKOTA', abbreviation: 'SD' },
-		{ name: 'TENNESSEE', abbreviation: 'TN' },
-		{ name: 'TEXAS', abbreviation: 'TX' },
-		{ name: 'UTAH', abbreviation: 'UT' },
-		{ name: 'VERMONT', abbreviation: 'VT' },
-		{ name: 'VIRGINIA', abbreviation: 'VA' },
-		{ name: 'WASHINGTON', abbreviation: 'WA' },
-		{ name: 'WEST VIRGINIA', abbreviation: 'WV' },
-		{ name: 'WISCONSIN', abbreviation: 'WI' },
-		{ name: 'WYOMING', abbreviation: 'WY' }
-	];
-
 	$scope.bankAdd = function() {
 		if($scope.bankForm.$invalid) {
 			var cont = true;
@@ -426,93 +335,19 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		});
 	};
 
-	$scope.customerAdd = function() {
-		if($scope.customerForm.$invalid) {
-			var cont = true;
-
-			if($scope.newCustomer.name.first === '') {
-				$scope.customerForm.firstname.$invalid = true;
-				$scope.customerForm.firstname.$dirty = true;
-				cont = false;
-			}
-
-			if($scope.newCustomer.name.last === '') {
-				$scope.customerForm.lastname.$invalid = true;
-				$scope.customerForm.lastname.$dirty = true;
-				cont = false;
-			}
-
-			if(!cont) {
-				return;
-			}
-		}
-
-		var upload = $q.defer();
-
-		var ele = document.getElementById('upload-photo');
-		if(ele.files.length) {
-			var f = ele.files[0];
-			var r = new FileReader();
-
-			r.onloadend = function(e) {
-				var data = e.target.result;
-				$scope.newCustomer.photo = data;
-				upload.resolve();
-			};
-
-			r.readAsDataURL(f);
-		}
-		else {
-			upload.resolve();
-		}
-
-		$q.all([ upload.promise ]).then(function() {
-			console.log('photo uploaded.');
-
-			var url = 'http://stx.localhost:8888/q/customer/add';
-			$http({
-				method: 'POST',
-				url: url,
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				},
-				data: $scope.newCustomer
-			}).
-			success(function(data, status, headers, config) {
-				console.log('success.');
-				console.log(data);
-				$scope.customer.id = data.cusId;
-				$scope.customer.name.first = $scope.newCustomer.name.first;
-				$scope.customer.name.last = $scope.newCustomer.name.last;
-				$scope.customer.photo = $scope.newCustomer.photo;
-				$scope.customer.selected = true;
-				$scope.newCustomer.add = false;
-			}).
-			error(function(data, status, headers, config) {
-				console.log('error.');
-			});
-		});
-	};
-
-	$scope.customerAddCancel = function() {
-		initNewCustomer();
-		document.getElementById('upload-photo').value = '';
-	};
-
 	$scope.customerClear = function() {
 		initCustomer();
-		initNewCustomer();
 	};
 
 	$scope.customerNew = function() {
-		initNewCustomer();
-		$scope.newCustomer.add = true;
-
-		document.getElementById('upload-photo').value = '';
+		$scope.customer.add = true;
+		$scope.customer.search = false;
+		$scope.customers = [];
 	};
 
 	$scope.customerSearch = function() {
+		$scope.customer.add = false;
+
 		if($scope.customer.name.first === '' || $scope.customer.name.last === '') {
 			return;
 		}
@@ -557,7 +392,6 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	};
 
 	$scope.customerSelect = function(i) {
-		initNewCustomer();
 		var customer = $scope.customers[i];
 
 		$scope.customer.id = customer.cusId;
