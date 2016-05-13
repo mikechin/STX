@@ -22,9 +22,12 @@ Flight::route('GET /bank/@id', function($id) {
 });
 
 Flight::route('GET /checks/@type/@id', function($type, $id) {
+	$db = Flight::db();
 	if($type === 'customer') {
-		$db = Flight::db();
 		$db->getChecksByCustomerId($id);
+	}
+	else if($type = 'issuer') {
+		$db->getChecksByIssuerId($id);
 	}
 	else {
 		header("HTTP/1.1 401 Unauthorized");
@@ -52,6 +55,21 @@ Flight::route('GET /issuer/@account/@routing', function($account, $routing) {
 	$db->getIssuerByAccountRouting($account, $routing);
 });
 
+Flight::route('GET /issuers/@name', function($name) {
+	$db = Flight::db();
+	$db->getIssuersByName($name);
+});
+
+Flight::route('GET /issuers/acct/@account', function($account) {
+	$db = Flight::db();
+	$db->getIssuersByAccount($account);
+});
+
+Flight::route('GET /issuers/@name/@account', function($name, $account) {
+	$db = Flight::db();
+	$db->getIssuersByNameAccount($name, $account);
+});
+
 Flight::route('GET /report/@start/@end', function($start, $end) {
 	$db = Flight::db();
 	$db->getReportByRange($start, $end);
@@ -72,11 +90,6 @@ Flight::route('POST /customer/add', function() {
 	$db->addCustomer(Flight::request()->data);
 });
 
-Flight::route('POST /customer/photo', function() {
-	$db = Flight::db();
-	$db->addCustomer(Flight::request()->data);
-});
-
 Flight::route('POST /check', function() {
 	$db = Flight::db();
 	$db->addCheck(Flight::request()->data);
@@ -85,6 +98,16 @@ Flight::route('POST /check', function() {
 Flight::route('POST /issuer/add', function() {
 	$db = Flight::db();
 	$db->addIssuer(Flight::request()->data);
+});
+
+// **************************************************
+// put.
+//
+//
+// **************************************************
+Flight::route('PUT /customer/update/@id', function($id) {
+	$db = Flight::db();
+	$db->updateCustomer($id, Flight::request()->data);
 });
 
 Flight::start();

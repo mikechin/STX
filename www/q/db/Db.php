@@ -367,6 +367,44 @@ class Db {
 		}
 	}
 
+	public function getChecksByIssuerId($id) {
+		$q = $this->db->prepare(
+			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
+			FROM checks
+			WHERE issId = :id"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'status' => true,
+				'chkId' => $row['chkId'],
+				'issId' => $row['issId'],
+				'bnkId' => $row['bnkId'],
+				'created' => $row['created_at'],
+				'acct' => $row['MICRAcct'],
+				'amt' => $row['MICRAmt'],
+				'transit' => $row['MICRTransit'],
+				'serNum' => $row['MICRSerNum']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'checks' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function getCustomerById($id) {
 		$q = $this->db->prepare("SELECT firstname, lastname FROM customers WHERE cusId = :id LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
@@ -485,6 +523,123 @@ class Db {
 		}
 	}
 
+	public function getIssuersByName($name) {
+		$search = "%$name%";
+		$q = $this->db->prepare(
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode
+			FROM issuers
+			WHERE name LIKE :name"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':name', $search);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'issId' => $row['issId'],
+				'account' => $row['account'],
+				'routing' => $row['routing'],
+				'name' => $row['name'],
+				'address1' => $row['address1'],
+				'address2' => $row['address2'],
+				'city' => $row['city'],
+				'state' => $row['state'],
+				'zipcode' => $row['zipcode']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'issuers' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
+	public function getIssuersByAccount($account) {
+		$q = $this->db->prepare(
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode
+			FROM issuers
+			WHERE account = :account"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':account', $account);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'issId' => $row['issId'],
+				'account' => $row['account'],
+				'routing' => $row['routing'],
+				'name' => $row['name'],
+				'address1' => $row['address1'],
+				'address2' => $row['address2'],
+				'city' => $row['city'],
+				'state' => $row['state'],
+				'zipcode' => $row['zipcode']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'issuers' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
+	public function getIssuersByNameAccount($name, $account) {
+		$search = "%$name%";
+		$q = $this->db->prepare(
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode
+			FROM issuers
+			WHERE account = :account AND name LIKE :name"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':account', $account);
+		$q->bindParam(':name', $search);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'issId' => $row['issId'],
+				'account' => $row['account'],
+				'routing' => $row['routing'],
+				'name' => $row['name'],
+				'address1' => $row['address1'],
+				'address2' => $row['address2'],
+				'city' => $row['city'],
+				'state' => $row['state'],
+				'zipcode' => $row['zipcode']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'issuers' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function getReportByRange($start, $end) {
 		$q = $this->db->prepare(
 			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
@@ -515,6 +670,81 @@ class Db {
 			$this->send([
 				'status' => true,
 				'checks' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
+	public function updateCustomer($id, $data) {
+		$values = 'firstname = :firstname, lastname = :lastname';
+
+		$firstname = $data->name['first'];
+		$lastname = $data->name['last'];
+		$address1 = NULL;
+		$address2 = NULL;
+		$city = NULL;
+		$state = NULL;
+		$zipcode = NULL;
+		$phone = NULL;
+		$photo = NULL;
+
+		if($data->address1 !== '') {
+			$address1 = $data->address1;
+			$values .= ', address1 = :address1';
+		}
+		if($data->address2 !== '') {
+			$address2 = $data->address2;
+			$values .= ', address2 = :address2';
+		}
+		if($data->city !== '') {
+			$city = $data->city;
+			$values .= ', city = :city';
+		}
+		if($data->state !== '') {
+			$state = $data->state;
+			$values .= ', state = :state';
+		}
+		if($data->zipcode !== '') {
+			$zipcode = $data->zipcode;
+			$values .= ', zipcode = :zipcode';
+		}
+		if($data->phone !== '') {
+			$phone = $data->phone;
+			$values .= ', phone = :phone';
+		}
+		if($data->photo !== null) {
+			$photo = $data->photo;
+			$values .= ', photo = :photo';
+		}
+
+		$q = $this->db->prepare("UPDATE customers SET $values WHERE cusId = :id");
+		$q->bindParam(':firstname', $firstname);
+		$q->bindParam(':lastname', $lastname);
+		if($address1)
+			$q->bindParam(':address1', $address1);
+		if($address2)
+			$q->bindParam(':address2', $address2);
+		if($city)
+			$q->bindParam(':city', $city);
+		if($state)
+			$q->bindParam(':state', $state);
+		if($zipcode)
+			$q->bindParam(':zipcode', $zipcode);
+		if($phone)
+			$q->bindParam(':phone', $phone);
+		if($photo)
+			$q->bindParam(':photo', $photo);
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		if($q->rowCount() > 0) {
+			$this->send([
+				'status' => true,
+				'cusId' => $id,
 			]);
 		}
 		else {
