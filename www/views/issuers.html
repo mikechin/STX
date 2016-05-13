@@ -1,0 +1,91 @@
+<div class="content">
+	<div class="section-header">
+		<span>Search Issuers</span>
+	</div>
+	<div class="section">
+		<ng-form name="issuersForm">
+			<div class="option">
+				<div class="pull-left">
+					<label>Name</label>
+					<button class="edit" ng-click="cleanInput('name')" ng-show="search.name">X</button>
+					<div class="form-control" ng-class="{ 'has-error': issuersForm.name.$invalid && issuersForm.name.$dirty }">
+						<input type="text" name="name" ng-model="search.name" required />
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="option">
+				<div class="pull-left">
+					<label>Account Number</label>
+					<button class="edit" ng-click="cleanInput('account')" ng-show="search.account">X</button>
+					<div class="form-control" ng-class="{ 'has-error': issuersForm.account.$invalid && issuersForm.account.$dirty }">
+						<input type="text" name="account" ng-model="search.account" required />
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="buttons">
+				<button class="confirm" ng-click="issuersSearch()">Search</button>
+			</div>
+		</ng-form>
+		<div class="search-results" ng-show="search.search">
+			<div class="no-results" ng-hide="issuers.length">
+				<span>No results.</span>
+			</div>
+			<div class="search-result" ng-repeat="i in issuers">
+				<a href="" class="select" ng-click="issuerSelect($index)">
+					<div class="issuer-result">
+						<div class="info">
+							<div class="name">{{ i.name }}</div>
+							<div class="address">{{ i.address1 }} {{ i.address2 }}</div>
+							<div class="city">{{ i.city }}, {{ i.state }} {{ i.zipcode }}</div>
+						</div>
+					</div>
+				</a>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+	<div class="section-header" ng-show="issuer.selected">
+		<span>Issuer</span>
+	</div>
+	<div class="section" ng-show="issuer.selected">
+		<div class="search-result">
+			<div class="issuer-result">
+				<div class="info">
+					<div class="name">{{ issuer.name }}</div>
+					<div class="address">{{ issuer.address1 }} {{ issuer.address2 }}</div>
+					<div class="city">{{ issuer.city }}, {{ issuer.state }} {{ issuer.zipcode }}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="section-header" ng-show="issuer.selected">
+		<span>Checks</span>
+	</div>
+	<div class="section" ng-show="issuer.selected">
+		<div class="no-results" ng-hide="checks.length">
+			<span>No results.</span>
+		</div>
+		<div class="check-list" ng-show="checks.length" ng-repeat="c in checks">
+			<div class="item">
+				<div class="data">
+					<label>Date Scanned</label>
+					<div class="value">{{ c.created }}</div>
+					<label>Amount</label>
+					<div class="value">${{ c.amt }}</div>
+					<label>Account</label>
+					<div class="value">{{ c.acct }}</div>
+					<label>Routing</label>
+					<div class="value">{{ c.transit }}</div>
+					<label>Check Number</label>
+					<div class="value">{{ c.serNum }}</div>
+				</div>
+				<div class="image">
+					<img ng-src="chkimg/{{ c.chkId }}/front.JPG" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

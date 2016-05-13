@@ -16,7 +16,8 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 			photo: null,
 			search: false,
 			selected: false,
-			invalid: false
+			invalid: false,
+			add: false
 		};
 	}
 
@@ -37,17 +38,44 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 		photo: null,
 		search: false,
 		selected: false,
-		invalid: false
+		edit: false,
+		invalid: false,
+		add: false
+	};
+
+	$scope.search = {
+		name: {
+			first: '',
+			last: ''
+		}
+	};
+
+	$scope.customerNew = function() {
+		$scope.customer.add = true;
+		$scope.customer.edit = false;
+		$scope.customer.selected = false;
+		$scope.customer.search = false;
+		$scope.customers = [];
+	};
+
+	$scope.customerEdit = function() {
+		$scope.customer.zipcode = parseInt($scope.customer.zipcode);
+
+		$scope.customer.add = false;
+		$scope.customer.edit = true;
 	};
 
 	$scope.customerSearch = function() {
-		if($scope.customer.name.first === '' || $scope.customer.name.last === '') {
-			if($scope.customer.name.first === '') {
+		$scope.customer.add = false;
+		$scope.customer.edit = false;
+
+		if($scope.search.name.first === '' || $scope.search.name.last === '') {
+			if($scope.search.name.first === '') {
 				$scope.customerForm.firstname.$invalid = true;
 				$scope.customerForm.firstname.$dirty = true;
 			}
 
-			if($scope.customer.name.last === '') {
+			if($scope.search.name.last === '') {
 				$scope.customerForm.lastname.$invalid = true;
 				$scope.customerForm.lastname.$dirty = true;
 			}
@@ -55,7 +83,7 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 			return;
 		}
 
-		var url = 'http://stx.localhost:8888/q/customers/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
+		var url = 'http://stx.localhost:8888/q/customers/' + $scope.search.name.first + '/' + $scope.search.name.last;
 		$http({
 			method: 'GET',
 			url: url,
@@ -65,7 +93,7 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 			}
 		}).
 		success(function(data, status, headers, config) {
-			console.log('success.');
+			console.log('success.', data);
 			$scope.customers = data.customers;
 			$scope.customer.search = true;
 		}).
