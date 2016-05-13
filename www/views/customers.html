@@ -20,6 +20,7 @@
 				<div class="clear"></div>
 			</div>
 			<div class="buttons">
+				<button class="confirm" ng-click="customerNew()">New</button>
 				<button class="confirm" ng-click="customerSearch()">Search</button>
 			</div>
 		</ng-form>
@@ -67,7 +68,8 @@
 			<div class="clear"></div>
 		</div>
 	</div>
-	<customers-info type="edit" show="customer.edit" customer="editCustomer"></customers-info>
+	<customers-info type="add" show="customer.add" customer="customer"></customers-info>
+	<customers-info type="edit" show="customer.edit" customer="customer" ng-if="customer.edit"></customers-info>
 	<div class="section-header" ng-show="customer.selected">
 		<span>Checks</span>
 	</div>

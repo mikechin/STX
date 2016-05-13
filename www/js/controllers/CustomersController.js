@@ -16,7 +16,8 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 			photo: null,
 			search: false,
 			selected: false,
-			invalid: false
+			invalid: false,
+			add: false
 		};
 	}
 
@@ -38,29 +39,29 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 		search: false,
 		selected: false,
 		edit: false,
-		invalid: false
+		invalid: false,
+		add: false
+	};
+
+	$scope.customerNew = function() {
+		$scope.customer.add = true;
+		$scope.customer.edit = false;
+		$scope.customer.selected = false;
+		$scope.customer.search = false;
+		$scope.customers = [];
 	};
 
 	$scope.customerEdit = function() {
-		$scope.editCustomer = {
-			id: $scope.customer.id,
-			photo: $scope.customer.photo,
-			name: {
-				first: $scope.customer.name.first,
-				last: $scope.customer.name.last
-			},
-			address1: $scope.customer.address1,
-			address2: $scope.customer.address2,
-			city: $scope.customer.city,
-			state: $scope.customer.state,
-			phone: $scope.customer.phone,
-			zipcode: parseInt($scope.customer.zipcode)
-		};
+		$scope.customer.zipcode = parseInt($scope.customer.zipcode);
 
+		$scope.customer.add = false;
 		$scope.customer.edit = true;
 	};
 
 	$scope.customerSearch = function() {
+		$scope.customer.add = false;
+		$scope.customer.edit = false;
+
 		if($scope.customer.name.first === '' || $scope.customer.name.last === '') {
 			if($scope.customer.name.first === '') {
 				$scope.customerForm.firstname.$invalid = true;
