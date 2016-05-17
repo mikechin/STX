@@ -13,6 +13,37 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', function($sco
 			search: false,
 			results: []
 		};
+
+		$scope.start = null;
+		$scope.end = null;
+	}
+
+	initReports();
+
+	function checkDates() {
+		if($scope.report.start === null || $scope.report.end === null) {
+			if($scope.report.start === null) {
+				$scope.reportForm.start.$invalid = true;
+				$scope.reportForm.start.$dirty = true;
+			}
+
+			if($scope.report.end === null) {
+				$scope.reportForm.end.$invalid = true;
+				$scope.reportForm.end.$dirty = true;
+			}
+
+			return false;
+		}
+		else if($scope.report.start > $scope.report.end) {
+			$scope.reportForm.end.$invalid = true;
+			$scope.reportForm.end.$dirty = true;
+			return false;
+		}
+
+		$scope.start = $filter('date')($scope.report.start, 'yyyy-MM-dd 00:00:00');
+		$scope.end = $filter('date')($scope.report.end, 'yyyy-MM-dd 23:59:59');
+
+		return true;
 	}
 
 	// **************************************************
@@ -28,29 +59,11 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', function($sco
 	};
 
 	$scope.generateReport = function() {
-		if($scope.report.start === null || $scope.report.end === null) {
-			if($scope.report.start === null) {
-				$scope.reportForm.start.$invalid = true;
-				$scope.reportForm.start.$dirty = true;
-			}
-
-			if($scope.report.end === null) {
-				$scope.reportForm.end.$invalid = true;
-				$scope.reportForm.end.$dirty = true;
-			}
-
-			return;
-		}
-		else if($scope.report.start > $scope.report.end) {
-			$scope.reportForm.end.$invalid = true;
-			$scope.reportForm.end.$dirty = true;
+		if(!checkDates()) {
 			return;
 		}
 
-		var start = $filter('date')($scope.report.start, 'yyyy-MM-dd 00:00:00');
-		var end = $filter('date')($scope.report.end, 'yyyy-MM-dd 23:59:59');
-
-		var url = 'http://stx.localhost:8888/q/report/' + start + '/' + end;
+		var url = 'http://stx.localhost:8888/q/report/' + $scope.start + '/' + $scope.end;
 		$http({
 			method: 'GET',
 			url: url,
