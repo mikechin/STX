@@ -50,6 +50,11 @@ Flight::route('GET /customers/@issId', function($issId) {
 	$db->getCustomersByIssuer($issId);
 });
 
+Flight::route('GET /download/@start/@end', function($start, $end) {
+	$db = Flight::db();
+	$db->getDownloadByRange($start, $end);
+});
+
 Flight::route('GET /issuer/@account/@routing', function($account, $routing) {
 	$db = Flight::db();
 	$db->getIssuerByAccountRouting($account, $routing);
