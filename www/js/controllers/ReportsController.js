@@ -58,6 +58,28 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', function($sco
 		results: []
 	};
 
+	$scope.download = function() {
+		if(!checkDates()) {
+			return;
+		}
+
+		var url = 'http://stx.localhost:8888/q/download/' + $scope.start + '/' + $scope.end;
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.', data);
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
+	};
+
 	$scope.generateReport = function() {
 		if(!checkDates()) {
 			return;
