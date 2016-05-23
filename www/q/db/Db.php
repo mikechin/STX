@@ -501,6 +501,43 @@ class Db {
 		}
 	}
 
+	public function getDownloadByRange($start, $end) {
+		$q = $this->db->prepare(
+			"SELECT chkId, ImageURL1, ImageURL2
+			FROM checks
+			WHERE created_at BETWEEN :start AND :end"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':start', $start);
+		$q->bindParam(':end', $end);
+		$q->execute();
+
+		$filename = $_SERVER["DOCUMENT_ROOT"] . '/reports/' . date('Y-m-d') . '.zip';
+		$zip = new ZipArchive();
+		if($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+			exit("cannot open <$filename>\n");
+		}
+		while($row = $q->fetch()) {
+			$chkImgFront = $_SERVER["DOCUMENT_ROOT"] . '/chkimg/' . $row['chkId'] . '/front.JPG';
+			$chkImgBack  = $_SERVER["DOCUMENT_ROOT"] . '/chkimg/' . $row['chkId'] . '/back.JPG';
+			$zip->addFile($chkImgFront, $row['chkId'] . '-F.JPG');
+			$zip->addFile($chkImgBack , $row['chkId'] . '-B.JPG');
+		}
+		$zip->close();
+
+		if(file_exists($filename)) {
+			$this->send([
+				'status' => true,
+				'dl' => $filename
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function getIssuerByAccountRouting($account, $routing) {
 		$q = $this->db->prepare("SELECT issId, name FROM issuers WHERE account = :account AND routing = :routing LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
