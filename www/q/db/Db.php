@@ -512,24 +512,38 @@ class Db {
 		$q->bindParam(':end', $end);
 		$q->execute();
 
-		$filename = $_SERVER["DOCUMENT_ROOT"] . '/reports/' . date('Y-m-d') . '.zip';
-		$zip = new ZipArchive();
-		if($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
-			exit("cannot open <$filename>\n");
-		}
-		while($row = $q->fetch()) {
-			$chkImgFront = $_SERVER["DOCUMENT_ROOT"] . '/chkimg/' . $row['chkId'] . '/front.JPG';
-			$chkImgBack  = $_SERVER["DOCUMENT_ROOT"] . '/chkimg/' . $row['chkId'] . '/back.JPG';
-			$zip->addFile($chkImgFront, $row['chkId'] . '-F.JPG');
-			$zip->addFile($chkImgBack , $row['chkId'] . '-B.JPG');
-		}
-		$zip->close();
+		if($q->rowCount() > 0) {
+			$r = $this->db->prepare("INSERT INTO reports (start, end) VALUES (:start, :end)");
+			$r->bindParam(':start', $start);
+			$r->bindParam(':end', $end);
+			$r->execute();
 
-		if(file_exists($filename)) {
-			$this->send([
-				'status' => true,
-				'dl' => $filename
-			]);
+			$rptId = $this->db->lastInsertId();
+
+			$filename = $_SERVER["DOCUMENT_ROOT"] . '/reports/' . $rptId . '.zip';
+			$zip = new ZipArchive();
+			if($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+				exit("cannot open <$filename>\n");
+			}
+			while($row = $q->fetch()) {
+				$chkImgFront = $_SERVER["DOCUMENT_ROOT"] . '/chkimg/' . $row['chkId'] . '/front.JPG';
+				$chkImgBack  = $_SERVER["DOCUMENT_ROOT"] . '/chkimg/' . $row['chkId'] . '/back.JPG';
+				$zip->addFile($chkImgFront, $row['chkId'] . '-F.JPG');
+				$zip->addFile($chkImgBack , $row['chkId'] . '-B.JPG');
+			}
+			$zip->close();
+
+			if(file_exists($filename)) {
+				$this->send([
+					'status' => true,
+					'dl' => $rptId . '.zip'
+				]);
+			}
+			else {
+				$this->send([
+					'status' => false
+				]);
+			}
 		}
 		else {
 			$this->send([
