@@ -1,4 +1,4 @@
-stx.controller('ReportsController', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', function($scope, $http, $filter, $window) {
 	'use strict';
 
 	// **************************************************
@@ -74,6 +74,7 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', function($sco
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.', data);
+			$window.location.href = '/reports/' + data.dl;
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
@@ -96,8 +97,13 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', function($sco
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
-			$scope.report.results = data.checks;
 			$scope.report.search = true;
+			if(data.status) {
+				$scope.report.results = data.checks;
+			}
+			else {
+				$scope.report.results = 0;
+			}
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
