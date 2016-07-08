@@ -1,6 +1,32 @@
 <div class="content">
 	<div class="section-header">
-		<span>Report</span>
+		<span>Reports</span>
+	</div>
+	<div class="section">
+		<div class="no-results" ng-hide="recent.length">
+			<span>No results.</span>
+		</div>
+		<table class="report-recent" ng-show="recent.length">
+			<thead>
+				<tr>
+					<td>Created</td>
+					<td>Start</td>
+					<td>End</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="r in recent">
+					<td>{{ r.created }}</td>
+					<td>{{ r.start | date:'MM/dd/yyyy' }}</td>
+					<td>{{ r.end | date:'MM/dd/yyyy' }}</td>
+					<td><a class="confirm" download="{{ r.rptId }}.zip" ng-href="/reports/{{ r.rptId }}.zip">DOWNLOAD</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="section-header">
+		<span>Create Report</span>
 	</div>
 	<div class="section">
 		<ng-form name="reportForm">
@@ -21,7 +47,7 @@
 			</div>
 			<div class="buttons">
 				<button class="confirm" ng-click="generateReport()">Search</button>
-				<button class="confirm" ng-show="report.results.length" ng-click="download()">Download</button>
+				<button class="confirm" ng-show="report.results.length" ng-click="create()">Create Report</button>
 			</div>
 		</ng-form>
 	</div>
