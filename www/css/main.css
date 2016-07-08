@@ -10,7 +10,16 @@ a:hover {
 a:active {
 }
 
+a.confirm {
+	background-color: #8ac007;
+	border: none;
+	color: #ffffff;
+	text-decoration: none;
+	padding: 5px;
+}
+
 .active {
+
 	border-bottom: 2px solid #f90;
 }
 
@@ -361,6 +370,20 @@ table.new-entry td select {
 	font-size: 1em;
 	padding: 5px 17px 5px 5px;
 	-webkit-appearance: none;
+}
+
+table.report-recent {
+	margin: 10px;
+}
+
+table thead {
+	font-size: 1.3em;
+}
+table.report-recent tr {
+}
+
+table.report-recent td {
+	padding: 0 20px 10px 0;
 }
 
 .view {
