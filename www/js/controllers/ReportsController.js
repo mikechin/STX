@@ -14,11 +14,38 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', fu
 			results: []
 		};
 
+		$scope.recent = [];
+
 		$scope.start = null;
 		$scope.end = null;
 	}
 
+	function getRecentReports() {
+		var url = 'http://stx.localhost:8888/q/report/recent';
+		$http({
+			method: 'GET',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			if(data.status) {
+				$scope.recent = data.reports;
+			}
+			else {
+				$scope.recent = [];
+			}
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
+	}
+
 	initReports();
+	getRecentReports();
 
 	function checkDates() {
 		if($scope.report.start === null || $scope.report.end === null) {
@@ -58,7 +85,9 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', fu
 		results: []
 	};
 
-	$scope.download = function() {
+	$scope.recent = [];
+
+	$scope.create = function() {
 		if(!checkDates()) {
 			return;
 		}
@@ -73,8 +102,10 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', fu
 			}
 		}).
 		success(function(data, status, headers, config) {
-			console.log('success.', data);
-			$window.location.href = '/reports/' + data.dl;
+			console.log('success.');
+			$scope.report.search = false;
+			$scope.report.results = [];
+			getRecentReports();
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
@@ -102,7 +133,7 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', fu
 				$scope.report.results = data.checks;
 			}
 			else {
-				$scope.report.results = 0;
+				$scope.report.results = [];
 			}
 		}).
 		error(function(data, status, headers, config) {
