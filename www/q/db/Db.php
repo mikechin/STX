@@ -730,6 +730,40 @@ class Db {
 		}
 	}
 
+	public function getReportRecent() {
+		$q = $this->db->prepare(
+			"SELECT rptId, created_at, start, end
+			FROM reports
+			ORDER BY rptId DESC
+			LIMIT 10"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'status' => true,
+				'rptId' => $row['rptId'],
+				'created' => $row['created_at'],
+				'start' => date('M d, Y', strtotime($row['start'])),
+				'end' => date('M d, Y', strtotime($row['end']))
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'reports' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function updateCustomer($id, $data) {
 		$values = 'firstname = :firstname, lastname = :lastname';
 
