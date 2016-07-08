@@ -75,6 +75,11 @@ Flight::route('GET /issuers/@name/@account', function($name, $account) {
 	$db->getIssuersByNameAccount($name, $account);
 });
 
+Flight::route('GET /report/recent', function() {
+	$db = Flight::db();
+	$db->getReportRecent();
+});
+
 Flight::route('GET /report/@start/@end', function($start, $end) {
 	$db = Flight::db();
 	$db->getReportByRange($start, $end);
