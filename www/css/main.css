@@ -18,8 +18,15 @@ a.confirm {
 	padding: 5px;
 }
 
-.active {
+a.cancel {
+	background-color: #bc2d07;
+	border: none;
+	color: #FFFFFF;
+	text-decoration: none;
+	padding: 5px;
+}
 
+.active {
 	border-bottom: 2px solid #f90;
 }
 
