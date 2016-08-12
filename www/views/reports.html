@@ -21,6 +21,7 @@
 					<td>{{ r.start | date:'MM/dd/yyyy' }}</td>
 					<td>{{ r.end | date:'MM/dd/yyyy' }}</td>
 					<td><a class="confirm" download="{{ r.rptId }}.zip" ng-href="/reports/{{ r.rptId }}.zip">DOWNLOAD</a></td>
+					<td><a class="cancel"  ng-click="delete(r.rptId)">X</a></td>
 				</tr>
 			</tbody>
 		</table>

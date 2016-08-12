@@ -112,6 +112,25 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', fu
 		});
 	};
 
+	$scope.delete = function(id) {
+		var url = 'http://stx.localhost:8888/q/report/delete/' + id;
+		$http({
+			method: 'DELETE',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			getRecentReports();
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
+	};
+
 	$scope.generateReport = function() {
 		if(!checkDates()) {
 			return;
