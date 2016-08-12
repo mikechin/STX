@@ -307,6 +307,20 @@ class Db {
 		}
 	}
 
+	public function deleteReportById($rptId) {
+		$q = $this->db->prepare("DELETE FROM reports WHERE rptId = :id LIMIT 1");
+		$q->bindParam(':id', $rptId);
+		$q->execute();
+
+		// delete report zip.
+		$filename = $_SERVER["DOCUMENT_ROOT"] . '/reports/' . $rptId . '.zip';
+		unlink($filename);
+
+		$this->send([
+			'status' => true
+		]);
+	}
+
 	public function getBankById($id) {
 		$q = $this->db->prepare("SELECT bnkId, account, name FROM banks WHERE account = :id LIMIT 1");
 		$q->setFetchMode(PDO::FETCH_ASSOC);
