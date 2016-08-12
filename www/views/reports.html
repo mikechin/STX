@@ -52,32 +52,5 @@
 			</div>
 		</ng-form>
 	</div>
-	<div class="section-header" ng-show="report.search">
-		<span>Checks</span>
-	</div>
-	<div class="section" ng-show="report.search">
-		<div class="no-results" ng-hide="report.results.length">
-			<span>No results.</span>
-		</div>
-		<div class="check-list" ng-show="report.results.length" ng-repeat="c in report.results">
-			<div class="item">
-				<div class="data">
-					<label>Date Scanned</label>
-					<div class="value">{{ c.created }}</div>
-					<label>Amount</label>
-					<div class="value">${{ c.amt }}</div>
-					<label>Account</label>
-					<div class="value">{{ c.acct }}</div>
-					<label>Routing</label>
-					<div class="value">{{ c.transit }}</div>
-					<label>Check Number</label>
-					<div class="value">{{ c.serNum }}</div>
-				</div>
-				<div class="image">
-					<img ng-src="chkimg/{{ c.chkId }}/front.JPG" />
-					<img ng-src="chkimg/{{ c.chkId }}/back.JPG" />
-				</div>
-			</div>
-		</div>
-	</div>
+	<check-list list="report.results" show="report.search" options="listOptions"></check-list>
 </div>

@@ -1,0 +1,28 @@
+<div class="section-header" ng-show="show">
+  <span>Checks</span>
+</div>
+<div class="section" ng-show="show">
+  <div class="no-results" ng-hide="list.length">
+    <span>No results.</span>
+  </div>
+  <div class="check-list" ng-show="list.length" ng-repeat="i in list">
+    <div class="item">
+      <div class="data">
+        <label>Date Scanned</label>
+        <div class="value">{{ i.created }}</div>
+        <label>Amount</label>
+        <div class="value">${{ i.amt }}</div>
+        <label>Account</label>
+        <div class="value">{{ i.acct }}</div>
+        <label>Routing</label>
+        <div class="value">{{ i.transit }}</div>
+        <label>Check Number</label>
+        <div class="value">{{ i.serNum }}</div>
+      </div>
+      <div class="image">
+        <img ng-src="chkimg/{{ i.chkId }}/front.JPG" />
+        <img ng-src="chkimg/{{ i.chkId }}/back.JPG"  ng-if="options.checkFrontBack" />
+      </div>
+    </div>
+  </div>
+</div>
