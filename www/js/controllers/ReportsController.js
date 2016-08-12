@@ -85,6 +85,10 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', fu
 		results: []
 	};
 
+	$scope.listOptions = {
+		checkFrontBack: true
+	};
+
 	$scope.recent = [];
 
 	$scope.create = function() {
