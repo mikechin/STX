@@ -85,6 +85,11 @@ Flight::route('GET /report/@start/@end', function($start, $end) {
 	$db->getReportByRange($start, $end);
 });
 
+Flight::route('DELETE /report/delete/@rptId', function($rptId) {
+	$db = Flight::db();
+	$db->deleteReportById($rptId);
+});
+
 // **************************************************
 // post.
 //
