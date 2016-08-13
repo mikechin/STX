@@ -210,6 +210,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	$scope.customers = [];
 	$scope.scannedData = null;
 	$scope.showOptions = false;
+	$scope.usStates = configuration.usStates
 
 	$scope.bank = {
 		id: '',
