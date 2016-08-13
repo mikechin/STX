@@ -170,8 +170,19 @@ class Db {
 
 		$chkImgPath = $_SERVER["DOCUMENT_ROOT"] . "/chkimg/$nextId";
 		mkdir($chkImgPath, 0755, true);
-		$this->saveImage($data->stxUrl . $image['front']['url'], $chkImgPath . "/front." . $image['FileType']);
-		$this->saveImage($data->stxUrl . $image['back']['url'], $chkImgPath . "/back." . $image['FileType']);
+		$frontImgPath = $chkImgPath . "/front." . $image['FileType'];
+		$backImgPath = $chkImgPath . "/back." . $image['FileType'];
+		$this->saveImage($data->stxUrl . $image['front']['url'], $frontImgPath);
+		$this->saveImage($data->stxUrl . $image['back']['url'], $backImgPath);
+
+		$filename = $chkImgPath . '/imgs.zip';
+		$zip = new ZipArchive();
+		if($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+			exit("cannot open <$filename>\n");
+		}
+		$zip->addFile($frontImgPath, 'front.' . $image['FileType']);
+		$zip->addFile($backImgPath , 'back.'  . $image['FileType']);
+		$zip->close();
 
 		$q = $this->db->prepare("INSERT INTO checks (cusId, issId, bnkId, MICRAcct, MICRAmt, MICRAux, MICRBankNum, MICRChkType, MICRCountry, MICRDecode, MICREPC, MICRFont, MICROnUs, MICROut, MICRParseSts0, MICRParseSts1, MICRRaw, MICRSerNum, MICRTPC, MICRTransit, DocHeight, DocUnits, DocWidth, ImageSHA1Key1, ImageSHA1Key2, ImageSize1, ImageSize2, ImageURL1, ImageURL2) VALUES (:cusId, :issId, :bnkId, :MICRAcct, :MICRAmt, :MICRAux, :MICRBankNum, :MICRChkType, :MICRCountry, :MICRDecode, :MICREPC, :MICRFont, :MICROnUs, :MICROut, :MICRParseSts0, :MICRParseSts1, :MICRRaw, :MICRSerNum, :MICRTPC, :MICRTransit, :DocHeight, :DocUnits, :DocWidth, :ImageSHA1Key1, :ImageSHA1Key2, :ImageSize1, :ImageSize2, :ImageURL1, :ImageURL2)");
 		$q->bindParam(':cusId', $cusId);
