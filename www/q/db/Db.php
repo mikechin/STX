@@ -358,7 +358,8 @@ class Db {
 		$q = $this->db->prepare(
 			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
 			FROM checks
-			WHERE cusId = :id"
+			WHERE cusId = :id
+			ORDER BY chkId DESC"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':id', $id);
@@ -396,7 +397,8 @@ class Db {
 		$q = $this->db->prepare(
 			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
 			FROM checks
-			WHERE issId = :id"
+			WHERE issId = :id
+			ORDER BY chkId DESC"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':id', $id);
