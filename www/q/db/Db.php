@@ -318,6 +318,50 @@ class Db {
 		}
 	}
 
+	public function alertCustomer($id) {
+		$q = $this->db->prepare(
+			"UPDATE customers
+			SET alert = 1
+			WHERE cusId = :id"
+		);
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		if($q->rowCount() > 0) {
+			$this->send([
+				'status' => true,
+				'cusId' => $id,
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
+	public function alertIssuer($id) {
+		$q = $this->db->prepare(
+			"UPDATE issuers
+			SET alert = 1
+			WHERE issId = :id"
+		);
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		if($q->rowCount() > 0) {
+			$this->send([
+				'status' => true,
+				'cusId' => $id,
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function deleteReportById($rptId) {
 		$q = $this->db->prepare("DELETE FROM reports WHERE rptId = :id LIMIT 1");
 		$q->bindParam(':id', $rptId);
