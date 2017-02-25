@@ -88,12 +88,17 @@ button.options {
 }
 
 .check-list .item .image {
-	float: right;
-	width: 65%;
+	float: left;
+	width: 60%;
 }
 
 .check-list .item .image img {
 	max-width: 600px;
+}
+
+.check-list .item .options {
+	float: right;
+	width: 10%;
 }
 
 .clear {
