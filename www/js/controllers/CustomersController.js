@@ -136,4 +136,22 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 			console.log('error.');
 		});
 	};
+
+	$scope.reportCustomer = function(id) {
+		var url = 'http://stx.localhost:8888/q/alert/customer/' + $scope.customer.id;
+		$http({
+			method: 'PUT',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.', data);
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
+	};
 }]);
