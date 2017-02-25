@@ -11,6 +11,7 @@
 		<script src="js/main.js"></script>
 
 		<!-- controllers. -->
+		<script src="js/controllers/ChecksController.js"></script>
 		<script src="js/controllers/CustomersController.js"></script>
 		<script src="js/controllers/NavController.js"></script>
 		<script src="js/controllers/IssuersController.js"></script>
@@ -31,6 +32,7 @@
 			</div>
 			<div class="nav" ng-controller="NavController">
 				<a href="#/reports" ng-class="{ active: isActive('/reports') }"><div>reports</div></a>
+				<a href="#/checks" ng-class="{ active: isActive('/checks') }"><div>checks</div></a>
 				<a href="#/customers" ng-class="{ active: isActive('/customers') }"><div>customers</div></a>
 				<a href="#/issuers" ng-class="{ active: isActive('/issuers') }"><div>issuers</div></a>
 				<a href="#/scan" ng-class="{ active: isActive('/scan') }"><div>scan</div></a>
