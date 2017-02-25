@@ -1,0 +1,22 @@
+<div class="content">
+	<div class="section-header">
+		<span>Search Checks</span>
+	</div>
+	<div class="section">
+		<ng-form name="checkForm">
+			<div class="option">
+				<div class="pull-left">
+					<label>Number</label>
+					<div class="form-control" ng-class="{ 'has-error': checkForm.number.$invalid && checkForm.number.$dirty }">
+						<input type="number" name="number" ng-model="search.number" required />
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="buttons">
+				<button class="confirm" ng-click="numberSearch()">Search</button>
+			</div>
+		</ng-form>
+	</div>
+	<check-list list="checks" show="show"></check-list>
+</div>
