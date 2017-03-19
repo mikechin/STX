@@ -205,8 +205,8 @@
 				</div>
 				<div class="buttons">
 					<button class="confirm" ng-click="customerSearch()">Search</button>
-					<button class="confirm" ng-click="customerNew()">New</button>
-					<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
+					<button class="new" ng-click="customerNew()">+ New</button>
+					<button class="options" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
 				</div>
 				<div class="search-results" ng-show="customer.search">
 					<div class="no-results" ng-hide="customers.length">
@@ -237,7 +237,7 @@
 					</div>
 					<div class="clear"></div>
 				</div>
-				<button class="confirm" ng-click="customerClear()">Clear</button>
+				<a class="clear customer" ng-click="customerClear()"><img src="/assets/icons/111239/cross-sketch.svg" /></a>
 			</div>
 		</div>
 		<customers-info type="add" show="customer.add" customer="customer"></customers-info>
@@ -333,6 +333,6 @@
 				<button class="confirm" ng-click="bankAdd()">Add</button>
 			</div>
 		</div>
-		<button class="confirm" ng-click="save()">Save</button>
+		<button class="new" ng-click="save()">Save</button>
 	</div>
 </div>

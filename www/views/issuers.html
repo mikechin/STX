@@ -7,7 +7,7 @@
 			<div class="option">
 				<div class="pull-left">
 					<label>Name</label>
-					<button class="edit" ng-click="cleanInput('name')" ng-show="search.name">X</button>
+					<button class="clear" ng-click="cleanInput('name')" ng-show="search.name">X</button>
 					<div class="form-control" ng-class="{ 'has-error': issuersForm.name.$invalid && issuersForm.name.$dirty }">
 						<input type="text" name="name" ng-model="search.name" required />
 					</div>
@@ -17,7 +17,7 @@
 			<div class="option">
 				<div class="pull-left">
 					<label>Account Number</label>
-					<button class="edit" ng-click="cleanInput('account')" ng-show="search.account">X</button>
+					<button class="clear" ng-click="cleanInput('account')" ng-show="search.account">X</button>
 					<div class="form-control" ng-class="{ 'has-error': issuersForm.account.$invalid && issuersForm.account.$dirty }">
 						<input type="text" name="account" ng-model="search.account" required />
 					</div>
