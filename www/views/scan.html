@@ -141,8 +141,11 @@
 			<ng-form name="scanForm">
 				<div class="option">
 					<label>Amount</label>
+					<div class="value" ng-if="!edit.routing">
+						<span>{{ scannedData.MICR.amt | currency }}</span>
+					</div>
 					<div class="form-control">
-						<input type="number" name="amount" ng-model="scannedData.MICR.amt" required />
+						<input type="number" step="0.01" placeholder="0.00" name="amount" ng-model="scannedData.MICR.amt" required />
 					</div>
 				</div>
 				<div class="option">
