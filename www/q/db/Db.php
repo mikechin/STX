@@ -617,7 +617,7 @@ class Db {
 
 	public function getCustomersByIssuer($issId) {
 		$q = $this->db->prepare(
-			"SELECT DISTINCT checks.cusId, customers.firstname, customers.lastname, customers.photo
+			"SELECT DISTINCT checks.cusId, customers.firstname, customers.lastname, customers.photo, customers.comment, customers.alert
 			FROM checks
 			INNER JOIN customers ON checks.cusId = customers.cusId
 			WHERE issId = :issId"
@@ -633,7 +633,10 @@ class Db {
 				'cusId' => $row['cusId'],
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
-				'photo' => $row['photo']
+				'photo' => $row['photo'],
+				'comment' => $row['comment'],
+				'warn' => (int)$row['alert'] === 1 ? true : false,
+				'danger' => (int)$row['alert'] === 2 ? true : false
 			];
 		}
 
