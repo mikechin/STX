@@ -318,13 +318,10 @@ class Db {
 		}
 	}
 
-	public function alertCustomer($id) {
-		$q = $this->db->prepare(
-			"UPDATE customers
-			SET alert = 1
-			WHERE cusId = :id"
-		);
+	public function alertCustomer($id, $level) {
+		$q = $this->db->prepare("UPDATE customers SET alert = :level WHERE cusId = :id");
 		$q->bindParam(':id', $id);
+		$q->bindParam(':level', $level);
 		$q->execute();
 
 		if($q->rowCount() > 0) {
@@ -577,7 +574,7 @@ class Db {
 
 	public function getCustomersByName($firstname, $lastname) {
 		$q = $this->db->prepare(
-			"SELECT cusId, firstname, lastname, photo, address1, address2, city, state, zipcode, phone
+			"SELECT cusId, firstname, lastname, photo, address1, address2, city, state, zipcode, phone, comment, alert
 			FROM customers
 			WHERE firstname = :firstname AND lastname = :lastname"
 		);
@@ -598,7 +595,10 @@ class Db {
 				'city' => $row['city'],
 				'state' => $row['state'],
 				'zipcode' => $row['zipcode'],
-				'phone' => $row['phone']
+				'phone' => $row['phone'],
+				'comment' => $row['comment'],
+				'warn' => (int)$row['alert'] === 1 ? true : false,
+				'danger' => (int)$row['alert'] === 2 ? true : false
 			];
 		}
 
