@@ -42,6 +42,14 @@ a.clear.customer img {
 	border-bottom: 2px solid #d9853b;
 }
 
+.bg-danger {
+	background-color: #f2dede !important;
+}
+
+.bg-warn {
+	background-color: #fcf8e3 !important;
+}
+
 body {
 	background-color: #f5f3ee;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -163,7 +171,7 @@ button.options {
 }
 
 .header {
-	background-color: #74AFAD;
+	background-color: #4d4d4d;
 	border-bottom: 1px solid #000;
 	margin-left: auto;
 	margin-right: auto;
