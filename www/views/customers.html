@@ -28,7 +28,7 @@
 			<div class="no-results" ng-hide="customers.length">
 				<span>No results.</span>
 			</div>
-			<div class="search-result" ng-repeat="c in customers">
+			<div class="search-result" ng-class="{ 'bg-danger': c.danger, 'bg-warn': c.warn }" ng-repeat="c in customers">
 				<a href="" class="select" ng-click="customerSelect($index)">
 					<div class="customer-result">
 						<div class="photo">
@@ -50,11 +50,13 @@
 	<div class="section-header" ng-show="customer.selected">
 		<span>Customer</span>
 	</div>
-	<div class="section" ng-show="customer.selected">
+	<div class="section" ng-class="{ 'bg-danger': customer.danger, 'bg-warn': customer.warn }" ng-show="customer.selected">
 		<div class="search-result">
 			<div class="customer-result">
 				<button class="edit" ng-click="customerEdit()">Edit</button>
-				<button class="edit" ng-click="reportCustomer()">Report</button>
+				<button class="edit" ng-click="reportCustomer(1)">Warn</button>
+				<button class="edit" ng-click="reportCustomer(2)">Alert</button>
+				<button class="edit" ng-click="reportCustomer(0)">Clear</button>
 				<div class="photo">
 					<img ng-show="customer.photo" ng-src="{{ customer.photo }}" />
 					<img ng-hide="customer.photo" ng-src="assets/img/no_image_available.jpg" />
