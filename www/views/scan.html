@@ -189,7 +189,7 @@
 		<div class="section-header">
 			<span>Customer</span>
 		</div>
-		<div class="section" ng-class="{ 'has-error': customer.invalid }">
+		<div class="section" ng-class="{ 'has-error': customer.invalid, 'bg-danger': customer.danger, 'bg-warn': customer.warn }">
 			<div ng-hide="customer.selected">
 				<div class="option">
 					<div class="pull-left">
@@ -215,7 +215,7 @@
 					<div class="no-results" ng-hide="customers.length">
 						<span>No results.</span>
 					</div>
-					<div class="search-result" ng-repeat="c in customers">
+					<div class="search-result" ng-class="{ 'bg-danger': c.danger, 'bg-warn': c.warn }" ng-repeat="c in customers">
 						<a href="" class="select" ng-click="customerSelect($index)">
 							<div class="photo">
 								<img ng-show="c.photo" ng-src="{{ c.photo }}" />
