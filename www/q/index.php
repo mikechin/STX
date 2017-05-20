@@ -140,9 +140,9 @@ Flight::route('PUT /customer/update/@id', function($id) {
 	$db->updateCustomer($id, Flight::request()->data);
 });
 
-Flight::route('PUT /alert/customer/@id', function($id) {
+Flight::route('PUT /alert/customer/@id/@level', function($id, $level) {
 	$db = Flight::db();
-	$db->alertCustomer($id);
+	$db->alertCustomer($id, $level);
 });
 
 Flight::start();
