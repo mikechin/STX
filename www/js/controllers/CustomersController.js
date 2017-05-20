@@ -115,6 +115,9 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 		$scope.customer.zipcode = customer.zipcode;
 		$scope.customer.phone = customer.phone;
 		$scope.customer.photo = customer.photo;
+		$scope.customer.comment = customer.comment;
+		$scope.customer.warn = customer.warn;
+		$scope.customer.danger = customer.danger;
 		$scope.customer.search = false;
 		$scope.customer.selected = true;
 
@@ -137,8 +140,8 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 		});
 	};
 
-	$scope.reportCustomer = function(id) {
-		var url = 'http://stx.localhost:8888/q/alert/customer/' + $scope.customer.id;
+	$scope.reportCustomer = function(level) {
+		var url = 'http://stx.localhost:8888/q/alert/customer/' + $scope.customer.id + '/' + level;
 		$http({
 			method: 'PUT',
 			url: url,
@@ -149,6 +152,18 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.', data);
+			if(level === 1) {
+				$scope.customer.warn   = true;
+				$scope.customer.danger = false;
+			}
+			else if(level === 2) {
+				$scope.customer.warn   = false;
+				$scope.customer.danger = true;
+			}
+			else {
+				$scope.customer.warn   = false;
+				$scope.customer.danger = false;
+			}
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
