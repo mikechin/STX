@@ -399,6 +399,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		$scope.customer.name.first = customer.firstname;
 		$scope.customer.name.last = customer.lastname;
 		$scope.customer.photo = customer.photo;
+		$scope.customer.warn = customer.warn;
+		$scope.customer.danger = customer.danger;
 		$scope.customer.search = false;
 		$scope.customer.selected = true;
 
