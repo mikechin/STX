@@ -99,11 +99,13 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			if(data.status) {
-				$scope.issuer.id = data.issId;
+				$scope.issuer.id   = data.issId;
 				$scope.issuer.name = data.name;
 			}
 			else {
-				$scope.newIssuer.add = true;
+				$scope.issuer.add     = true;
+				$scope.issuer.acct    = $scope.scannedData.MICR.acct;
+				$scope.issuer.transit = $scope.scannedData.MICR.transit;
 			}
 
 			getIssuers.resolve();
@@ -233,7 +235,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		search: false,
 		selected: false,
 		invalid: false,
-		add: false
+		add: false,
 	};
 
 	$scope.edit = {
@@ -243,21 +245,12 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	};
 
 	$scope.issuer = {
-		id: '',
-		name: '',
-		invalid: false
-	};
-
-	$scope.newIssuer = {
-		add: false,
-		name: '',
-		address1: '',
-		address2: '',
-		city: '',
-		state: '',
-		zipcode: '',
-		phone: '',
-		email: ''
+		id:      '',
+		name:    '',
+		acct:    '',
+		transit: '',
+		invalid: false,
+		add:     false,
 	};
 
 	$scope.Endorser = {
