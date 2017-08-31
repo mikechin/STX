@@ -49,9 +49,13 @@
 	<div class="section-header" ng-show="issuer.selected">
 		<span>Issuer</span>
 	</div>
-	<div class="section" ng-show="issuer.selected">
+	<div class="section" ng-class="{ 'bg-danger': issuer.danger, 'bg-warn': issuer.warn }"  ng-show="issuer.selected">
 		<div class="search-result">
 			<div class="issuer-result">
+				<button class="edit" ng-click="issuerEdit()">Edit</button>
+				<button class="edit" ng-click="reportIssuer(1)">Warn</button>
+				<button class="edit" ng-click="reportIssuer(2)">Alert</button>
+				<button class="edit" ng-click="reportIssuer(0)">Clear</button>
 				<div class="info">
 					<div class="name">{{ issuer.name }}</div>
 					<div class="address">{{ issuer.address1 }} {{ issuer.address2 }}</div>
