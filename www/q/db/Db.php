@@ -246,37 +246,37 @@ class Db {
 		$phone = NULL;
 		$email = NULL;
 
-		if($data->address1 !== '') {
+		if(!empty($data->address1)) {
 			$address1 = $data->address1;
 			$columns .= ', address1';
 			$values .= ', :address1';
 		}
-		if($data->address2 !== '') {
+		if(!empty($data->address2)) {
 			$address2 = $data->address2;
 			$columns .= ', address2';
 			$values .= ', :address2';
 		}
-		if($data->city !== '') {
+		if(!empty($data->city)) {
 			$city = $data->city;
 			$columns .= ', city';
 			$values .= ', :city';
 		}
-		if($data->state !== '') {
+		if(!empty($data->state)) {
 			$state = $data->state;
 			$columns .= ', state';
 			$values .= ', :state';
 		}
-		if($data->zipcode !== '') {
+		if(!empty($data->zipcode)) {
 			$zipcode = $data->zipcode;
 			$columns .= ', zipcode';
 			$values .= ', :zipcode';
 		}
-		if($data->phone !== '') {
+		if(!empty($data->phone)) {
 			$phone = $data->phone;
 			$columns .= ', phone';
 			$values .= ', :phone';
 		}
-		if($data->email !== '') {
+		if(!empty($data->email)) {
 			$email = $data->email;
 			$columns .= ', email';
 			$values .= ', :email';
@@ -308,12 +308,12 @@ class Db {
 			$this->send([
 				'status' => true,
 				'issId' => $issId,
-				'name' => $name
+				'name' => $name,
 			]);
 		}
 		else {
 			$this->send([
-				'status' => false
+				'status' => false,
 			]);
 		}
 	}
@@ -990,6 +990,7 @@ class Db {
 			]);
 		}
 	}
+
 }
 
 ?>
