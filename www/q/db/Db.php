@@ -337,10 +337,10 @@ class Db {
 		}
 	}
 
-	public function alertIssuer($id) {
+	public function alertIssuer($id, $level) {
 		$q = $this->db->prepare(
 			"UPDATE issuers
-			SET alert = 1
+			SET alert = $level
 			WHERE issId = :id"
 		);
 		$q->bindParam(':id', $id);

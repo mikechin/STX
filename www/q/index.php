@@ -145,6 +145,11 @@ Flight::route('PUT /alert/customer/@id/@level', function($id, $level) {
 	$db->alertCustomer($id, $level);
 });
 
+Flight::route('PUT /alert/issuer/@id/@level', function($id, $level) {
+	$db = Flight::db();
+	$db->alertIssuer($id, $level);
+});
+
 Flight::start();
 
 ?>
