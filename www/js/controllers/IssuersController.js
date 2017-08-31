@@ -110,4 +110,34 @@ stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) 
 			console.log('error.');
 		});
 	};
+
+	$scope.reportIssuer = function(level) {
+		var url = 'http://stx.localhost:8888/q/alert/issuer/' + $scope.issuer.id + '/' + level;
+		$http({
+			method: 'PUT',
+			url: url,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.', data);
+			if(level === 1) {
+				$scope.issuer.warn   = true;
+				$scope.issuer.danger = false;
+			}
+			else if(level === 2) {
+				$scope.issuer.warn   = false;
+				$scope.issuer.danger = true;
+			}
+			else {
+				$scope.issuer.warn   = false;
+				$scope.issuer.danger = false;
+			}
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+		});
+	};
 }]);

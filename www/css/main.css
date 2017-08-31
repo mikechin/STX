@@ -368,6 +368,7 @@ img.check {
 
 .search-result .issuer-result .info {
 	float: left;
+	margin-right: 15px;
 }
 
 .search-result .issuer-result .info .name {
