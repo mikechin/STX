@@ -32,7 +32,7 @@
 			<div class="no-results" ng-hide="issuers.length">
 				<span>No results.</span>
 			</div>
-			<div class="search-result" ng-repeat="i in issuers">
+			<div class="search-result" ng-class="{ 'bg-danger': i.danger, 'bg-warn': i.warn }" ng-repeat="i in issuers">
 				<a href="" class="select" ng-click="issuerSelect($index)">
 					<div class="issuer-result">
 						<div class="info">

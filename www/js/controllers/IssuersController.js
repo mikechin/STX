@@ -83,14 +83,16 @@ stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) 
 	$scope.issuerSelect = function(i) {
 		var issuer = $scope.issuers[i];
 
-		$scope.issuer.id = issuer.issId;
-		$scope.issuer.name = issuer.name;
+		$scope.issuer.id       = issuer.issId;
+		$scope.issuer.name     = issuer.name;
 		$scope.issuer.address1 = issuer.address1;
 		$scope.issuer.address2 = issuer.address2;
-		$scope.issuer.city = issuer.city;
-		$scope.issuer.state = issuer.state;
-		$scope.issuer.zipcode = issuer.zipcode;
-		$scope.search.search = false;
+		$scope.issuer.city     = issuer.city;
+		$scope.issuer.state    = issuer.state;
+		$scope.issuer.zipcode  = issuer.zipcode;
+		$scope.issuer.warn     = issuer.warn;
+		$scope.issuer.danger   = issuer.danger;
+		$scope.search.search   = false;
 		$scope.issuer.selected = true;
 
 		var url = 'http://stx.localhost:8888/q/checks/issuer/' + $scope.issuer.id;

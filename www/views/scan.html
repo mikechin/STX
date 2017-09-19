@@ -247,7 +247,7 @@
 		<div class="section-header">
 			<span>Issuer</span>
 		</div>
-		<div class="section" ng-class="{ 'has-error': issuer.invalid }">
+		<div class="section" ng-class="{ 'has-error': issuer.invalid, 'bg-danger': issuer.danger, 'bg-warn': issuer.warn  }">
 			<div class="option">
 				<div ng-hide="issuer.add">
 					<label>Name</label>

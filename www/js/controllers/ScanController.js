@@ -99,8 +99,10 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			if(data.status) {
-				$scope.issuer.id   = data.issId;
-				$scope.issuer.name = data.name;
+				$scope.issuer.id     = data.issId;
+				$scope.issuer.name   = data.name;
+				$scope.issuer.warn   = data.warn;
+				$scope.issuer.danger = data.danger;
 			}
 			else {
 				$scope.issuer.add     = true;
