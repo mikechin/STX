@@ -32,6 +32,11 @@ stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) 
 		$scope.issuersForm[input].$dirty = false;
 	};
 
+	$scope.issuerEdit = function() {
+		$scope.issuer.add  = false;
+		$scope.issuer.edit = true;
+	};
+
 	$scope.issuersSearch = function() {
 		if(!$scope.search.name && !$scope.search.account) {
 			if(!$scope.search.name) {
