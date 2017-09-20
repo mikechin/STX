@@ -18,21 +18,21 @@ stx.directive('issuersInfo', ['$q', '$http', 'configuration', function($q, $http
       function init() {
         if(scope.type === 'add') {
           initI();
-          scope.add = true;
+          scope.add  = true;
           scope.edit = false;
         }
 
         if(scope.type === 'edit') {
-          scope.i = scope.issuer;
-          scope.add = false;
+          scope.i    = scope.issuer;
+          scope.add  = false;
           scope.edit = true;
         }
       }
 
       function initI() {
         scope.i = {
-          id:      '',
-          name:    '',
+          id:   '',
+          name: '',
         };
 
         scope.editForm.name.$invalid = false;
@@ -48,7 +48,6 @@ stx.directive('issuersInfo', ['$q', '$http', 'configuration', function($q, $http
       // **************************************************
       function updateIssuer() {
         scope.issuer = angular.copy(scope.i);
-        initI();
       }
 
       // **************************************************
@@ -92,10 +91,10 @@ stx.directive('issuersInfo', ['$q', '$http', 'configuration', function($q, $http
           method: 'PUT',
           url: url,
           headers: {
-            'Accept': 'application/json',
+            'Accept':       'application/json',
             'Content-Type': 'application/json'
           },
-          data: scope.c
+          data: scope.i
         }).
         success(function(data, status, headers, config) {
           console.log('success update.', data);
