@@ -349,7 +349,7 @@ class Db {
 		if($q->rowCount() > 0) {
 			$this->send([
 				'status' => true,
-				'cusId' => $id,
+				'issId' => $id,
 			]);
 		}
 		else {
@@ -994,6 +994,79 @@ class Db {
 			$this->send([
 				'status' => true,
 				'cusId' => $id,
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
+	public function updateIssuer($id, $data) {
+		$values = 'name = :name';
+
+		$name     = $data->name;
+		$address1 = NULL;
+		$address2 = NULL;
+		$city     = NULL;
+		$state    = NULL;
+		$zipcode  = NULL;
+		$phone    = NULL;
+		$email    = NULL;
+
+		if(!empty($data->address1)) {
+			$address1 = $data->address1;
+			$values .= ', address1 = :address1';
+		}
+		if(!empty($data->address2)) {
+			$address2 = $data->address2;
+			$values .= ', address2 = :address2';
+		}
+		if(!empty($data->city)) {
+			$city = $data->city;
+			$values .= ', city = :city';
+		}
+		if(!empty($data->state)) {
+			$state = $data->state;
+			$values .= ', state = :state';
+		}
+		if(!empty($data->zipcode)) {
+			$zipcode = $data->zipcode;
+			$values .= ', zipcode = :zipcode';
+		}
+		if(!empty($data->phone)) {
+			$phone = $data->phone;
+			$values .= ', phone = :phone';
+		}
+		if(!empty($data->email)) {
+			$email = $data->email;
+			$values .= ', :email';
+		}
+
+		$q = $this->db->prepare("UPDATE issuers SET $values WHERE issId = :id");
+		$q->bindParam(':name', $name);
+		if($address1)
+			$q->bindParam(':address1', $address1);
+		if($address2)
+			$q->bindParam(':address2', $address2);
+		if($city)
+			$q->bindParam(':city', $city);
+		if($state)
+			$q->bindParam(':state', $state);
+		if($zipcode)
+			$q->bindParam(':zipcode', $zipcode);
+		if($phone)
+			$q->bindParam(':phone', $phone);
+		if($email)
+			$q->bindParam(':email', $email);
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		if($q->rowCount() > 0) {
+			$this->send([
+				'status' => true,
+				'issId'  => $id,
 			]);
 		}
 		else {
