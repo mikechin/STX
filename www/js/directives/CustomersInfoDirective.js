@@ -4,8 +4,8 @@ stx.directive('customersInfo', ['$q', '$http', '$rootScope', 'configuration', fu
   return {
     restrict: 'E',
     scope: {
-      show:     '=',
-      type:     '@'
+      show: '=',
+      type: '@',
     },
     templateUrl: 'views/templates/customersInfo.html',
     link: function(scope, elem, attrs) {
