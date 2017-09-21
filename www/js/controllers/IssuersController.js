@@ -13,29 +13,36 @@ stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) 
   //
   // **************************************************
   $scope.search = {
-    name: '',
+    name:    '',
     account: '',
-    search: false
+    search:  false
   };
 
   $scope.issuer = {
-    id: '',
-    name: '',
-    account: '',
-    selected: false
+    id:       '',
+    name:     '',
+    account:  '',
+    selected: false,
+    info:     false,
   };
 
   $scope.issuers = [];
+  $scope.checks  = [];
 
   $scope.cleanInput = function(input) {
-    $scope.search[input] = '';
+    $scope.search[input]             = '';
     $scope.issuersForm[input].$dirty = false;
   };
 
   $scope.issuerEdit = function() {
-    $scope.issuer.add  = false;
-    $scope.issuer.edit = true;
+    $scope.issuer.info = true;
+
+    $scope.$broadcast('issuer-edit', { data: $scope.issuer });
   };
+
+  $scope.$on('issuer-updated', function(event, args) {
+    $scope.issuer = angular.copy(args.data);
+  });
 
   $scope.issuersSearch = function() {
     if(!$scope.search.name && !$scope.search.account) {
