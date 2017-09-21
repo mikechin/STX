@@ -38,9 +38,8 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
     photo: null,
     search: false,
     selected: false,
-    edit: false,
     invalid: false,
-    add: false
+    info: false,
   };
 
   $scope.search = {
@@ -51,33 +50,40 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
   };
 
   $scope.customerNew = function() {
-    $scope.customer.add = true;
-    $scope.customer.edit = false;
+    $scope.customer.info     = true;
     $scope.customer.selected = false;
-    $scope.customer.search = false;
-    $scope.customers = [];
+    $scope.customer.search   = false;
+    $scope.customers         = [];
+    $scope.checks            = [];
+
+    $scope.$broadcast('customer-add');
   };
 
   $scope.customerEdit = function() {
-    $scope.customer.zipcode = parseInt($scope.customer.zipcode);
+    $scope.customer.info     = true;
+    $scope.customer.selected = false;
+    $scope.customer.search   = false;
 
-    $scope.customer.add = false;
-    $scope.customer.edit = true;
+    $scope.$broadcast('customer-edit', { data: $scope.customer });
   };
 
+  $scope.$on('customer-updated', function(event, args) {
+    $scope.customer = angular.copy(args.data);
+  });
+
   $scope.customerSearch = function() {
-    $scope.customer.add = false;
+    $scope.customer.add  = false;
     $scope.customer.edit = false;
 
     if($scope.search.name.first === '' || $scope.search.name.last === '') {
       if($scope.search.name.first === '') {
         $scope.customerForm.firstname.$invalid = true;
-        $scope.customerForm.firstname.$dirty = true;
+        $scope.customerForm.firstname.$dirty   = true;
       }
 
       if($scope.search.name.last === '') {
         $scope.customerForm.lastname.$invalid = true;
-        $scope.customerForm.lastname.$dirty = true;
+        $scope.customerForm.lastname.$dirty   = true;
       }
 
       return;
@@ -105,21 +111,21 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
   $scope.customerSelect = function(i) {
     var customer = $scope.customers[i];
 
-    $scope.customer.id = customer.cusId;
+    $scope.customer.id         = customer.cusId;
     $scope.customer.name.first = customer.firstname;
-    $scope.customer.name.last = customer.lastname;
-    $scope.customer.address1 = customer.address1;
-    $scope.customer.address2 = customer.address2;
-    $scope.customer.city = customer.city;
-    $scope.customer.state = customer.state;
-    $scope.customer.zipcode = customer.zipcode;
-    $scope.customer.phone = customer.phone;
-    $scope.customer.photo = customer.photo;
-    $scope.customer.comment = customer.comment;
-    $scope.customer.warn = customer.warn;
-    $scope.customer.danger = customer.danger;
-    $scope.customer.search = false;
-    $scope.customer.selected = true;
+    $scope.customer.name.last  = customer.lastname;
+    $scope.customer.address1   = customer.address1;
+    $scope.customer.address2   = customer.address2;
+    $scope.customer.city       = customer.city;
+    $scope.customer.state      = customer.state;
+    $scope.customer.zipcode    = parseInt(customer.zipcode);
+    $scope.customer.phone      = customer.phone;
+    $scope.customer.photo      = customer.photo;
+    $scope.customer.comment    = customer.comment;
+    $scope.customer.warn       = customer.warn;
+    $scope.customer.danger     = customer.danger;
+    $scope.customer.search     = false;
+    $scope.customer.selected   = true;
 
     var url = 'http://stx.localhost:8888/q/checks/customer/' + $scope.customer.id;
     $http({
