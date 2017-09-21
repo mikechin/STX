@@ -1,33 +1,30 @@
-stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $http, configuration) {
+stx.directive('customersInfo', ['$q', '$http', '$rootScope', 'configuration', function($q, $http, $rootScope, configuration) {
   'use strict';
 
   return {
     restrict: 'E',
     scope: {
-      show: '=',
-      customer: '=',
-      type: '@'
+      show:     '=',
+      type:     '@'
     },
     templateUrl: 'views/templates/customersInfo.html',
     link: function(scope, elem, attrs) {
-      scope.add = false;
-      scope.edit = false;
+      scope.add      = false;
+      scope.edit     = false;
       scope.usStates = configuration.usStates;
-      scope.c = null;
+      scope.c        = null;
 
-      function init() {
-        if(scope.type === 'add') {
-          initC();
-          scope.add = true;
-          scope.edit = false;
-        }
+      scope.$on('customer-add', function(event, args) {
+        initC();
+        scope.add  = true;
+        scope.edit = false;
+      });
 
-        if(scope.type === 'edit') {
-          scope.c = scope.customer;
-          scope.add = false;
-          scope.edit = true;
-        }
-      }
+      scope.$on('customer-edit', function(event, args) {
+        scope.c    = angular.copy(args.data);
+        scope.add  = false;
+        scope.edit = true;
+      });
 
       function initC() {
         scope.c = {
@@ -45,13 +42,11 @@ stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $ht
         };
 
         scope.editForm.firstname.$invalid = false;
-        scope.editForm.firstname.$dirty = false;
+        scope.editForm.firstname.$dirty   = false;
 
         scope.editForm.lastname.$invalid = false;
-        scope.editForm.lastname.$dirty = false;
+        scope.editForm.lastname.$dirty   = false;
       }
-
-      init();
 
       // **************************************************
       // private.
@@ -66,13 +61,13 @@ stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $ht
 
           if(!scope.c.name.first || scope.c.name.first === '') {
             scope.editForm.firstname.$invalid = true;
-            scope.editForm.firstname.$dirty = true;
+            scope.editForm.firstname.$dirty   = true;
             cont = false;
           }
 
           if(!scope.c.name.last || scope.c.name.last === '') {
             scope.editForm.lastname.$invalid = true;
-            scope.editForm.lastname.$dirty = true;
+            scope.editForm.lastname.$dirty   = true;
             cont = false;
           }
 
@@ -108,9 +103,11 @@ stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $ht
         return d.promise;
       }
 
-      function updateCustomer() {
-        scope.customer = angular.copy(scope.c);
-        initC();
+      function updateCustomer(id) {
+        scope.c.id       = id;
+        scope.c.selected = true;
+        scope.c.info     = false;
+        $rootScope.$broadcast('customer-updated', { data: scope.c });
       }
 
       // **************************************************
@@ -132,10 +129,7 @@ stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $ht
           }).
           success(function(data, status, headers, config) {
             console.log('success add.', data);
-            updateCustomer();
-            scope.customer.id = data.cusId;
-            scope.customer.add = false;
-            scope.customer.selected = true;
+            updateCustomer(data.cusId);
           }).
           error(function(data, status, headers, config) {
             console.log('error.');
@@ -150,7 +144,7 @@ stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $ht
 
       scope.update = function() {
         uploadPhoto().then(function() {
-          var url = 'http://stx.localhost:8888/q/customer/update/' + scope.customer.id;
+          var url = 'http://stx.localhost:8888/q/customer/update/' + scope.c.id;
           $http({
             method: 'PUT',
             url: url,
@@ -162,8 +156,7 @@ stx.directive('customersInfo', ['$q', '$http', 'configuration', function($q, $ht
           }).
           success(function(data, status, headers, config) {
             console.log('success update.', data);
-            updateCustomer();
-            scope.customer.edit = false;
+            updateCustomer(data.cusId);
           }).
           error(function(data, status, headers, config) {
             console.log('error.');
