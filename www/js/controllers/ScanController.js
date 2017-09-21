@@ -231,13 +231,13 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		id: '',
 		name: {
 			first: '',
-			last: ''
+			last:  ''
 		},
-		photo: null,
-		search: false,
+		photo:    null,
+		search:   false,
 		selected: false,
-		invalid: false,
-		add: false,
+		invalid:  false,
+		info:     false,
 	};
 
 	$scope.edit = {
@@ -336,10 +336,16 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	};
 
 	$scope.customerNew = function() {
-		$scope.customer.add = true;
+		$scope.customer.info   = true;
 		$scope.customer.search = false;
 		$scope.customers = [];
+
+		$scope.$broadcast('customer-add');
 	};
+
+	$scope.$on('customer-updated', function(event, args) {
+		$scope.customer = angular.copy(args.data);
+	});
 
 	$scope.customerSearch = function() {
 		$scope.customer.add = false;
