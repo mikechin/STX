@@ -1,12 +1,11 @@
-stx.directive('issuersInfo', ['$q', '$http', 'configuration', function($q, $http, configuration) {
+stx.directive('issuersInfo', ['$q', '$http', '$rootScope', 'configuration', function($q, $http, $rootScope, configuration) {
   'use strict';
 
   return {
     restrict: 'E',
     scope: {
-      show:   '=',
-      issuer: '=',
-      type:   '@'
+      show: '=',
+      type: '@',
     },
     templateUrl: 'views/templates/issuersInfo.html',
     link: function(scope, elem, attrs) {
@@ -15,19 +14,17 @@ stx.directive('issuersInfo', ['$q', '$http', 'configuration', function($q, $http
       scope.usStates = configuration.usStates;
       scope.i        = null;
 
-      function init() {
-        if(scope.type === 'add') {
-          initI();
-          scope.add  = true;
-          scope.edit = false;
-        }
+      scope.$on('issuer-add', function(event, args) {
+        initI();
+        scope.add  = true;
+        scope.edit = false;
+      });
 
-        if(scope.type === 'edit') {
-          scope.i    = scope.issuer;
-          scope.add  = false;
-          scope.edit = true;
-        }
-      }
+      scope.$on('issuer-edit', function(event, args) {
+        scope.i    = angular.copy(args.data);
+        scope.add  = false;
+        scope.edit = true;
+      });
 
       function initI() {
         scope.i = {
@@ -39,15 +36,18 @@ stx.directive('issuersInfo', ['$q', '$http', 'configuration', function($q, $http
         scope.editForm.name.$dirty = false;
       }
 
-      init();
-
       // **************************************************
       // private.
       //
       //
       // **************************************************
-      function updateIssuer() {
-        scope.issuer = angular.copy(scope.i);
+      function updateIssuer(id) {
+        scope.i.id       = id;
+        scope.i.add      = false;
+        scope.i.selected = true;
+        scope.i.info     = false;
+
+        $rootScope.$broadcast('issuer-updated', { data: scope.i });
       }
 
       // **************************************************
@@ -58,7 +58,6 @@ stx.directive('issuersInfo', ['$q', '$http', 'configuration', function($q, $http
       scope.insert = function() {
         scope.i.account = scope.issuer.acct;
         scope.i.routing = scope.issuer.transit;
-        console.log('s', scope.i);
         var url = 'http://stx.localhost:8888/q/issuer/add';
         $http({
           method: 'POST',
@@ -71,10 +70,7 @@ stx.directive('issuersInfo', ['$q', '$http', 'configuration', function($q, $http
         }).
         success(function(data, status, headers, config) {
           console.log('success add.', data);
-          updateIssuer();
-          scope.issuer.id = data.issId;
-          scope.issuer.add = false;
-          scope.issuer.selected = true;
+          updateIssuer(data.issId);
         }).
         error(function(data, status, headers, config) {
           console.log('error.');
@@ -86,7 +82,7 @@ stx.directive('issuersInfo', ['$q', '$http', 'configuration', function($q, $http
       };
 
       scope.update = function() {
-        var url = 'http://stx.localhost:8888/q/issuer/update/' + scope.issuer.id;
+        var url = 'http://stx.localhost:8888/q/issuer/update/' + scope.i.id;
         $http({
           method: 'PUT',
           url: url,
@@ -98,8 +94,7 @@ stx.directive('issuersInfo', ['$q', '$http', 'configuration', function($q, $http
         }).
         success(function(data, status, headers, config) {
           console.log('success update.', data);
-          updateIssuer();
-          scope.issuer.edit = false;
+          updateIssuer(data.issId);
         }).
         error(function(data, status, headers, config) {
           console.log('error.');
