@@ -16,8 +16,12 @@ stx.directive('issuersInfo', ['$q', '$http', '$rootScope', 'configuration', func
 
       scope.$on('issuer-add', function(event, args) {
         initI();
+
         scope.add  = true;
         scope.edit = false;
+
+        scope.i.account = args.acct;
+        scope.i.routing = args.transit;
       });
 
       scope.$on('issuer-edit', function(event, args) {
@@ -28,8 +32,10 @@ stx.directive('issuersInfo', ['$q', '$http', '$rootScope', 'configuration', func
 
       function initI() {
         scope.i = {
-          id:   '',
-          name: '',
+          id:      '',
+          name:    '',
+          account: '',
+          routing: '',
         };
 
         scope.editForm.name.$invalid = false;
@@ -43,7 +49,6 @@ stx.directive('issuersInfo', ['$q', '$http', '$rootScope', 'configuration', func
       // **************************************************
       function updateIssuer(id) {
         scope.i.id       = id;
-        scope.i.add      = false;
         scope.i.selected = true;
         scope.i.info     = false;
 
@@ -56,8 +61,20 @@ stx.directive('issuersInfo', ['$q', '$http', '$rootScope', 'configuration', func
       //
       // **************************************************
       scope.insert = function() {
-        scope.i.account = scope.issuer.acct;
-        scope.i.routing = scope.issuer.transit;
+        if(scope.editForm.$invalid) {
+          var cont = true;
+
+          if(scope.i.name === '') {
+            scope.editForm.name.$invalid = true;
+            scope.editForm.name.$dirty = true;
+            cont = false;
+          }
+
+          if(!cont) {
+            return;
+          }
+        }
+
         var url = 'http://stx.localhost:8888/q/issuer/add';
         $http({
           method: 'POST',
