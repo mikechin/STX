@@ -233,53 +233,53 @@ class Db {
 
 	public function addIssuer($data) {
 		$columns = 'account, routing, name';
-		$values = ':account, :routing, :name';
+		$values =  ':account, :routing, :name';
 
-		$account = $data->account;
-		$routing = $data->routing;
-		$name = $data->name;
+		$account  = $data->account;
+		$routing  = $data->routing;
+		$name     = $data->name;
 		$address1 = NULL;
 		$address2 = NULL;
-		$city = NULL;
-		$state = NULL;
-		$zipcode = NULL;
-		$phone = NULL;
-		$email = NULL;
+		$city     = NULL;
+		$state    = NULL;
+		$zipcode  = NULL;
+		$phone    = NULL;
+		$email    = NULL;
 
 		if(!empty($data->address1)) {
 			$address1 = $data->address1;
 			$columns .= ', address1';
-			$values .= ', :address1';
+			$values  .= ', :address1';
 		}
 		if(!empty($data->address2)) {
 			$address2 = $data->address2;
 			$columns .= ', address2';
-			$values .= ', :address2';
+			$values  .= ', :address2';
 		}
 		if(!empty($data->city)) {
-			$city = $data->city;
+			$city     = $data->city;
 			$columns .= ', city';
-			$values .= ', :city';
+			$values  .= ', :city';
 		}
 		if(!empty($data->state)) {
-			$state = $data->state;
+			$state    = $data->state;
 			$columns .= ', state';
-			$values .= ', :state';
+			$values  .= ', :state';
 		}
 		if(!empty($data->zipcode)) {
-			$zipcode = $data->zipcode;
+			$zipcode  = $data->zipcode;
 			$columns .= ', zipcode';
-			$values .= ', :zipcode';
+			$values  .= ', :zipcode';
 		}
 		if(!empty($data->phone)) {
-			$phone = $data->phone;
+			$phone    = $data->phone;
 			$columns .= ', phone';
-			$values .= ', :phone';
+			$values  .= ', :phone';
 		}
 		if(!empty($data->email)) {
-			$email = $data->email;
+			$email    = $data->email;
 			$columns .= ', email';
-			$values .= ', :email';
+			$values  .= ', :email';
 		}
 
 		$q = $this->db->prepare("INSERT INTO issuers ($columns) VALUES ($values)");
