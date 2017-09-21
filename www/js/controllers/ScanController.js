@@ -105,9 +105,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 				$scope.issuer.danger = data.danger;
 			}
 			else {
-				$scope.issuer.add     = true;
+				$scope.issuer.info    = true;
 				$scope.issuer.acct    = $scope.scannedData.MICR.acct;
 				$scope.issuer.transit = $scope.scannedData.MICR.transit;
+
+				$scope.$broadcast('issuer-add', { acct: $scope.issuer.acct, transit: $scope.issuer.transit });
 			}
 
 			getIssuers.resolve();
@@ -148,7 +150,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		$q.all(promises).then(function() {
 			$scope.scanImages = {
 				front: 'http://' + configuration.device.url + process.image.front.url,
-				back: 'http://' + configuration.device.url + process.image.back.url
+				back:  'http://' + configuration.device.url + process.image.back.url
 			}
 			$scope.panes.info = true;
 		});
@@ -252,7 +254,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		acct:    '',
 		transit: '',
 		invalid: false,
-		add:     false,
+		info:    false,
 	};
 
 	$scope.Endorser = {
@@ -418,47 +420,9 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		}
 	};
 
-	$scope.issuerAdd = function() {
-		if($scope.issuerForm.$invalid) {
-			var cont = true;
-
-			if($scope.newIssuer.name === '') {
-				$scope.issuerForm.name.$invalid = true;
-				$scope.issuerForm.name.$dirty = true;
-				cont = false;
-			}
-
-			if(!cont) {
-				return;
-			}
-		}
-
-		var data = $scope.newIssuer;
-		data.account = process.MICR.acct;
-		data.routing = process.MICR.transit;
-
-		var url = 'http://stx.localhost:8888/q/issuer/add';
-		$http({
-			method: 'POST',
-			url: url,
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			data: data
-		}).
-		success(function(data, status, headers, config) {
-			console.log('success.');
-			if(data.status) {
-				$scope.issuer.id = data.issId;
-				$scope.issuer.name = data.name;
-				$scope.newIssuer.add = false;
-			}
-		}).
-		error(function(data, status, headers, config) {
-			console.log('error.');
-		});
-	};
+	$scope.$on('issuer-updated', function(event, args) {
+		$scope.issuer = angular.copy(args.data);
+	});
 
 	$scope.save = function() {
 		var save = true;
