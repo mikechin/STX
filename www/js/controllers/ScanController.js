@@ -473,10 +473,10 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		}
 
 		if(save) {
-			process.cusId = $scope.customer.id;
-			process.issId = $scope.issuer.id;
-			process.bnkId = $scope.bank.id;
-			process.stxUrl = 'http://' + configuration.device.url;
+			process.cusId          = $scope.customer.id;
+			process.issId          = $scope.issuer.id;
+			process.bnkId          = $scope.bank.id;
+			process.stxUrl         = 'http://' + configuration.device.url;
 			process.image.FileType = $scope.ImageOptions.FileType;
 
 			$http({
