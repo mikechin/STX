@@ -98,7 +98,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	}
 
 	function getIssuer() {
-		var url = 'http://stx.localhost:8888/q/issuer/' + process.MICR.acct + '/' + process.MICR.transit;
+		console.log('get.', $scope.scannedData.MICR);
+		var url = 'http://stx.localhost:8888/q/issuer/' + $scope.scannedData.MICR.acct + '/' + $scope.scannedData.MICR.transit;
 		var d   = $q.defer();
 
 		$http({
@@ -112,6 +113,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			if(data.status) {
+				$scope.issuer.info   = false;
 				$scope.issuer.id     = data.issId;
 				$scope.issuer.name   = data.name;
 				$scope.issuer.warn   = data.warn;
@@ -136,7 +138,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	}
 
 	function getBank() {
-		var url = 'http://stx.localhost:8888/q/bank/' + process.MICR.bankNum;
+		var url = 'http://stx.localhost:8888/q/bank/' + $scope.scannedData.MICR.bankNum;
 		var d   = $q.defer();
 
 		$http({
@@ -423,6 +425,17 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 
 	$scope.edit = function(area) {
 		$scope.edit[area] = !$scope.edit[area];
+
+		if(!$scope.edit[area]) {
+			console.log(area);
+			switch(area) {
+				case 'acct':
+				case 'routing':
+					getIssuer();
+					break;
+				default:
+			}
+		}
 	};
 
 	$scope.inputKeyDown = function(event, area) {
