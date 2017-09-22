@@ -85,14 +85,27 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		process.start(data);
 		$scope.scannedData = process;
 
+		promises.push(getIssuer());
+		promises.push(getBank());
+
+		$q.all(promises).then(function() {
+			$scope.scanImages = {
+				front: 'http://' + configuration.device.url + process.image.front.url,
+				back:  'http://' + configuration.device.url + process.image.back.url
+			}
+			$scope.panes.info = true;
+		});
+	}
+
+	function getIssuer() {
 		var url = 'http://stx.localhost:8888/q/issuer/' + process.MICR.acct + '/' + process.MICR.transit;
-		var getIssuers = $q.defer();
-		promises.push(getIssuers.promise);
+		var d   = $q.defer();
+
 		$http({
 			method: 'GET',
-			url: url,
+			url:    url,
 			headers: {
-				'Accept': 'application/json',
+				'Accept':       'application/json',
 				'Content-Type': 'application/json'
 			}
 		}).
@@ -112,48 +125,46 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 				$scope.$broadcast('issuer-add', { acct: $scope.issuer.acct, transit: $scope.issuer.transit });
 			}
 
-			getIssuers.resolve();
+			d.resolve();
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
-			getIssuers.reject();
+			d.reject();
 		});
 
+		return d.promise;
+	}
+
+	function getBank() {
 		var url = 'http://stx.localhost:8888/q/bank/' + process.MICR.bankNum;
-		var getBanks = $q.defer();
-		promises.push(getBanks.promise);
+		var d   = $q.defer();
+
 		$http({
 			method: 'GET',
-			url: url,
+			url:    url,
 			headers: {
-				'Accept': 'application/json',
+				'Accept':       'application/json',
 				'Content-Type': 'application/json'
 			}
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			if(data.status) {
-				$scope.bank.id = data.bnkId;
+				$scope.bank.id   = data.bnkId;
 				$scope.bank.name = data.name;
 			}
 			else {
 				$scope.newBank.add = true;
 			}
 
-			getBanks.resolve();
+			d.resolve();
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
-			getBanks.reject();
+			d.reject();
 		});
 
-		$q.all(promises).then(function() {
-			$scope.scanImages = {
-				front: 'http://' + configuration.device.url + process.image.front.url,
-				back:  'http://' + configuration.device.url + process.image.back.url
-			}
-			$scope.panes.info = true;
-		});
+		return d.promise;
 	}
 
 	function setEndorser() {
