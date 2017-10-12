@@ -7,7 +7,7 @@
 			<div class="option">
 				<div class="pull-left">
 					<label>Name</label>
-					<button class="edit" ng-click="cleanInput('name')" ng-show="search.name">X</button>
+					<button class="clear" ng-click="cleanInput('name')" ng-show="search.name">X</button>
 					<div class="form-control" ng-class="{ 'has-error': issuersForm.name.$invalid && issuersForm.name.$dirty }">
 						<input type="text" name="name" ng-model="search.name" required />
 					</div>
@@ -17,7 +17,7 @@
 			<div class="option">
 				<div class="pull-left">
 					<label>Account Number</label>
-					<button class="edit" ng-click="cleanInput('account')" ng-show="search.account">X</button>
+					<button class="clear" ng-click="cleanInput('account')" ng-show="search.account">X</button>
 					<div class="form-control" ng-class="{ 'has-error': issuersForm.account.$invalid && issuersForm.account.$dirty }">
 						<input type="text" name="account" ng-model="search.account" required />
 					</div>
@@ -32,7 +32,7 @@
 			<div class="no-results" ng-hide="issuers.length">
 				<span>No results.</span>
 			</div>
-			<div class="search-result" ng-repeat="i in issuers">
+			<div class="search-result" ng-class="{ 'bg-danger': i.danger, 'bg-warn': i.warn }" ng-repeat="i in issuers">
 				<a href="" class="select" ng-click="issuerSelect($index)">
 					<div class="issuer-result">
 						<div class="info">
@@ -49,9 +49,13 @@
 	<div class="section-header" ng-show="issuer.selected">
 		<span>Issuer</span>
 	</div>
-	<div class="section" ng-show="issuer.selected">
+	<div class="section" ng-class="{ 'bg-danger': issuer.danger, 'bg-warn': issuer.warn }"  ng-show="issuer.selected">
 		<div class="search-result">
 			<div class="issuer-result">
+				<button class="edit" ng-click="issuerEdit()">Edit</button>
+				<button class="edit" ng-click="reportIssuer(1)">Warn</button>
+				<button class="edit" ng-click="reportIssuer(2)">Alert</button>
+				<button class="edit" ng-click="reportIssuer(0)">Clear</button>
 				<div class="info">
 					<div class="name">{{ issuer.name }}</div>
 					<div class="address">{{ issuer.address1 }} {{ issuer.address2 }}</div>
@@ -61,5 +65,6 @@
 			<div class="clear"></div>
 		</div>
 	</div>
+	<issuers-info show="issuer.info"></issuers-info>
 	<check-list list="checks" show="issuer.selected"></check-list>
 </div>

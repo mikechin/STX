@@ -1,0 +1,51 @@
+<div class="section-header" ng-show="show">
+  <span ng-show="add">New Issuer</span>
+  <span ng-show="edit">Edit Issuer</span>
+</div>
+<div class="section" ng-show="show">
+  <ng-form name="editForm">
+    <table class="new-entry">
+      <tr ng-class="{ 'has-error': editForm.name.$invalid && editForm.name.$dirty }">
+        <td>Name</td>
+        <td><input type="text" name="name" class="form-input" ng-model="i.name" required /></td>
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td><input type="text" ng-model="i.address1" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type="text" ng-model="i.address2" /></td>
+      </tr>
+      <tr>
+        <td>City</td>
+        <td><input type="text" ng-model="i.city" /></td>
+      </tr>
+      <tr>
+        <td>State</td>
+        <td>
+          <select ng-model="i.state">
+            <option ng-repeat="state in usStates" value="{{ state.abbreviation }}">{{ state.name }}</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Zip</td>
+        <td><input type="number" ng-model="i.zipcode" /></td>
+      </tr>
+      <tr>
+        <td>Phone</td>
+        <td><input type="number" ng-model="i.phone" /></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td><input type="text" ng-model="i.email" /></td>
+      </tr>
+    </table>
+  </ng-form>
+  <div class="buttons">
+    <button class="confirm" ng-click="insert()" ng-show="add">New</button>
+    <button class="confirm" ng-click="update()" ng-show="edit">Update</button>
+    <button class="cancel" ng-click="cancel()">Cancel</button>
+  </div>
+</div>

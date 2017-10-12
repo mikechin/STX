@@ -23,7 +23,9 @@
         <img ng-src="chkimg/{{ i.chkId }}/front.JPG" />
         <img ng-src="chkimg/{{ i.chkId }}/back.JPG"  ng-if="options.checkFrontBack" />
       </div>
-      <a class="confirm pull-right" download="imgs.zip" ng-href="/chkimg/{{ i.chkId }}/imgs.zip">DOWNLOAD</a>
+      <div class="options">
+        <a class="confirm download pull-right" download="imgs.zip" ng-href="/chkimg/{{ i.chkId }}/imgs.zip"><img src="/assets/icons/111239/download-sketch.svg" /></a>
+      </div>
     </div>
   </div>
 </div>

@@ -87,37 +87,37 @@ class Db {
 		$phone = NULL;
 		$photo = NULL;
 
-		if($data->address1 !== '') {
+		if(!empty($data->address1)) {
 			$address1 = $data->address1;
 			$columns .= ', address1';
 			$values .= ', :address1';
 		}
-		if($data->address2 !== '') {
+		if(!empty($data->address2)) {
 			$address2 = $data->address2;
 			$columns .= ', address2';
 			$values .= ', :address2';
 		}
-		if($data->city !== '') {
+		if(!empty($data->city)) {
 			$city = $data->city;
 			$columns .= ', city';
 			$values .= ', :city';
 		}
-		if($data->state !== '') {
+		if(!empty($data->state)) {
 			$state = $data->state;
 			$columns .= ', state';
 			$values .= ', :state';
 		}
-		if($data->zipcode !== '') {
+		if(!empty($data->zipcode)) {
 			$zipcode = $data->zipcode;
 			$columns .= ', zipcode';
 			$values .= ', :zipcode';
 		}
-		if($data->phone !== '') {
+		if(!empty($data->phone)) {
 			$phone = $data->phone;
 			$columns .= ', phone';
 			$values .= ', :phone';
 		}
-		if($data->photo !== null) {
+		if(!empty($data->photo)) {
 			$photo = $data->photo;
 			$columns .= ', photo';
 			$values .= ', :photo';
@@ -233,53 +233,53 @@ class Db {
 
 	public function addIssuer($data) {
 		$columns = 'account, routing, name';
-		$values = ':account, :routing, :name';
+		$values =  ':account, :routing, :name';
 
-		$account = $data->account;
-		$routing = $data->routing;
-		$name = $data->name;
+		$account  = $data->account;
+		$routing  = $data->routing;
+		$name     = $data->name;
 		$address1 = NULL;
 		$address2 = NULL;
-		$city = NULL;
-		$state = NULL;
-		$zipcode = NULL;
-		$phone = NULL;
-		$email = NULL;
+		$city     = NULL;
+		$state    = NULL;
+		$zipcode  = NULL;
+		$phone    = NULL;
+		$email    = NULL;
 
-		if($data->address1 !== '') {
+		if(!empty($data->address1)) {
 			$address1 = $data->address1;
 			$columns .= ', address1';
-			$values .= ', :address1';
+			$values  .= ', :address1';
 		}
-		if($data->address2 !== '') {
+		if(!empty($data->address2)) {
 			$address2 = $data->address2;
 			$columns .= ', address2';
-			$values .= ', :address2';
+			$values  .= ', :address2';
 		}
-		if($data->city !== '') {
-			$city = $data->city;
+		if(!empty($data->city)) {
+			$city     = $data->city;
 			$columns .= ', city';
-			$values .= ', :city';
+			$values  .= ', :city';
 		}
-		if($data->state !== '') {
-			$state = $data->state;
+		if(!empty($data->state)) {
+			$state    = $data->state;
 			$columns .= ', state';
-			$values .= ', :state';
+			$values  .= ', :state';
 		}
-		if($data->zipcode !== '') {
-			$zipcode = $data->zipcode;
+		if(!empty($data->zipcode)) {
+			$zipcode  = $data->zipcode;
 			$columns .= ', zipcode';
-			$values .= ', :zipcode';
+			$values  .= ', :zipcode';
 		}
-		if($data->phone !== '') {
-			$phone = $data->phone;
+		if(!empty($data->phone)) {
+			$phone    = $data->phone;
 			$columns .= ', phone';
-			$values .= ', :phone';
+			$values  .= ', :phone';
 		}
-		if($data->email !== '') {
-			$email = $data->email;
+		if(!empty($data->email)) {
+			$email    = $data->email;
 			$columns .= ', email';
-			$values .= ', :email';
+			$values  .= ', :email';
 		}
 
 		$q = $this->db->prepare("INSERT INTO issuers ($columns) VALUES ($values)");
@@ -308,7 +308,48 @@ class Db {
 			$this->send([
 				'status' => true,
 				'issId' => $issId,
-				'name' => $name
+				'name' => $name,
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false,
+			]);
+		}
+	}
+
+	public function alertCustomer($id, $level) {
+		$q = $this->db->prepare("UPDATE customers SET alert = :level WHERE cusId = :id");
+		$q->bindParam(':id', $id);
+		$q->bindParam(':level', $level);
+		$q->execute();
+
+		if($q->rowCount() > 0) {
+			$this->send([
+				'status' => true,
+				'cusId' => $id,
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
+	public function alertIssuer($id, $level) {
+		$q = $this->db->prepare(
+			"UPDATE issuers
+			SET alert = $level
+			WHERE issId = :id"
+		);
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		if($q->rowCount() > 0) {
+			$this->send([
+				'status' => true,
+				'issId' => $id,
 			]);
 		}
 		else {
@@ -354,11 +395,50 @@ class Db {
 		}
 	}
 
+	public function getChecks() {
+		$q = $this->db->prepare(
+			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
+			FROM checks
+			ORDER BY chkId DESC
+			LIMIT 20"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'status' => true,
+				'chkId' => $row['chkId'],
+				'issId' => $row['issId'],
+				'bnkId' => $row['bnkId'],
+				'created' => $row['created_at'],
+				'acct' => $row['MICRAcct'],
+				'amt' => $row['MICRAmt'],
+				'transit' => $row['MICRTransit'],
+				'serNum' => $row['MICRSerNum']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'checks' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function getChecksByCustomerId($id) {
 		$q = $this->db->prepare(
 			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
 			FROM checks
-			WHERE cusId = :id"
+			WHERE cusId = :id
+			ORDER BY chkId DESC"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':id', $id);
@@ -396,10 +476,51 @@ class Db {
 		$q = $this->db->prepare(
 			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
 			FROM checks
-			WHERE issId = :id"
+			WHERE issId = :id
+			ORDER BY chkId DESC"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':id', $id);
+		$q->execute();
+
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
+				'status' => true,
+				'chkId' => $row['chkId'],
+				'issId' => $row['issId'],
+				'bnkId' => $row['bnkId'],
+				'created' => $row['created_at'],
+				'acct' => $row['MICRAcct'],
+				'amt' => $row['MICRAmt'],
+				'transit' => $row['MICRTransit'],
+				'serNum' => $row['MICRSerNum']
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status' => true,
+				'checks' => $data
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
+	public function getChecksByNumber($number) {
+		$q = $this->db->prepare(
+			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
+			FROM checks
+			WHERE MICRSerNum = :number
+			ORDER BY chkId DESC
+			LIMIT 20"
+		);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		$q->bindParam(':number', $number);
 		$q->execute();
 
 		$data = [];
@@ -453,7 +574,7 @@ class Db {
 
 	public function getCustomersByName($firstname, $lastname) {
 		$q = $this->db->prepare(
-			"SELECT cusId, firstname, lastname, photo, address1, address2, city, state, zipcode, phone
+			"SELECT cusId, firstname, lastname, photo, address1, address2, city, state, zipcode, phone, comment, alert
 			FROM customers
 			WHERE firstname = :firstname AND lastname = :lastname"
 		);
@@ -474,7 +595,10 @@ class Db {
 				'city' => $row['city'],
 				'state' => $row['state'],
 				'zipcode' => $row['zipcode'],
-				'phone' => $row['phone']
+				'phone' => $row['phone'],
+				'comment' => $row['comment'],
+				'warn' => (int)$row['alert'] === 1 ? true : false,
+				'danger' => (int)$row['alert'] === 2 ? true : false
 			];
 		}
 
@@ -493,7 +617,7 @@ class Db {
 
 	public function getCustomersByIssuer($issId) {
 		$q = $this->db->prepare(
-			"SELECT DISTINCT checks.cusId, customers.firstname, customers.lastname, customers.photo
+			"SELECT DISTINCT checks.cusId, customers.firstname, customers.lastname, customers.photo, customers.comment, customers.alert
 			FROM checks
 			INNER JOIN customers ON checks.cusId = customers.cusId
 			WHERE issId = :issId"
@@ -509,7 +633,10 @@ class Db {
 				'cusId' => $row['cusId'],
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
-				'photo' => $row['photo']
+				'photo' => $row['photo'],
+				'comment' => $row['comment'],
+				'warn' => (int)$row['alert'] === 1 ? true : false,
+				'danger' => (int)$row['alert'] === 2 ? true : false
 			];
 		}
 
@@ -578,7 +705,11 @@ class Db {
 	}
 
 	public function getIssuerByAccountRouting($account, $routing) {
-		$q = $this->db->prepare("SELECT issId, name FROM issuers WHERE account = :account AND routing = :routing LIMIT 1");
+		$q = $this->db->prepare(
+			"SELECT issId, name, alert
+			FROM issuers
+			WHERE account = :account AND routing = :routing LIMIT 1"
+		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':account', $account);
 		$q->bindParam(':routing', $routing);
@@ -588,8 +719,10 @@ class Db {
 		if($row) {
 			$this->send([
 				'status' => true,
-				'issId' => $row['issId'],
-				'name' => $row['name']
+				'issId'  => $row['issId'],
+				'name'   => $row['name'],
+				'warn'   => (int)$row['alert'] === 1 ? true : false,
+				'danger' => (int)$row['alert'] === 2 ? true : false,
 			]);
 		}
 		else {
@@ -602,7 +735,7 @@ class Db {
 	public function getIssuersByName($name) {
 		$search = "%$name%";
 		$q = $this->db->prepare(
-			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode, alert
 			FROM issuers
 			WHERE name LIKE :name"
 		);
@@ -613,15 +746,17 @@ class Db {
 		$data = [];
 		while($row = $q->fetch()) {
 			$data[] = [
-				'issId' => $row['issId'],
-				'account' => $row['account'],
-				'routing' => $row['routing'],
-				'name' => $row['name'],
+				'issId'    => $row['issId'],
+				'account'  => $row['account'],
+				'routing'  => $row['routing'],
+				'name'     => $row['name'],
 				'address1' => $row['address1'],
 				'address2' => $row['address2'],
-				'city' => $row['city'],
-				'state' => $row['state'],
-				'zipcode' => $row['zipcode']
+				'city'     => $row['city'],
+				'state'    => $row['state'],
+				'zipcode'  => $row['zipcode'],
+				'warn'     => (int)$row['alert'] === 1 ? true : false,
+				'danger'   => (int)$row['alert'] === 2 ? true : false,
 			];
 		}
 
@@ -640,7 +775,7 @@ class Db {
 
 	public function getIssuersByAccount($account) {
 		$q = $this->db->prepare(
-			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode, alert
 			FROM issuers
 			WHERE account = :account"
 		);
@@ -651,15 +786,17 @@ class Db {
 		$data = [];
 		while($row = $q->fetch()) {
 			$data[] = [
-				'issId' => $row['issId'],
-				'account' => $row['account'],
-				'routing' => $row['routing'],
-				'name' => $row['name'],
+				'issId'    => $row['issId'],
+				'account'  => $row['account'],
+				'routing'  => $row['routing'],
+				'name'     => $row['name'],
 				'address1' => $row['address1'],
 				'address2' => $row['address2'],
-				'city' => $row['city'],
-				'state' => $row['state'],
-				'zipcode' => $row['zipcode']
+				'city'     => $row['city'],
+				'state'    => $row['state'],
+				'zipcode'  => $row['zipcode'],
+				'warn'     => (int)$row['alert'] === 1 ? true : false,
+				'danger'   => (int)$row['alert'] === 2 ? true : false,
 			];
 		}
 
@@ -679,7 +816,7 @@ class Db {
 	public function getIssuersByNameAccount($name, $account) {
 		$search = "%$name%";
 		$q = $this->db->prepare(
-			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode, alert
 			FROM issuers
 			WHERE account = :account AND name LIKE :name"
 		);
@@ -691,15 +828,17 @@ class Db {
 		$data = [];
 		while($row = $q->fetch()) {
 			$data[] = [
-				'issId' => $row['issId'],
-				'account' => $row['account'],
-				'routing' => $row['routing'],
-				'name' => $row['name'],
+				'issId'    => $row['issId'],
+				'account'  => $row['account'],
+				'routing'  => $row['routing'],
+				'name'     => $row['name'],
 				'address1' => $row['address1'],
 				'address2' => $row['address2'],
-				'city' => $row['city'],
-				'state' => $row['state'],
-				'zipcode' => $row['zipcode']
+				'city'     => $row['city'],
+				'state'    => $row['state'],
+				'zipcode'  => $row['zipcode'],
+				'warn'     => (int)$row['alert'] === 1 ? true : false,
+				'danger'   => (int)$row['alert'] === 2 ? true : false,
 			];
 		}
 
@@ -802,31 +941,31 @@ class Db {
 		$phone = NULL;
 		$photo = NULL;
 
-		if($data->address1 !== '') {
+		if(!empty($data->address1)) {
 			$address1 = $data->address1;
 			$values .= ', address1 = :address1';
 		}
-		if($data->address2 !== '') {
+		if(!empty($data->address2)) {
 			$address2 = $data->address2;
 			$values .= ', address2 = :address2';
 		}
-		if($data->city !== '') {
+		if(!empty($data->city)) {
 			$city = $data->city;
 			$values .= ', city = :city';
 		}
-		if($data->state !== '') {
+		if(!empty($data->state)) {
 			$state = $data->state;
 			$values .= ', state = :state';
 		}
-		if($data->zipcode !== '') {
+		if(!empty($data->zipcode)) {
 			$zipcode = $data->zipcode;
 			$values .= ', zipcode = :zipcode';
 		}
-		if($data->phone !== '') {
+		if(!empty($data->phone)) {
 			$phone = $data->phone;
 			$values .= ', phone = :phone';
 		}
-		if($data->photo !== null) {
+		if(!empty($data->photo)) {
 			$photo = $data->photo;
 			$values .= ', photo = :photo';
 		}
@@ -863,6 +1002,80 @@ class Db {
 			]);
 		}
 	}
+
+	public function updateIssuer($id, $data) {
+		$values = 'name = :name';
+
+		$name     = $data->name;
+		$address1 = NULL;
+		$address2 = NULL;
+		$city     = NULL;
+		$state    = NULL;
+		$zipcode  = NULL;
+		$phone    = NULL;
+		$email    = NULL;
+
+		if(!empty($data->address1)) {
+			$address1 = $data->address1;
+			$values .= ', address1 = :address1';
+		}
+		if(!empty($data->address2)) {
+			$address2 = $data->address2;
+			$values .= ', address2 = :address2';
+		}
+		if(!empty($data->city)) {
+			$city = $data->city;
+			$values .= ', city = :city';
+		}
+		if(!empty($data->state)) {
+			$state = $data->state;
+			$values .= ', state = :state';
+		}
+		if(!empty($data->zipcode)) {
+			$zipcode = $data->zipcode;
+			$values .= ', zipcode = :zipcode';
+		}
+		if(!empty($data->phone)) {
+			$phone = $data->phone;
+			$values .= ', phone = :phone';
+		}
+		if(!empty($data->email)) {
+			$email = $data->email;
+			$values .= ', :email';
+		}
+
+		$q = $this->db->prepare("UPDATE issuers SET $values WHERE issId = :id");
+		$q->bindParam(':name', $name);
+		if($address1)
+			$q->bindParam(':address1', $address1);
+		if($address2)
+			$q->bindParam(':address2', $address2);
+		if($city)
+			$q->bindParam(':city', $city);
+		if($state)
+			$q->bindParam(':state', $state);
+		if($zipcode)
+			$q->bindParam(':zipcode', $zipcode);
+		if($phone)
+			$q->bindParam(':phone', $phone);
+		if($email)
+			$q->bindParam(':email', $email);
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		if($q->rowCount() > 0) {
+			$this->send([
+				'status' => true,
+				'issId'  => $id,
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 }
 
 ?>

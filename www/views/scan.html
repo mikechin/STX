@@ -141,8 +141,11 @@
 			<ng-form name="scanForm">
 				<div class="option">
 					<label>Amount</label>
+					<div class="value" ng-if="!edit.routing">
+						<span>{{ scannedData.MICR.amt | currency }}</span>
+					</div>
 					<div class="form-control">
-						<input type="number" name="amount" ng-model="scannedData.MICR.amt" required />
+						<input type="number" step="0.01" placeholder="0.00" name="amount" ng-model="scannedData.MICR.amt" required />
 					</div>
 				</div>
 				<div class="option">
@@ -186,7 +189,7 @@
 		<div class="section-header">
 			<span>Customer</span>
 		</div>
-		<div class="section" ng-class="{ 'has-error': customer.invalid }">
+		<div class="section" ng-class="{ 'has-error': customer.invalid, 'bg-danger': customer.danger, 'bg-warn': customer.warn }">
 			<div ng-hide="customer.selected">
 				<div class="option">
 					<div class="pull-left">
@@ -205,14 +208,14 @@
 				</div>
 				<div class="buttons">
 					<button class="confirm" ng-click="customerSearch()">Search</button>
-					<button class="confirm" ng-click="customerNew()">New</button>
-					<button class="confirm" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
+					<button class="new" ng-click="customerNew()">+ New</button>
+					<button class="options" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
 				</div>
 				<div class="search-results" ng-show="customer.search">
 					<div class="no-results" ng-hide="customers.length">
 						<span>No results.</span>
 					</div>
-					<div class="search-result" ng-repeat="c in customers">
+					<div class="search-result" ng-class="{ 'bg-danger': c.danger, 'bg-warn': c.warn }" ng-repeat="c in customers">
 						<a href="" class="select" ng-click="customerSelect($index)">
 							<div class="photo">
 								<img ng-show="c.photo" ng-src="{{ c.photo }}" />
@@ -237,72 +240,25 @@
 					</div>
 					<div class="clear"></div>
 				</div>
-				<button class="confirm" ng-click="customerClear()">Clear</button>
+				<a class="clear customer" ng-click="customerClear()"><img src="/assets/icons/111239/cross-sketch.svg" /></a>
 			</div>
 		</div>
-		<customers-info type="add" show="customer.add" customer="customer"></customers-info>
+		<customers-info show="customer.info"></customers-info>
 		<div class="section-header">
 			<span>Issuer</span>
 		</div>
-		<div class="section" ng-class="{ 'has-error': issuer.invalid }">
+		<div class="section" ng-class="{ 'has-error': issuer.invalid, 'bg-danger': issuer.danger, 'bg-warn': issuer.warn  }">
 			<div class="option">
-				<div ng-hide="newIssuer.add">
+				<div ng-hide="issuer.add">
 					<label>Name</label>
 					<div>{{ issuer.name }}</div>
 				</div>
-				<div class="no-results" ng-show="newIssuer.add">
+				<div class="no-results" ng-show="issuer.add">
 					<span>No results.</span>
 				</div>
 			</div>
 		</div>
-		<div class="section-header" ng-show="newIssuer.add">
-			<span>New Issuer</span>
-		</div>
-		<div class="section" ng-show="newIssuer.add">
-			<ng-form name="issuerForm">
-				<table class="new-entry">
-					<tr ng-class="{ 'has-error': issuerForm.name.$invalid && issuerForm.name.$dirty }">
-						<td>Name</td>
-						<td><input type="text" name="name" class="form-input" ng-model="newIssuer.name" required /></td>
-					</tr>
-					<tr>
-						<td>Address</td>
-						<td><input type="text" ng-model="newIssuer.address1" /></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td><input type="text" ng-model="newIssuer.address2" /></td>
-					</tr>
-					<tr>
-						<td>City</td>
-						<td><input type="text" ng-model="newIssuer.city" /></td>
-					</tr>
-					<tr>
-						<td>State</td>
-						<td>
-							<select ng-model="newIssuer.state">
-								<option ng-repeat="state in usStates" value="{{ state.abbreviation }}">{{ state.name }}</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>Zip</td>
-						<td><input type="number" ng-model="newIssuer.zipcode" /></td>
-					</tr>
-					<tr>
-						<td>Phone</td>
-						<td><input type="number" ng-model="newIssuer.phone" /></td>
-					</tr>
-					<tr>
-						<td>Email</td>
-						<td><input type="text" ng-model="newIssuer.email" /></td>
-					</tr>
-				</table>
-			</ng-form>
-			<div class="buttons">
-				<button class="confirm" ng-click="issuerAdd()">Add</button>
-			</div>
-		</div>
+		<issuers-info show="issuer.info"></issuers-info>
 		<div class="section-header">
 			<span>Bank</span>
 		</div>
@@ -333,6 +289,6 @@
 				<button class="confirm" ng-click="bankAdd()">Add</button>
 			</div>
 		</div>
-		<button class="confirm" ng-click="save()">Save</button>
+		<button class="new" ng-click="save()">Save</button>
 	</div>
 </div>

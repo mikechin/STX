@@ -85,69 +85,88 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		process.start(data);
 		$scope.scannedData = process;
 
-		var url = 'http://stx.localhost:8888/q/issuer/' + process.MICR.acct + '/' + process.MICR.transit;
-		var getIssuers = $q.defer();
-		promises.push(getIssuers.promise);
+		promises.push(getIssuer());
+		promises.push(getBank());
+
+		$q.all(promises).then(function() {
+			$scope.scanImages = {
+				front: 'http://' + configuration.device.url + process.image.front.url,
+				back:  'http://' + configuration.device.url + process.image.back.url
+			}
+			$scope.panes.info = true;
+		});
+	}
+
+	function getIssuer() {
+		console.log('get.', $scope.scannedData.MICR);
+		var url = 'http://stx.localhost:8888/q/issuer/' + $scope.scannedData.MICR.acct + '/' + $scope.scannedData.MICR.transit;
+		var d   = $q.defer();
+
 		$http({
 			method: 'GET',
-			url: url,
+			url:    url,
 			headers: {
-				'Accept': 'application/json',
+				'Accept':       'application/json',
 				'Content-Type': 'application/json'
 			}
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			if(data.status) {
-				$scope.issuer.id = data.issId;
-				$scope.issuer.name = data.name;
+				$scope.issuer.info   = false;
+				$scope.issuer.id     = data.issId;
+				$scope.issuer.name   = data.name;
+				$scope.issuer.warn   = data.warn;
+				$scope.issuer.danger = data.danger;
 			}
 			else {
-				$scope.newIssuer.add = true;
+				$scope.issuer.info    = true;
+				$scope.issuer.acct    = $scope.scannedData.MICR.acct;
+				$scope.issuer.transit = $scope.scannedData.MICR.transit;
+
+				$scope.$broadcast('issuer-add', { acct: $scope.issuer.acct, transit: $scope.issuer.transit });
 			}
 
-			getIssuers.resolve();
+			d.resolve();
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
-			getIssuers.reject();
+			d.reject();
 		});
 
-		var url = 'http://stx.localhost:8888/q/bank/' + process.MICR.bankNum;
-		var getBanks = $q.defer();
-		promises.push(getBanks.promise);
+		return d.promise;
+	}
+
+	function getBank() {
+		var url = 'http://stx.localhost:8888/q/bank/' + $scope.scannedData.MICR.bankNum;
+		var d   = $q.defer();
+
 		$http({
 			method: 'GET',
-			url: url,
+			url:    url,
 			headers: {
-				'Accept': 'application/json',
+				'Accept':       'application/json',
 				'Content-Type': 'application/json'
 			}
 		}).
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			if(data.status) {
-				$scope.bank.id = data.bnkId;
+				$scope.bank.id   = data.bnkId;
 				$scope.bank.name = data.name;
 			}
 			else {
 				$scope.newBank.add = true;
 			}
 
-			getBanks.resolve();
+			d.resolve();
 		}).
 		error(function(data, status, headers, config) {
 			console.log('error.');
-			getBanks.reject();
+			d.reject();
 		});
 
-		$q.all(promises).then(function() {
-			$scope.scanImages = {
-				front: 'http://' + configuration.device.url + process.image.front.url,
-				back: 'http://' + configuration.device.url + process.image.back.url
-			}
-			$scope.panes.info = true;
-		});
+		return d.promise;
 	}
 
 	function setEndorser() {
@@ -227,13 +246,13 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		id: '',
 		name: {
 			first: '',
-			last: ''
+			last:  ''
 		},
-		photo: null,
-		search: false,
+		photo:    null,
+		search:   false,
 		selected: false,
-		invalid: false,
-		add: false
+		invalid:  false,
+		info:     false,
 	};
 
 	$scope.edit = {
@@ -243,21 +262,12 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	};
 
 	$scope.issuer = {
-		id: '',
-		name: '',
-		invalid: false
-	};
-
-	$scope.newIssuer = {
-		add: false,
-		name: '',
-		address1: '',
-		address2: '',
-		city: '',
-		state: '',
-		zipcode: '',
-		phone: '',
-		email: ''
+		id:      '',
+		name:    '',
+		acct:    '',
+		transit: '',
+		invalid: false,
+		info:    false,
 	};
 
 	$scope.Endorser = {
@@ -341,10 +351,16 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	};
 
 	$scope.customerNew = function() {
-		$scope.customer.add = true;
+		$scope.customer.info   = true;
 		$scope.customer.search = false;
 		$scope.customers = [];
+
+		$scope.$broadcast('customer-add');
 	};
+
+	$scope.$on('customer-updated', function(event, args) {
+		$scope.customer = angular.copy(args.data);
+	});
 
 	$scope.customerSearch = function() {
 		$scope.customer.add = false;
@@ -399,6 +415,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		$scope.customer.name.first = customer.firstname;
 		$scope.customer.name.last = customer.lastname;
 		$scope.customer.photo = customer.photo;
+		$scope.customer.warn = customer.warn;
+		$scope.customer.danger = customer.danger;
 		$scope.customer.search = false;
 		$scope.customer.selected = true;
 
@@ -407,6 +425,17 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 
 	$scope.edit = function(area) {
 		$scope.edit[area] = !$scope.edit[area];
+
+		if(!$scope.edit[area]) {
+			console.log(area);
+			switch(area) {
+				case 'acct':
+				case 'routing':
+					getIssuer();
+					break;
+				default:
+			}
+		}
 	};
 
 	$scope.inputKeyDown = function(event, area) {
@@ -415,47 +444,9 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		}
 	};
 
-	$scope.issuerAdd = function() {
-		if($scope.issuerForm.$invalid) {
-			var cont = true;
-
-			if($scope.newIssuer.name === '') {
-				$scope.issuerForm.name.$invalid = true;
-				$scope.issuerForm.name.$dirty = true;
-				cont = false;
-			}
-
-			if(!cont) {
-				return;
-			}
-		}
-
-		var data = $scope.newIssuer;
-		data.account = process.MICR.acct;
-		data.routing = process.MICR.transit;
-
-		var url = 'http://stx.localhost:8888/q/issuer/add';
-		$http({
-			method: 'POST',
-			url: url,
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			data: data
-		}).
-		success(function(data, status, headers, config) {
-			console.log('success.');
-			if(data.status) {
-				$scope.issuer.id = data.issId;
-				$scope.issuer.name = data.name;
-				$scope.newIssuer.add = false;
-			}
-		}).
-		error(function(data, status, headers, config) {
-			console.log('error.');
-		});
-	};
+	$scope.$on('issuer-updated', function(event, args) {
+		$scope.issuer = angular.copy(args.data);
+	});
 
 	$scope.save = function() {
 		var save = true;
@@ -482,10 +473,10 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		}
 
 		if(save) {
-			process.cusId = $scope.customer.id;
-			process.issId = $scope.issuer.id;
-			process.bnkId = $scope.bank.id;
-			process.stxUrl = 'http://' + configuration.device.url;
+			process.cusId          = $scope.customer.id;
+			process.issId          = $scope.issuer.id;
+			process.bnkId          = $scope.bank.id;
+			process.stxUrl         = 'http://' + configuration.device.url;
 			process.image.FileType = $scope.ImageOptions.FileType;
 
 			$http({

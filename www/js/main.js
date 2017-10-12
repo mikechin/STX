@@ -6,6 +6,10 @@ stx.config(['$routeProvider', function($routeProvider) {
 			controller: 'ScanController',
 			templateUrl: 'views/scan.html'
 		}).
+		when('/checks', {
+			controller: 'ChecksController',
+			templateUrl: 'views/checks.html'
+		}).
 		when('/customers', {
 			controller: 'CustomersController',
 			templateUrl: 'views/customers.html'
