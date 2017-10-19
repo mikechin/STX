@@ -4,6 +4,7 @@
 	"name": "STX",
 	"description": "Interface for Excella STX.",
 	"devDependencies": {
+		"gulp": "^3.9.1",
 		"bower": "^1.4.1"
 	},
 	"scripts": {}
