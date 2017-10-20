@@ -3,6 +3,11 @@
 //
 @background-color: #f5f3ee;
 @text-gray: #777777;
+@bg-green: #8ac007;
+@bg-orange: #d9853b;
+@bg-teal: #74afad;
+@bg-gray: #f6f6f6;
+@bg-cancel: #e0e0e0;
 
 // ------------------------------
 // Mixins.
@@ -51,7 +56,7 @@ a {
 }
 
 .active {
-  border-bottom: 2px solid #d9853b;
+  border-bottom: 2px solid @bg-orange;
 }
 
 .bg-danger {
@@ -69,23 +74,25 @@ body {
 }
 
 button {
+  border-radius: 4px;
+
   &.confirm {
-    background-color: #d9853b;
+    background-color: @bg-green;
     #button;
   }
 
   &.new {
-    background-color: #8ac007;
+    background-color: @bg-green;
     #button;
   }
 
   &.cancel {
-    background-color: #e0e0e0;
+    background-color: @bg-light-gray;
     #button;
   }
 
   &.options {
-    background-color: #e0e0e0;
+    background-color: @bg-light-gray;
     #button;
   }
 
@@ -243,8 +250,9 @@ img.check {
 }
 
 .section-header {
-  background-color: #74afad;
+  background-color: @bg-teal;
   border: 1px solid #000;
+  border-radius: 10px 10px 0 0;
   color: #fff;
   font-size: 1.5em;
   margin-top: 20px;
@@ -269,8 +277,11 @@ img.check {
 }
 
 .section {
-  background-color: #f6f6f6;
-  border: 1px solid #000;
+  background-color: @bg-gray;
+  border-width: 0 1px 1px 1px;
+  border-style: solid;
+  border-color: #000;
+  border-radius: 0 0 10px 10px;
   padding: 20px 20px 20px 20px;
 
   .buttons {
