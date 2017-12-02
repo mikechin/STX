@@ -22,6 +22,10 @@ stx.config(['$routeProvider', function($routeProvider) {
 			controller: 'ReportsController',
 			templateUrl: 'views/reports.html'
 		}).
+		when('/fraud', {
+			controller: 'FraudController',
+			templateUrl: 'views/fraud.html'
+		}).
 		otherwise({
 			redirectTo: '/scan'
 		});
