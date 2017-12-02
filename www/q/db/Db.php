@@ -397,8 +397,9 @@ class Db {
 
 	public function getChecks() {
 		$q = $this->db->prepare(
-			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
+			"SELECT chkId, checks.issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum, issuers.name
 			FROM checks
+			INNER JOIN issuers ON checks.issId = issuers.issId
 			ORDER BY chkId DESC
 			LIMIT 20"
 		);
@@ -408,15 +409,16 @@ class Db {
 		$data = [];
 		while($row = $q->fetch()) {
 			$data[] = [
-				'status' => true,
-				'chkId' => $row['chkId'],
-				'issId' => $row['issId'],
-				'bnkId' => $row['bnkId'],
+				'status'  => true,
+				'chkId'   => $row['chkId'],
+				'issId'   => $row['issId'],
+				'issuer'  => $row['name'],
+				'bnkId'   => $row['bnkId'],
 				'created' => $row['created_at'],
-				'acct' => $row['MICRAcct'],
-				'amt' => $row['MICRAmt'],
+				'acct'    => $row['MICRAcct'],
+				'amt'     => $row['MICRAmt'],
 				'transit' => $row['MICRTransit'],
-				'serNum' => $row['MICRSerNum']
+				'serNum'  => $row['MICRSerNum']
 			];
 		}
 
