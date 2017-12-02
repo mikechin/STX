@@ -7,7 +7,7 @@
 @bg-orange: #d9853b;
 @bg-teal: #74afad;
 @bg-gray: #f6f6f6;
-@bg-cancel: #e0e0e0;
+@bg-light-gray: #e0e0e0;
 
 // ------------------------------
 // Mixins.
@@ -78,22 +78,21 @@ button {
 
   &.confirm {
     background-color: @bg-green;
-    #button;
+    #button
   }
 
   &.new {
-    background-color: @bg-green;
-    #button;
+    #button
   }
 
   &.cancel {
     background-color: @bg-light-gray;
-    #button;
+    #button
   }
 
   &.options {
     background-color: @bg-light-gray;
-    #button;
+    #button
   }
 
   &.clear {
@@ -198,10 +197,12 @@ button {
     }
 
     a {
+      color: @text-gray !important;
       height: 100%;
       padding: 20px;
       font-weight: normal;
       &:link, &:visited, &:hover, &:active {
+        color: @text-gray !important;
         #a
       }
     }
