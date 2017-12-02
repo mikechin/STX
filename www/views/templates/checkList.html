@@ -10,14 +10,16 @@
       <div class="data">
         <label>Date Scanned</label>
         <div class="value">{{ i.created }}</div>
-        <label>Amount</label>
-        <div class="value">${{ i.amt }}</div>
-        <label>Account</label>
-        <div class="value">{{ i.acct }}</div>
+        <label>Issuer</label>
+        <div class="value">{{ i.issuer }}</div>
         <label>Routing</label>
         <div class="value">{{ i.transit }}</div>
+        <label>Account</label>
+        <div class="value">{{ i.acct }}</div>
         <label>Check Number</label>
         <div class="value">{{ i.serNum }}</div>
+        <label>Amount</label>
+        <div class="value">${{ i.amt }}</div>
       </div>
       <div class="image">
         <img ng-src="chkimg/{{ i.chkId }}/front.JPG" />
