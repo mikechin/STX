@@ -399,7 +399,7 @@ class Db {
 		$q = $this->db->prepare(
 			"SELECT chkId, checks.issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum, issuers.name
 			FROM checks
-			INNER JOIN issuers ON checks.issId = issuers.issId
+			LEFT JOIN issuers ON checks.issId = issuers.issId
 			ORDER BY chkId DESC
 			LIMIT 20"
 		);
