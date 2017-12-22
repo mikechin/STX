@@ -1,4 +1,4 @@
-stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configuration', function($scope, $http, $q, process, configuration) {
+stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process', 'configuration', function($scope, $http, $q, $timeout, process, configuration) {
 	'use strict';
 
 	// **************************************************
@@ -226,10 +226,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	//
 	//
 	// **************************************************
-	$scope.customers = [];
+	$scope.customers   = [];
 	$scope.scannedData = null;
 	$scope.showOptions = false;
-	$scope.usStates = configuration.usStates
+	$scope.usStates    = configuration.usStates
+	$scope.loading     = false;
 
 	$scope.bank = {
 		id: '',
@@ -501,6 +502,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	};
 
 	$scope.scan = function() {
+		$scope.loading = true;
 		if(!configuration.testing) {
 			setOptions();
 
@@ -517,6 +519,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 			}).
 			success(function(data, status, headers, config) {
 				console.log('success - ' + status + '.');
+				$scope.loading = false;
 				processScan(_x2js.xml_str2json(data));
 			}).
 			error(function(data, status, headers, config) {
@@ -525,7 +528,10 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		}
 		else {
 			var data = _x2js.xml_str2json(configuration.testData);
-			processScan(data);
+			$timeout(function() {
+				$scope.loading = false;
+				processScan(data);
+			}, 3000);
 		}
 	};
 
