@@ -158,11 +158,12 @@ class Db {
 	}
 
 	public function addCheck($data) {
+		$error = $data->error ? '2' : '0';
 		$cusId = $data->cusId;
 		$issId = $data->issId;
 		$bnkId = $data->bnkId;
-		$doc = $data->doc;
-		$MICR = $data->MICR;
+		$doc   = $data->doc;
+		$MICR  = $data->MICR;
 		$image = $data->image;
 
 		$q = $this->db->query("SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'checks' AND table_schema = DATABASE()");
@@ -184,7 +185,7 @@ class Db {
 		$zip->addFile($backImgPath , 'back.'  . $image['FileType']);
 		$zip->close();
 
-		$q = $this->db->prepare("INSERT INTO checks (cusId, issId, bnkId, MICRAcct, MICRAmt, MICRAux, MICRBankNum, MICRChkType, MICRCountry, MICRDecode, MICREPC, MICRFont, MICROnUs, MICROut, MICRParseSts0, MICRParseSts1, MICRRaw, MICRSerNum, MICRTPC, MICRTransit, DocHeight, DocUnits, DocWidth, ImageSHA1Key1, ImageSHA1Key2, ImageSize1, ImageSize2, ImageURL1, ImageURL2) VALUES (:cusId, :issId, :bnkId, :MICRAcct, :MICRAmt, :MICRAux, :MICRBankNum, :MICRChkType, :MICRCountry, :MICRDecode, :MICREPC, :MICRFont, :MICROnUs, :MICROut, :MICRParseSts0, :MICRParseSts1, :MICRRaw, :MICRSerNum, :MICRTPC, :MICRTransit, :DocHeight, :DocUnits, :DocWidth, :ImageSHA1Key1, :ImageSHA1Key2, :ImageSize1, :ImageSize2, :ImageURL1, :ImageURL2)");
+		$q = $this->db->prepare("INSERT INTO checks (cusId, issId, bnkId, MICRAcct, MICRAmt, MICRAux, MICRBankNum, MICRChkType, MICRCountry, MICRDecode, MICREPC, MICRFont, MICROnUs, MICROut, MICRParseSts0, MICRParseSts1, MICRRaw, MICRSerNum, MICRTPC, MICRTransit, DocHeight, DocUnits, DocWidth, ImageSHA1Key1, ImageSHA1Key2, ImageSize1, ImageSize2, ImageURL1, ImageURL2, alert) VALUES (:cusId, :issId, :bnkId, :MICRAcct, :MICRAmt, :MICRAux, :MICRBankNum, :MICRChkType, :MICRCountry, :MICRDecode, :MICREPC, :MICRFont, :MICROnUs, :MICROut, :MICRParseSts0, :MICRParseSts1, :MICRRaw, :MICRSerNum, :MICRTPC, :MICRTransit, :DocHeight, :DocUnits, :DocWidth, :ImageSHA1Key1, :ImageSHA1Key2, :ImageSize1, :ImageSize2, :ImageURL1, :ImageURL2, :alert)");
 		$q->bindParam(':cusId', $cusId);
 		$q->bindParam(':issId', $issId);
 		$q->bindParam(':bnkId', $bnkId);
@@ -214,6 +215,7 @@ class Db {
 		$q->bindParam(':ImageSize2', $image['back']['size']);
 		$q->bindParam(':ImageURL1', $image['front']['url']);
 		$q->bindParam(':ImageURL2', $image['back']['url']);
+		$q->bindParam(':alert', $error);
 		$q->execute();
 
 		$chkId = $this->db->lastInsertId();

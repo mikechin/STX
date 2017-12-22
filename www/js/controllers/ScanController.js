@@ -85,16 +85,25 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 		process.start(data);
 		$scope.scannedData = process;
 
-		promises.push(getIssuer());
-		promises.push(getBank());
+		if($scope.scannedData.MICR.decode === 'OK') {
+			promises.push(getIssuer());
+			promises.push(getBank());
 
-		$q.all(promises).then(function() {
+			$q.all(promises).then(function() {
+				$scope.scanImages = {
+					front: 'http://' + configuration.device.url + process.image.front.url,
+					back:  'http://' + configuration.device.url + process.image.back.url
+				}
+				$scope.panes.info = true;
+			});
+		}
+		else {
 			$scope.scanImages = {
 				front: 'http://' + configuration.device.url + process.image.front.url,
 				back:  'http://' + configuration.device.url + process.image.back.url
 			}
 			$scope.panes.info = true;
-		});
+		}
 	}
 
 	function getIssuer() {
@@ -111,7 +120,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 			}
 		}).
 		success(function(data, status, headers, config) {
-			console.log('success.');
+			console.log('success.', data);
 			if(data.status) {
 				$scope.issuer.info   = false;
 				$scope.issuer.id     = data.issId;
@@ -219,6 +228,27 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 
 	function setProcessOptions() {
 		_options.DeviceSettings.ProcessOptions = $scope.ProcessOptions;
+	}
+
+	function saveScan() {
+		$http({
+			method: 'POST',
+			url: 'http://stx.localhost:8888/q/check',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			data: process
+		}).
+		success(function(data, status, headers, config) {
+			console.log('success.');
+			console.log(data);
+			cleanup();
+		}).
+		error(function(data, status, headers, config) {
+			console.log('error.');
+			console.log(data);
+		});
 	}
 
 	// **************************************************
@@ -449,6 +479,14 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 	});
 
 	$scope.save = function() {
+		if(process.MICR.decode === 'ERROR') {
+			process.error          = true;
+			process.stxUrl         = 'http://' + configuration.device.url;
+			process.image.FileType = $scope.ImageOptions.FileType;
+			saveScan();
+			return;
+		}
+
 		var save = true;
 
 		if(process.MICR.amt === '') {
@@ -478,25 +516,9 @@ stx.controller('ScanController', ['$scope', '$http', '$q', 'process', 'configura
 			process.bnkId          = $scope.bank.id;
 			process.stxUrl         = 'http://' + configuration.device.url;
 			process.image.FileType = $scope.ImageOptions.FileType;
+			process.error          = false;
 
-			$http({
-				method: 'POST',
-				url: 'http://stx.localhost:8888/q/check',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				},
-				data: process
-			}).
-			success(function(data, status, headers, config) {
-				console.log('success.');
-				console.log(data);
-				cleanup();
-			}).
-			error(function(data, status, headers, config) {
-				console.log('error.');
-				console.log(data);
-			});
+			saveScan();
 		}
 	};
 

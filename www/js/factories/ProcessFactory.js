@@ -5,6 +5,7 @@ stx.factory('process', ['$q', function($q) {
 		this.cusId = null;
 		this.issId = null;
 		this.bnkId = null;
+		this.error = null;
 
 		this.doc = {
 			height: null,
