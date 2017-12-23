@@ -1,13 +1,14 @@
 {
-	"version": "0.1.0",
-	"private": true,
-	"name": "STX",
-	"description": "Interface for Excella STX.",
-	"dependencies": {
-		"angular": "1.4.x",
-		"angular-mocks": "~1.4.x",
-		"angular-route": "~1.4.x",
-		"angular-cookies": "~1.4.x",
-		"x2js": "~1.1.x"
-	}
+  "version": "0.1.0",
+  "private": true,
+  "name": "STX",
+  "description": "Interface for Excella STX.",
+  "dependencies": {
+    "angular": "1.4.x",
+    "angular-mocks": "~1.4.x",
+    "angular-route": "~1.4.x",
+    "angular-cookies": "~1.4.x",
+    "x2js": "~1.1.x",
+    "ngstorage": "^0.3.11"
+  }
 }
