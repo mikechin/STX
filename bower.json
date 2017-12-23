@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "private": true,
-  "name": "STX",
+  "name": "stx",
   "description": "Interface for Excella STX.",
   "dependencies": {
     "angular": "1.4.x",
