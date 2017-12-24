@@ -1,4 +1,4 @@
-stx.controller('ChecksController', ['$scope', '$http', function($scope, $http) {
+stx.controller('ChecksController', ['$scope', '$http', 'configuration', function($scope, $http, configuration) {
 	'use strict';
 
 	// **************************************************
@@ -7,7 +7,7 @@ stx.controller('ChecksController', ['$scope', '$http', function($scope, $http) {
 	//
 	// **************************************************
 	function init() {
-		var url = 'http://stx.localhost:8888/q/checks';
+		var url = 'http://' + configuration.storage.hostUrl + '/q/checks';
 		$http({
 			method: 'GET',
 			url: url,
@@ -51,7 +51,7 @@ stx.controller('ChecksController', ['$scope', '$http', function($scope, $http) {
 			return;
 		}
 
-		var url = 'http://stx.localhost:8888/q/checks/' + $scope.search.number;
+		var url = 'http://' + configuration.storage.hostUrl + '/q/checks/' + $scope.search.number;
 		$http({
 			method: 'GET',
 			url: url,

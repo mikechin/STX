@@ -99,7 +99,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 
 	function getIssuer() {
 		console.log('get.', $scope.scannedData.MICR);
-		var url = 'http://stx.localhost:8888/q/issuer/' + $scope.scannedData.MICR.acct + '/' + $scope.scannedData.MICR.transit;
+		var url = 'http://' + configuration.storage.hostUrl + '/q/issuer/' + $scope.scannedData.MICR.acct + '/' + $scope.scannedData.MICR.transit;
 		var d   = $q.defer();
 
 		$http({
@@ -138,7 +138,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 	}
 
 	function getBank() {
-		var url = 'http://stx.localhost:8888/q/bank/' + $scope.scannedData.MICR.bankNum;
+		var url = 'http://' + configuration.storage.hostUrl + '/q/bank/' + $scope.scannedData.MICR.bankNum;
 		var d   = $q.defer();
 
 		$http({
@@ -325,7 +325,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 		var data = $scope.newBank;
 		data.account = process.MICR.bankNum;
 
-		var url = 'http://stx.localhost:8888/q/bank/add';
+		var url = 'http://' + configuration.storage.hostUrl + '/q/bank/add';
 		$http({
 			method: 'POST',
 			url: url,
@@ -371,7 +371,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 			return;
 		}
 
-		var url = 'http://stx.localhost:8888/q/customers/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
+		var url = 'http://' + configuration.storage.hostUrl + '/q/customers/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
 		$http({
 			method: 'GET',
 			url: url,
@@ -391,7 +391,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 	};
 
 	$scope.customerSearchByCompany = function() {
-		var url = 'http://stx.localhost:8888/q/customers/' + $scope.issuer.id;
+		var url = 'http://' + configuration.storage.hostUrl + '/q/customers/' + $scope.issuer.id;
 		$http({
 			method: 'GET',
 			url: url,
@@ -483,7 +483,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 
 			$http({
 				method: 'POST',
-				url: 'http://stx.localhost:8888/q/check',
+				url: 'http://' + configuration.storage.hostUrl + '/q/check',
 				headers: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'

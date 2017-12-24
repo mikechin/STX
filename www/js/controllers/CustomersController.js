@@ -1,4 +1,4 @@
-stx.controller('CustomersController', ['$scope', '$http', function($scope, $http) {
+stx.controller('CustomersController', ['$scope', '$http', 'configuration', function($scope, $http, configuration) {
   'use strict';
 
   // **************************************************
@@ -89,7 +89,7 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
       return;
     }
 
-    var url = 'http://stx.localhost:8888/q/customers/' + $scope.search.name.first + '/' + $scope.search.name.last;
+    var url = 'http://' + configuration.storage.hostUrl + '/q/customers/' + $scope.search.name.first + '/' + $scope.search.name.last;
     $http({
       method: 'GET',
       url: url,
@@ -127,7 +127,7 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
     $scope.customer.search     = false;
     $scope.customer.selected   = true;
 
-    var url = 'http://stx.localhost:8888/q/checks/customer/' + $scope.customer.id;
+    var url = 'http://' + configuration.storage.hostUrl + '/q/checks/customer/' + $scope.customer.id;
     $http({
       method: 'GET',
       url: url,
@@ -147,7 +147,7 @@ stx.controller('CustomersController', ['$scope', '$http', function($scope, $http
   };
 
   $scope.reportCustomer = function(level) {
-    var url = 'http://stx.localhost:8888/q/alert/customer/' + $scope.customer.id + '/' + level;
+    var url = 'http://' + configuration.storage.hostUrl + '/q/alert/customer/' + $scope.customer.id + '/' + level;
     $http({
       method: 'PUT',
       url: url,

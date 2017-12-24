@@ -75,7 +75,7 @@ stx.directive('issuersInfo', ['$q', '$http', '$rootScope', 'configuration', func
           }
         }
 
-        var url = 'http://stx.localhost:8888/q/issuer/add';
+        var url = 'http://' + configuration.storage.hostUrl + '/q/issuer/add';
         $http({
           method: 'POST',
           url: url,
@@ -99,7 +99,7 @@ stx.directive('issuersInfo', ['$q', '$http', '$rootScope', 'configuration', func
       };
 
       scope.update = function() {
-        var url = 'http://stx.localhost:8888/q/issuer/update/' + scope.i.id;
+        var url = 'http://' + configuration.storage.hostUrl + '/q/issuer/update/' + scope.i.id;
         $http({
           method: 'PUT',
           url: url,

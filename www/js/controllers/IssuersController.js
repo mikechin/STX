@@ -1,4 +1,4 @@
-stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) {
+stx.controller('IssuersController', ['$scope', '$http', 'configuration', function($scope, $http, configuration) {
   'use strict';
 
   // **************************************************
@@ -63,7 +63,7 @@ stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) 
       $scope.issuersForm.account.$dirty = false;
     }
 
-    var url = 'http://stx.localhost:8888/q/issuers/';
+    var url = 'http://' + configuration.storage.hostUrl + '/q/issuers/';
     if($scope.search.name !== '' && $scope.search.account !== '') {
       url += $scope.search.name + '/' + $scope.search.account;
     }
@@ -107,7 +107,7 @@ stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) 
     $scope.search.search   = false;
     $scope.issuer.selected = true;
 
-    var url = 'http://stx.localhost:8888/q/checks/issuer/' + $scope.issuer.id;
+    var url = 'http://' + configuration.storage.hostUrl + '/q/checks/issuer/' + $scope.issuer.id;
     $http({
       method: 'GET',
       url: url,
@@ -126,7 +126,7 @@ stx.controller('IssuersController', ['$scope', '$http', function($scope, $http) 
   };
 
   $scope.reportIssuer = function(level) {
-    var url = 'http://stx.localhost:8888/q/alert/issuer/' + $scope.issuer.id + '/' + level;
+    var url = 'http://' + configuration.storage.hostUrl + '/q/alert/issuer/' + $scope.issuer.id + '/' + level;
     $http({
       method: 'PUT',
       url: url,

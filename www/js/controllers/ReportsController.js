@@ -1,4 +1,4 @@
-stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', function($scope, $http, $filter, $window) {
+stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', 'configuration', function($scope, $http, $filter, $window, configuration) {
 	'use strict';
 
 	// **************************************************
@@ -21,7 +21,7 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', fu
 	}
 
 	function getRecentReports() {
-		var url = 'http://stx.localhost:8888/q/report/recent';
+		var url = 'http://' + configuration.storage.hostUrl + '/q/report/recent';
 		$http({
 			method: 'GET',
 			url: url,
@@ -96,7 +96,7 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', fu
 			return;
 		}
 
-		var url = 'http://stx.localhost:8888/q/download/' + $scope.start + '/' + $scope.end;
+		var url = 'http://' + configuration.storage.hostUrl + '/q/download/' + $scope.start + '/' + $scope.end;
 		$http({
 			method: 'GET',
 			url: url,
@@ -117,7 +117,7 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', fu
 	};
 
 	$scope.delete = function(id) {
-		var url = 'http://stx.localhost:8888/q/report/delete/' + id;
+		var url = 'http://' + configuration.storage.hostUrl + '/q/report/delete/' + id;
 		$http({
 			method: 'DELETE',
 			url: url,
@@ -140,7 +140,7 @@ stx.controller('ReportsController', ['$scope', '$http', '$filter', '$window', fu
 			return;
 		}
 
-		var url = 'http://stx.localhost:8888/q/report/' + $scope.start + '/' + $scope.end;
+		var url = 'http://' + configuration.storage.hostUrl + '/q/report/' + $scope.start + '/' + $scope.end;
 		$http({
 			method: 'GET',
 			url: url,

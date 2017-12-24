@@ -2,7 +2,7 @@ stx.factory('configuration', ['$q', '$localStorage', 'testData', function($q, $l
 	'use strict';
 
 	function Configuration() {
-		this.testing   = false;
+		this.testing   = true;
 		this.testError = false;
 
 		this.storage = $localStorage.$default({
