@@ -1,4 +1,4 @@
-var stx = angular.module('stx', ['ngRoute', 'ngCookies']);
+var stx = angular.module('stx', ['ngRoute', 'ngCookies', 'ngStorage']);
 
 stx.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.
