@@ -50,8 +50,10 @@ Flight::route('GET /customer/@id', function($id) {
 	$db->getCustomerById($id);
 });
 
-Flight::route('GET /customers/@firstname/@lastname', function($firstname, $lastname) {
+Flight::route('GET /customers/name', function() {
 	$db = Flight::db();
+	$firstname = Flight::request()->query->firstname;
+	$lastname  = Flight::request()->query->lastname;
 	$db->getCustomersByName($firstname, $lastname);
 });
 

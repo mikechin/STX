@@ -577,39 +577,54 @@ class Db {
 	}
 
 	public function getCustomersByName($firstname, $lastname) {
+		$where = '';
+		if(!empty($firstname)) {
+			$where .= 'firstname = :firstname';
+		}
+		if(!empty($lastname)) {
+			if(!empty($where)) {
+				$where .= ' AND ';
+			}
+			$where .= 'lastname = :lastname';
+		}
 		$q = $this->db->prepare(
 			"SELECT cusId, firstname, lastname, photo, address1, address2, city, state, zipcode, phone, comment, alert
 			FROM customers
-			WHERE firstname = :firstname AND lastname = :lastname"
+			WHERE $where"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
-		$q->bindParam(':firstname', $firstname);
-		$q->bindParam(':lastname', $lastname);
+		if(!empty($firstname)) {
+			$q->bindParam(':firstname', $firstname);
+		}
+		if(!empty($lastname)) {
+			$q->bindParam(':lastname', $lastname);
+		}
 		$q->execute();
 
 		$data = [];
 		while($row = $q->fetch()) {
 			$data[] = [
-				'cusId' => $row['cusId'],
+				'cusId'     => $row['cusId'],
 				'firstname' => $row['firstname'],
-				'lastname' => $row['lastname'],
-				'photo' => $row['photo'],
-				'address1' => $row['address1'],
-				'address2' => $row['address2'],
-				'city' => $row['city'],
-				'state' => $row['state'],
-				'zipcode' => $row['zipcode'],
-				'phone' => $row['phone'],
-				'comment' => $row['comment'],
-				'warn' => (int)$row['alert'] === 1 ? true : false,
-				'danger' => (int)$row['alert'] === 2 ? true : false
+				'lastname'  => $row['lastname'],
+				'photo'     => $row['photo'],
+				'address1'  => $row['address1'],
+				'address2'  => $row['address2'],
+				'city'      => $row['city'],
+				'state'     => $row['state'],
+				'zipcode'   => $row['zipcode'],
+				'phone'     => $row['phone'],
+				'comment'   => $row['comment'],
+				'warn'      => (int)$row['alert'] === 1 ? true : false,
+				'danger'    => (int)$row['alert'] === 2 ? true : false
 			];
 		}
 
 		if(count($data) > 0) {
 			$this->send([
-				'status' => true,
-				'customers' => $data
+				'status'    => true,
+				'q'         => $q,
+				'customers' => $data,
 			]);
 		}
 		else {

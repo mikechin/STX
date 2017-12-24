@@ -75,32 +75,35 @@ stx.controller('CustomersController', ['$scope', '$http', 'configuration', funct
     $scope.customer.add  = false;
     $scope.customer.edit = false;
 
-    if($scope.search.name.first === '' || $scope.search.name.last === '') {
-      if($scope.search.name.first === '') {
-        $scope.customerForm.firstname.$invalid = true;
-        $scope.customerForm.firstname.$dirty   = true;
-      }
-
-      if($scope.search.name.last === '') {
-        $scope.customerForm.lastname.$invalid = true;
-        $scope.customerForm.lastname.$dirty   = true;
-      }
+    if($scope.search.name.first === '' && $scope.search.name.last === '') {
+      $scope.customerForm.firstname.$invalid = true;
+      $scope.customerForm.firstname.$dirty   = true;
+      $scope.customerForm.lastname.$invalid  = true;
+      $scope.customerForm.lastname.$dirty    = true;
 
       return;
     }
+    else {
+      $scope.customerForm.firstname.$invalid = false;
+      $scope.customerForm.lastname.$invalid  = false;
+    }
 
-    var url = 'http://' + configuration.storage.hostUrl + '/q/customers/' + $scope.search.name.first + '/' + $scope.search.name.last;
+    var url = 'http://' + configuration.storage.hostUrl + '/q/customers/name';
     $http({
       method: 'GET',
       url: url,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      params: {
+        firstname: $scope.search.name.first,
+        lastname:  $scope.search.name.last,
+      },
     }).
     success(function(data, status, headers, config) {
       console.log('success.', data);
-      $scope.customers = data.customers;
+      $scope.customers       = data.customers;
       $scope.customer.search = true;
     }).
     error(function(data, status, headers, config) {
