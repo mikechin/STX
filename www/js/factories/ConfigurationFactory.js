@@ -1,12 +1,18 @@
-stx.factory('configuration', ['$q', 'testData', function($q, testData) {
+stx.factory('configuration', ['$q', '$localStorage', 'testData', function($q, $localStorage, testData) {
 	'use strict';
 
 	function Configuration() {
-		this.testing   = true;
+		this.testing   = false;
 		this.testError = false;
 
+		this.storage = $localStorage.$default({
+			host:      true,
+			hostUrl:   'localhost',
+			deviceUrl: '192.168.1.100',
+		});
+
 		this.device = {
-			url: this.testing ? testData.url : '192.168.1.101'
+			url: this.testing ? testData.url : this.storage.deviceUrl,
 		};
 
 		this.testData = this.testError ? testData.dataError : testData.data;
