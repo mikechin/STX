@@ -243,6 +243,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 		success(function(data, status, headers, config) {
 			console.log('success.');
 			console.log(data);
+			$scope.saved = true;
 			cleanup();
 		}).
 		error(function(data, status, headers, config) {
@@ -261,6 +262,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 	$scope.showOptions = false;
 	$scope.usStates    = configuration.usStates
 	$scope.loading     = false;
+	$scope.saved       = false;
 	$scope.storage     = configuration.storage;
 
 	$scope.bank = {
@@ -525,6 +527,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 	};
 
 	$scope.scan = function() {
+		$scope.saved   = false;
 		$scope.loading = true;
 		if(!configuration.testing) {
 			setOptions();
