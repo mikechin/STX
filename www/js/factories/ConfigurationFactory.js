@@ -6,7 +6,6 @@ stx.factory('configuration', ['$q', '$localStorage', 'testData', function($q, $l
 		this.testError = false;
 
 		this.storage = $localStorage.$default({
-			host:      true,
 			hostUrl:   'localhost',
 			deviceUrl: '192.168.1.100',
 		});
