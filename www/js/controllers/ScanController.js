@@ -231,6 +231,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 	$scope.showOptions = false;
 	$scope.usStates    = configuration.usStates
 	$scope.loading     = false;
+	$scope.storage     = configuration.storage;
 
 	$scope.bank = {
 		id: '',
