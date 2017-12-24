@@ -28,7 +28,7 @@ stx.controller('ChecksController', ['$scope', '$http', function($scope, $http) {
 		});
 	}
 
-  init();
+	init();
 
 	// **************************************************
 	// public.
