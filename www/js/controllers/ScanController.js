@@ -92,8 +92,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 
 			$q.all(promises).then(function() {
 				$scope.scanImages = {
-					front: 'http://' + configuration.device.url + process.image.front.url,
-					back:  'http://' + configuration.device.url + process.image.back.url
+					front: 'http://' + configuration.device.url + process.image.front.url + '?' + Math.random(),
+					back:  'http://' + configuration.device.url + process.image.back.url + '?' + Math.random(),
 				}
 				$scope.panes.info = true;
 			});
