@@ -84,6 +84,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 
 		process.start(data);
 		$scope.scannedData = process;
+		$scope.scannedData.notes = '';
 
 		if($scope.scannedData.MICR.decode === 'OK') {
 			promises.push(getIssuer());
@@ -483,6 +484,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 	});
 
 	$scope.save = function() {
+		process.notes = $scope.scannedData.notes;
+
 		if(process.MICR.decode === 'ERROR') {
 			process.error          = true;
 			process.stxUrl         = 'http://' + configuration.device.url;
@@ -557,7 +560,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 			$timeout(function() {
 				$scope.loading = false;
 				processScan(data);
-			}, 3000);
+			}, 1000);
 		}
 	};
 

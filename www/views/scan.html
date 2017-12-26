@@ -193,6 +193,13 @@
 						<input type="text" name="acct" ng-model="scannedData.MICR.serNum" ng-keydown="inputKeyDown($event, 'checkNum')" />
 					</div>
 				</div>
+				<div class="option">
+					<label>Notes</label>
+					<div class="form-control-edit value">
+						<textarea class="notes" name="notes" ng-model="scannedData.notes" rows="10" cols="50">
+						</textarea>
+					</div>
+				</div>
 				<div class="option stripes">
 					<img class="check" ng-src="{{ scanImages.front }}" />
 				</div>
