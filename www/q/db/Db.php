@@ -439,8 +439,9 @@ class Db {
 
 	public function getChecksByCustomerId($id) {
 		$q = $this->db->prepare(
-			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
+			"SELECT chkId, checks.issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum, issuers.name
 			FROM checks
+			LEFT JOIN issuers ON checks.issId = issuers.issId
 			WHERE cusId = :id
 			ORDER BY chkId DESC"
 		);
@@ -454,6 +455,7 @@ class Db {
 				'status' => true,
 				'chkId' => $row['chkId'],
 				'issId' => $row['issId'],
+				'issuer'  => $row['name'],
 				'bnkId' => $row['bnkId'],
 				'created' => $row['created_at'],
 				'acct' => $row['MICRAcct'],
@@ -478,9 +480,10 @@ class Db {
 
 	public function getChecksByIssuerId($id) {
 		$q = $this->db->prepare(
-			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
+			"SELECT chkId, checks.issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum, issuers.name
 			FROM checks
-			WHERE issId = :id
+			LEFT JOIN issuers ON checks.issId = issuers.issId
+			WHERE checks.issId = :id
 			ORDER BY chkId DESC"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
@@ -493,6 +496,7 @@ class Db {
 				'status' => true,
 				'chkId' => $row['chkId'],
 				'issId' => $row['issId'],
+				'issuer'  => $row['name'],
 				'bnkId' => $row['bnkId'],
 				'created' => $row['created_at'],
 				'acct' => $row['MICRAcct'],
