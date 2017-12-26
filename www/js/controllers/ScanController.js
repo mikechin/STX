@@ -62,6 +62,9 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 			front: '',
 			back: ''
 		};
+
+		// clear red box around amount on subsequent scans.
+		$scope.scanForm.amount.$dirty = false;
 	}
 
 	function initCustomer() {
