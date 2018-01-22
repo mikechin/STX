@@ -34,6 +34,7 @@ stx.directive('issuersInfo', ['$q', '$http', '$rootScope', 'configuration', func
         scope.i = {
           id:      '',
           name:    '',
+          notes:   '',
           account: '',
           routing: '',
         };

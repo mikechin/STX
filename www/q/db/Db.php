@@ -257,6 +257,7 @@ class Db {
 		$zipcode  = NULL;
 		$phone    = NULL;
 		$email    = NULL;
+		$comment  = NULL;
 
 		if(!empty($data->address1)) {
 			$address1 = $data->address1;
@@ -293,6 +294,11 @@ class Db {
 			$columns .= ', email';
 			$values  .= ', :email';
 		}
+		if(!empty($data->notes)) {
+			$comment  = $data->notes;
+			$columns .= ', comment';
+			$values  .= ', :comment';
+		}
 
 		$q = $this->db->prepare("INSERT INTO issuers ($columns) VALUES ($values)");
 		$q->bindParam(':account', $account);
@@ -312,6 +318,8 @@ class Db {
 			$q->bindParam(':phone', $phone);
 		if($email)
 			$q->bindParam(':email', $email);
+		if($comment)
+			$q->bindParam(':comment', $comment);
 		$q->execute();
 
 		$issId = $this->db->lastInsertId();
@@ -1060,6 +1068,7 @@ class Db {
 		$zipcode  = NULL;
 		$phone    = NULL;
 		$email    = NULL;
+		$comment  = NULL;
 
 		if(!empty($data->address1)) {
 			$address1 = $data->address1;
@@ -1087,7 +1096,11 @@ class Db {
 		}
 		if(!empty($data->email)) {
 			$email = $data->email;
-			$values .= ', :email';
+			$values .= ', email = :email';
+		}
+		if(!empty($data->notes)) {
+			$comment = $data->notes;
+			$values .= ', comment = :comment';
 		}
 
 		$q = $this->db->prepare("UPDATE issuers SET $values WHERE issId = :id");
@@ -1106,6 +1119,8 @@ class Db {
 			$q->bindParam(':phone', $phone);
 		if($email)
 			$q->bindParam(':email', $email);
+		if($comment)
+			$q->bindParam(':comment', $comment);
 		$q->bindParam(':id', $id);
 		$q->execute();
 
