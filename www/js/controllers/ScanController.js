@@ -401,19 +401,28 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   });
 
   $scope.customerSearch = function() {
-    $scope.customer.add = false;
+    $scope.customer.add  = false;
+    $scope.customer.edit = false;
 
-    if($scope.customer.name.first === '' || $scope.customer.name.last === '') {
+    if($scope.customer.name.first === '' && $scope.customer.name.last === '') {
+      $scope.customer.invalid = true;
       return;
     }
+    else {
+      $scope.customer.invalid = false;
+    }
 
-    var url = 'http://' + configuration.storage.hostUrl + '/q/customers/' + $scope.customer.name.first + '/' + $scope.customer.name.last;
+    var url = 'http://' + configuration.storage.hostUrl + '/q/customers/name';
     $http({
       method: 'GET',
       url: url,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
+      },
+      params: {
+        firstname: $scope.customer.name.first,
+        lastname:  $scope.customer.name.last,
       }
     }).
     success(function(data, status, headers, config) {
