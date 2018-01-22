@@ -124,7 +124,7 @@ stx.controller('CustomersController', ['$scope', '$http', 'configuration', funct
     $scope.customer.zipcode    = parseInt(customer.zipcode);
     $scope.customer.phone      = customer.phone;
     $scope.customer.photo      = customer.photo;
-    $scope.customer.comment    = customer.comment;
+    $scope.customer.notes      = customer.comment;
     $scope.customer.warn       = customer.warn;
     $scope.customer.danger     = customer.danger;
     $scope.customer.search     = false;

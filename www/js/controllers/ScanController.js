@@ -72,13 +72,14 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
       id: '',
       name: {
         first: '',
-        last: ''
+        last:  ''
       },
-      photo: null,
-      search: false,
+      notes:    '',
+      photo:    null,
+      search:   false,
       selected: false,
-      invalid: false,
-      add: false
+      invalid:  false,
+      add:      false
     };
   }
 
@@ -286,6 +287,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
       first: '',
       last:  ''
     },
+    notes:    '',
     photo:    null,
     search:   false,
     selected: false,
@@ -458,16 +460,17 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   $scope.customerSelect = function(i) {
     var customer = $scope.customers[i];
 
-    $scope.customer.id = customer.cusId;
+    $scope.customer.id         = customer.cusId;
     $scope.customer.name.first = customer.firstname;
-    $scope.customer.name.last = customer.lastname;
-    $scope.customer.photo = customer.photo;
-    $scope.customer.warn = customer.warn;
-    $scope.customer.danger = customer.danger;
-    $scope.customer.search = false;
-    $scope.customer.selected = true;
+    $scope.customer.name.last  = customer.lastname;
+    $scope.customer.notes      = customer.comment;
+    $scope.customer.photo      = customer.photo;
+    $scope.customer.warn       = customer.warn;
+    $scope.customer.danger     = customer.danger;
+    $scope.customer.search     = false;
+    $scope.customer.selected   = true;
 
-    $scope.customer.invalid = false;
+    $scope.customer.invalid    = false;
   };
 
   $scope.edit = function(area) {
