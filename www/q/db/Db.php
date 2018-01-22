@@ -75,17 +75,18 @@ class Db {
 
 	public function addCustomer($data) {
 		$columns = 'firstname, lastname';
-		$values = ':firstname, :lastname';
+		$values  = ':firstname, :lastname';
 
 		$firstname = $data->name['first'];
-		$lastname = $data->name['last'];
-		$address1 = NULL;
-		$address2 = NULL;
-		$city = NULL;
-		$state = NULL;
-		$zipcode = NULL;
-		$phone = NULL;
-		$photo = NULL;
+		$lastname  = $data->name['last'];
+		$address1  = NULL;
+		$address2  = NULL;
+		$city      = NULL;
+		$state     = NULL;
+		$zipcode   = NULL;
+		$phone     = NULL;
+		$photo     = NULL;
+		$comment   = NULL;
 
 		if(!empty($data->address1)) {
 			$address1 = $data->address1;
@@ -117,6 +118,11 @@ class Db {
 			$columns .= ', phone';
 			$values .= ', :phone';
 		}
+		if(!empty($data->notes)) {
+			$comment = $data->notes;
+			$columns .= ', comment';
+			$values .= ', :comment';
+		}
 		if(!empty($data->photo)) {
 			$photo = $data->photo;
 			$columns .= ', photo';
@@ -138,6 +144,8 @@ class Db {
 			$q->bindParam(':zipcode', $zipcode);
 		if($phone)
 			$q->bindParam(':phone', $phone);
+		if($comment)
+			$q->bindParam(':comment', $comment);
 		if($photo)
 			$q->bindParam(':photo', $photo);
 		$q->execute();
@@ -963,14 +971,15 @@ class Db {
 		$values = 'firstname = :firstname, lastname = :lastname';
 
 		$firstname = $data->name['first'];
-		$lastname = $data->name['last'];
-		$address1 = NULL;
-		$address2 = NULL;
-		$city = NULL;
-		$state = NULL;
-		$zipcode = NULL;
-		$phone = NULL;
-		$photo = NULL;
+		$lastname  = $data->name['last'];
+		$address1  = NULL;
+		$address2  = NULL;
+		$city      = NULL;
+		$state     = NULL;
+		$zipcode   = NULL;
+		$phone     = NULL;
+		$comment   = NULL;
+		$photo     = NULL;
 
 		if(!empty($data->address1)) {
 			$address1 = $data->address1;
@@ -996,6 +1005,10 @@ class Db {
 			$phone = $data->phone;
 			$values .= ', phone = :phone';
 		}
+		if(!empty($data->notes)) {
+			$comment = $data->notes;
+			$values .= ', comment = :comment';
+		}
 		if(!empty($data->photo)) {
 			$photo = $data->photo;
 			$values .= ', photo = :photo';
@@ -1016,6 +1029,8 @@ class Db {
 			$q->bindParam(':zipcode', $zipcode);
 		if($phone)
 			$q->bindParam(':phone', $phone);
+		if($comment)
+			$q->bindParam(':comment', $comment);
 		if($photo)
 			$q->bindParam(':photo', $photo);
 		$q->bindParam(':id', $id);

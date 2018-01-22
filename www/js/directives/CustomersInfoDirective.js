@@ -38,7 +38,8 @@ stx.directive('customersInfo', ['$q', '$http', '$rootScope', 'configuration', fu
           state: '',
           zipcode: '',
           phone: '',
-          photo: null
+          notes: '',
+          photo: null,
         };
 
         scope.editForm.firstname.$invalid = false;
