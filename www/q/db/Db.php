@@ -753,7 +753,7 @@ class Db {
 
 	public function getIssuerByAccountRouting($account, $routing) {
 		$q = $this->db->prepare(
-			"SELECT issId, name, alert
+			"SELECT issId, name, comment, alert
 			FROM issuers
 			WHERE account = :account AND routing = :routing LIMIT 1"
 		);
@@ -765,11 +765,12 @@ class Db {
 		$row = $q->fetch();
 		if($row) {
 			$this->send([
-				'status' => true,
-				'issId'  => $row['issId'],
-				'name'   => $row['name'],
-				'warn'   => (int)$row['alert'] === 1 ? true : false,
-				'danger' => (int)$row['alert'] === 2 ? true : false,
+				'status'  => true,
+				'issId'   => $row['issId'],
+				'name'    => $row['name'],
+				'comment' => $row['comment'],
+				'warn'    => (int)$row['alert'] === 1 ? true : false,
+				'danger'  => (int)$row['alert'] === 2 ? true : false,
 			]);
 		}
 		else {
@@ -782,7 +783,7 @@ class Db {
 	public function getIssuersByName($name) {
 		$search = "%$name%";
 		$q = $this->db->prepare(
-			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode, alert
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode, comment, alert
 			FROM issuers
 			WHERE name LIKE :name"
 		);
@@ -802,6 +803,7 @@ class Db {
 				'city'     => $row['city'],
 				'state'    => $row['state'],
 				'zipcode'  => $row['zipcode'],
+				'comment'  => $row['comment'],
 				'warn'     => (int)$row['alert'] === 1 ? true : false,
 				'danger'   => (int)$row['alert'] === 2 ? true : false,
 			];
@@ -822,7 +824,7 @@ class Db {
 
 	public function getIssuersByAccount($account) {
 		$q = $this->db->prepare(
-			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode, alert
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode, comment, alert
 			FROM issuers
 			WHERE account = :account"
 		);
@@ -842,6 +844,7 @@ class Db {
 				'city'     => $row['city'],
 				'state'    => $row['state'],
 				'zipcode'  => $row['zipcode'],
+				'comment'  => $row['comment'],
 				'warn'     => (int)$row['alert'] === 1 ? true : false,
 				'danger'   => (int)$row['alert'] === 2 ? true : false,
 			];
@@ -863,7 +866,7 @@ class Db {
 	public function getIssuersByNameAccount($name, $account) {
 		$search = "%$name%";
 		$q = $this->db->prepare(
-			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode, alert
+			"SELECT issId, account, routing, name, address1, address2, city, state, zipcode, comment, alert
 			FROM issuers
 			WHERE account = :account AND name LIKE :name"
 		);
@@ -884,6 +887,7 @@ class Db {
 				'city'     => $row['city'],
 				'state'    => $row['state'],
 				'zipcode'  => $row['zipcode'],
+				'comment'  => $row['comment'],
 				'warn'     => (int)$row['alert'] === 1 ? true : false,
 				'danger'   => (int)$row['alert'] === 2 ? true : false,
 			];

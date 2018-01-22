@@ -130,6 +130,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
         $scope.issuer.info   = false;
         $scope.issuer.id     = data.issId;
         $scope.issuer.name   = data.name;
+        $scope.issuer.notes  = data.comment;
         $scope.issuer.warn   = data.warn;
         $scope.issuer.danger = data.danger;
       }
@@ -306,6 +307,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
     name:    '',
     acct:    '',
     transit: '',
+    notes:   '',
     invalid: false,
     info:    false,
   };

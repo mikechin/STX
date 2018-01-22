@@ -102,6 +102,7 @@ stx.controller('IssuersController', ['$scope', '$http', 'configuration', functio
     $scope.issuer.city     = issuer.city;
     $scope.issuer.state    = issuer.state;
     $scope.issuer.zipcode  = parseInt(issuer.zipcode);
+    $scope.issuer.notes    = issuer.comment;
     $scope.issuer.warn     = issuer.warn;
     $scope.issuer.danger   = issuer.danger;
     $scope.search.search   = false;
