@@ -89,28 +89,30 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
     var promises = [];
 
     process.start(data);
-    $scope.scannedData = process;
+    $scope.scannedData       = process;
     $scope.scannedData.notes = '';
 
-    if($scope.scannedData.MICR.decode === 'OK') {
-      promises.push(getIssuer());
-      promises.push(getBank());
+    promises.push(getIssuer());
+    promises.push(getBank());
 
-      $q.all(promises).then(function() {
-        $scope.scanImages = {
-          front: 'http://' + configuration.device.url + process.image.front.url + '?' + Math.random(),
-          back:  'http://' + configuration.device.url + process.image.back.url + '?' + Math.random(),
-        }
-        $scope.panes.info = true;
-      });
-    }
-    else {
-      $scope.scanImages = {
-        front: 'http://' + configuration.device.url + process.image.front.url,
-        back:  'http://' + configuration.device.url + process.image.back.url
-      }
+    $q.all(promises).then(function() {
+      $scope.panes.scan = false;
       $scope.panes.info = true;
-    }
+    },
+    function() {
+      $scope.panes.scan = false;
+      $scope.panes.info = true;
+    });
+
+    saveCheck().then(function(id) {
+      $scope.scanImages = {
+        front: 'chkimg/' + id + '/front.JPG',
+        back:  'chkimg/' + id + '/back.JPG',
+      }
+    },
+    function() {
+      console.warn('Error: Could not save check infomation.');
+    });
   }
 
   function getIssuer() {
@@ -233,10 +235,49 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
     _options.DeviceSettings.ProcessOptions = $scope.ProcessOptions;
   }
 
-  function saveScan() {
+  function saveCheck() {
+    var d = $q.defer();
+
+    process.stxUrl         = 'http://' + configuration.device.url;
+    process.image.FileType = $scope.ImageOptions.FileType;
+    process.error          = false;
+
+    if(process.MICR.decode === 'ERROR') {
+      process.error = true;
+    }
+
+    saveScan(d);
+
+    return d.promise;
+  }
+
+  function saveScan(defer) {
     $http({
       method: 'POST',
       url: 'http://stx.localhost:8888/q/check',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: process
+    }).
+    success(function(data, status, headers, config) {
+      console.log('success.');
+      console.log(data);
+      process.chkId = data.chkId;
+      defer.resolve(data.chkId);
+    }).
+    error(function(data, status, headers, config) {
+      console.log('error.');
+      console.log(data);
+      defer.reject();
+    });
+  }
+
+  function updateScan() {
+    $http({
+      method: 'PUT',
+      url: 'http://stx.localhost:8888/q/check/update/' + process.chkId,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -510,14 +551,6 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   $scope.save = function() {
     process.notes = $scope.scannedData.notes;
 
-    if(process.MICR.decode === 'ERROR') {
-      process.error          = true;
-      process.stxUrl         = 'http://' + configuration.device.url;
-      process.image.FileType = $scope.ImageOptions.FileType;
-      saveScan();
-      return;
-    }
-
     var save = true;
 
     if(process.MICR.amt === '') {
@@ -542,14 +575,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
     }
 
     if(save) {
-      process.cusId          = $scope.customer.id;
-      process.issId          = $scope.issuer.issId;
-      process.bnkId          = $scope.bank.id;
-      process.stxUrl         = 'http://' + configuration.device.url;
-      process.image.FileType = $scope.ImageOptions.FileType;
-      process.error          = false;
+      process.cusId = $scope.customer.id;
+      process.issId = $scope.issuer.issId;
+      process.bnkId = $scope.bank.id;
 
-      saveScan();
+      updateScan();
     }
   };
 
@@ -584,7 +614,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
       $timeout(function() {
         $scope.loading = false;
         processScan(data);
-      }, 1000);
+      }, 500);
     }
   };
 
