@@ -755,27 +755,34 @@ class Db {
 		$q = $this->db->prepare(
 			"SELECT issId, name, comment, alert
 			FROM issuers
-			WHERE account = :account AND routing = :routing LIMIT 1"
+			WHERE account = :account AND routing = :routing"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':account', $account);
 		$q->bindParam(':routing', $routing);
 		$q->execute();
 
-		$row = $q->fetch();
-		if($row) {
-			$this->send([
+		$data = [];
+		while($row = $q->fetch()) {
+			$data[] = [
 				'status'  => true,
 				'issId'   => $row['issId'],
 				'name'    => $row['name'],
 				'comment' => $row['comment'],
 				'warn'    => (int)$row['alert'] === 1 ? true : false,
 				'danger'  => (int)$row['alert'] === 2 ? true : false,
+			];
+		}
+
+		if(count($data) > 0) {
+			$this->send([
+				'status'  => true,
+				'issuers' => $data,
 			]);
 		}
 		else {
 			$this->send([
-				'status' => false
+				'status' => false,
 			]);
 		}
 	}
