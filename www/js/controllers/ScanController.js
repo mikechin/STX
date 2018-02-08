@@ -19,6 +19,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 
   function cleanup() {
     $scope.customers = [];
+    $scope.issuers   = [];
+
     $scope.scannedData = null;
     $scope.showOptions = false;
 
@@ -127,12 +129,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
     success(function(data, status, headers, config) {
       console.log('success.', data);
       if(data.status) {
-        $scope.issuer.info   = false;
-        $scope.issuer.id     = data.issId;
-        $scope.issuer.name   = data.name;
-        $scope.issuer.notes  = data.comment;
-        $scope.issuer.warn   = data.warn;
-        $scope.issuer.danger = data.danger;
+        $scope.issuers = data.issuers;
       }
       else {
         $scope.issuer.info    = true;
@@ -264,6 +261,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   //
   // **************************************************
   $scope.customers   = [];
+  $scope.issuers     = [];
   $scope.scannedData = null;
   $scope.showOptions = false;
   $scope.usStates    = configuration.usStates
@@ -440,7 +438,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   };
 
   $scope.customerSearchByCompany = function() {
-    var url = 'http://' + configuration.storage.hostUrl + '/q/customers/' + $scope.issuer.id;
+    var url = 'http://' + configuration.storage.hostUrl + '/q/customers/' + $scope.issuer.issId;
     $http({
       method: 'GET',
       url: url,
@@ -524,7 +522,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
       save = false;
     }
 
-    if($scope.issuer.id === '') {
+    if($scope.issuer.issId === '') {
       $scope.issuer.invalid = true;
       save = false;
     }
@@ -536,7 +534,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
 
     if(save) {
       process.cusId          = $scope.customer.id;
-      process.issId          = $scope.issuer.id;
+      process.issId          = $scope.issuer.issId;
       process.bnkId          = $scope.bank.id;
       process.stxUrl         = 'http://' + configuration.device.url;
       process.image.FileType = $scope.ImageOptions.FileType;

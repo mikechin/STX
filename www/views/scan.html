@@ -231,7 +231,7 @@
 				<div class="buttons">
 					<button class="confirm" ng-click="customerSearch()">Search</button>
 					<button class="new" ng-click="customerNew()">+ New</button>
-					<button class="options" ng-click="customerSearchByCompany()" ng-show="issuer.id">List</button>
+					<button class="options" ng-click="customerSearchByCompany()" ng-show="issuer.issId">List</button>
 				</div>
 				<div class="search-results" ng-show="customer.search">
 					<div class="no-results" ng-hide="customers.length">
@@ -274,10 +274,13 @@
 		<div class="section" ng-class="{ 'has-error': issuer.invalid, 'bg-danger': issuer.danger, 'bg-warn': issuer.warn  }">
 			<div class="option">
 				<div ng-hide="issuer.add">
+					<div>
+						<select ng-model="issuer" ng-options="issuer.name for issuer in issuers"></select>
+					</div>
 					<label>Name</label>
 					<div>{{ issuer.name }}</div>
 					<label>Notes</label>
-					<div>{{ issuer.notes }}</div>
+					<div>{{ issuer.comment }}</div>
 				</div>
 				<div class="no-results" ng-show="issuer.add">
 					<span>No results.</span>
