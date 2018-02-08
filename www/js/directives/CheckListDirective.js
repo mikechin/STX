@@ -1,4 +1,4 @@
-stx.directive('checkList', ['$q', '$http', function($q, $http) {
+stx.directive('checkList', ['$q', '$http', 'configuration', function($q, $http, configuration) {
   'use strict';
 
   return {
@@ -24,6 +24,25 @@ stx.directive('checkList', ['$q', '$http', function($q, $http) {
       // public.
       //
       // **************************************************
+      scope.delete = function(id, index) {
+        $http({
+          method: 'DELETE',
+          url: 'http://' + configuration.device.url + '/q/check/delete/' + id,
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        }).
+        success(function(data, status, headers, config) {
+          console.log('success.');
+          console.log(data, index);
+          scope.list.splice(index, 1);
+        }).
+        error(function(data, status, headers, config) {
+          console.log('error.');
+          console.log(data);
+        });
+      }
     }
   };
 }]);
