@@ -137,6 +137,11 @@ Flight::route('POST /issuer/add', function() {
 //
 //
 // **************************************************
+Flight::route('PUT /check/update/@id', function($id) {
+	$db = Flight::db();
+	$db->updateCheck($id, Flight::request()->data);
+});
+
 Flight::route('PUT /customer/update/@id', function($id) {
 	$db = Flight::db();
 	$db->updateCustomer($id, Flight::request()->data);

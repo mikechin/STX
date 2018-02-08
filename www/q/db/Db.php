@@ -987,6 +987,43 @@ class Db {
 		}
 	}
 
+	public function updateCheck($id, $data) {
+		$values = 'cusId = :cusId, issId = :issId, bnkId = :bnkId, MICRAmt = :MICRAmt';
+
+		$cusId = $data->cusId;
+		$issId = $data->issId;
+		$bnkId = $data->bnkId;
+		$amt   = $data->MICR['amt'];
+		$notes = NULL;
+
+		if(!empty($data->notes)) {
+			$notes   = $data->notes;
+			$values .= ', comment = :comment';
+		}
+
+		$q = $this->db->prepare("UPDATE checks SET $values WHERE chkId = :id");
+		$q->bindParam(':id',      $id);
+		$q->bindParam(':cusId',   $cusId);
+		$q->bindParam(':issId',   $issId);
+		$q->bindParam(':bnkId',   $bnkId);
+		$q->bindParam(':MICRAmt', $amt);
+		if($notes)
+			$q->bindParam(':comment', $notes);
+		$q->execute();
+
+		if($q->rowCount() > 0) {
+			$this->send([
+				'status' => true,
+				'chkId' => $id,
+			]);
+		}
+		else {
+			$this->send([
+				'status' => false
+			]);
+		}
+	}
+
 	public function updateCustomer($id, $data) {
 		$values = 'firstname = :firstname, lastname = :lastname';
 
@@ -1148,7 +1185,6 @@ class Db {
 			]);
 		}
 	}
-
 }
 
 ?>
