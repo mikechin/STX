@@ -63,7 +63,7 @@ stx.controller('ChecksController', ['$scope', '$http', 'configuration', function
 		success(function(data, status, headers, config) {
 			console.log('success.', data);
 			$scope.checks = data.checks;
-			if($scope.checks.length > 0) {
+			if(data.status && $scope.checks.length > 0) {
 				$scope.show = true;
 			}
 		}).
