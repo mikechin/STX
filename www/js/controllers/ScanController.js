@@ -254,7 +254,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   function saveScan(defer) {
     $http({
       method: 'POST',
-      url: 'http://stx.localhost:8888/q/check',
+      url: 'http://' + configuration.device.url + '/q/check',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -277,7 +277,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   function updateScan() {
     $http({
       method: 'PUT',
-      url: 'http://stx.localhost:8888/q/check/update/' + process.chkId,
+      url: 'http://' + configuration.device.url + '/q/check/update/' + process.chkId,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -616,6 +616,28 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
         processScan(data);
       }, 500);
     }
+  };
+
+  $scope.rescan = function() {
+    $http({
+      method: 'DELETE',
+      url: 'http://' + configuration.device.url + '/q/check/delete/' + process.chkId,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: process
+    }).
+    success(function(data, status, headers, config) {
+      console.log('success.');
+      console.log(data);
+      cleanup();
+    }).
+    error(function(data, status, headers, config) {
+      console.log('error.');
+      console.log(data);
+    });
+
   };
 
   $scope.toggleOptions = function() {
