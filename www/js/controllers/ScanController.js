@@ -626,7 +626,6 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      data: process
     }).
     success(function(data, status, headers, config) {
       console.log('success.');
@@ -637,7 +636,6 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
       console.log('error.');
       console.log(data);
     });
-
   };
 
   $scope.toggleOptions = function() {
