@@ -420,6 +420,7 @@ class Db {
 			"SELECT chkId, checks.issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum, checks.comment, issuers.name
 			FROM checks
 			LEFT JOIN issuers ON checks.issId = issuers.issId
+			WHERE checks.deleted = 0
 			ORDER BY chkId DESC
 			LIMIT 20"
 		);
@@ -461,7 +462,7 @@ class Db {
 			"SELECT chkId, checks.issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum, checks.comment, issuers.name
 			FROM checks
 			LEFT JOIN issuers ON checks.issId = issuers.issId
-			WHERE cusId = :id
+			WHERE cusId = :id AND checks.deleted = 0
 			ORDER BY chkId DESC"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
@@ -503,7 +504,7 @@ class Db {
 			"SELECT chkId, checks.issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum, checks.comment, issuers.name
 			FROM checks
 			LEFT JOIN issuers ON checks.issId = issuers.issId
-			WHERE checks.issId = :id
+			WHERE checks.issId = :id AND checks.deleted = 0
 			ORDER BY chkId DESC"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
@@ -545,7 +546,7 @@ class Db {
 			"SELECT chkId, checks.issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum, checks.comment, issuers.name
 			FROM checks
 			LEFT JOIN issuers ON checks.issId = issuers.issId
-			WHERE MICRSerNum = :number
+			WHERE MICRSerNum = :number AND checks.deleted = 0
 			ORDER BY chkId DESC
 			LIMIT 20"
 		);
@@ -704,7 +705,7 @@ class Db {
 		$q = $this->db->prepare(
 			"SELECT chkId, ImageURL1, ImageURL2
 			FROM checks
-			WHERE created_at BETWEEN :start AND :end"
+			WHERE deleted = 0 AND created_at BETWEEN :start AND :end"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':start', $start);
@@ -917,7 +918,7 @@ class Db {
 		$q = $this->db->prepare(
 			"SELECT chkId, issId, bnkId, created_at, MICRAcct, MICRAmt, MICRTransit, MICRSerNum
 			FROM checks
-			WHERE created_at BETWEEN :start AND :end"
+			WHERE deleted = 0 AND created_at BETWEEN :start AND :end"
 		);
 		$q->setFetchMode(PDO::FETCH_ASSOC);
 		$q->bindParam(':start', $start);
