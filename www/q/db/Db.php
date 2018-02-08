@@ -379,6 +379,16 @@ class Db {
 		}
 	}
 
+	public function deleteCheckById($id) {
+		$q = $this->db->prepare("UPDATE checks SET deleted = 1 WHERE chkId = :id LIMIT 1");
+		$q->bindParam(':id', $id);
+		$q->execute();
+
+		$this->send([
+			'status' => true
+		]);
+	}
+
 	public function deleteReportById($rptId) {
 		$q = $this->db->prepare("DELETE FROM reports WHERE rptId = :id LIMIT 1");
 		$q->bindParam(':id', $rptId);

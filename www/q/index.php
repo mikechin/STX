@@ -102,6 +102,11 @@ Flight::route('GET /report/@start/@end', function($start, $end) {
 //
 //
 // **************************************************
+Flight::route('DELETE /check/delete/@id', function($id) {
+	$db = Flight::db();
+	$db->deleteCheckById($id);
+});
+
 Flight::route('DELETE /report/delete/@rptId', function($rptId) {
 	$db = Flight::db();
 	$db->deleteReportById($rptId);
