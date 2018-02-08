@@ -281,6 +281,9 @@
 					<div>{{ issuer.name }}</div>
 					<label>Notes</label>
 					<div>{{ issuer.comment }}</div>
+					<div class="buttons">
+						<button class="new" ng-click="issuerNew()">+ New</button>
+					</div>
 				</div>
 				<div class="no-results" ng-show="issuer.add">
 					<span>No results.</span>

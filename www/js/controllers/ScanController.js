@@ -494,8 +494,17 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
     }
   };
 
+  $scope.issuerNew = function() {
+    $scope.issuer.info    = true;
+    $scope.issuer.acct    = $scope.scannedData.MICR.acct;
+    $scope.issuer.transit = $scope.scannedData.MICR.transit;
+
+    $scope.$broadcast('issuer-add', { acct: $scope.issuer.acct, transit: $scope.issuer.transit });
+  }
+
   $scope.$on('issuer-updated', function(event, args) {
-    $scope.issuer = angular.copy(args.data);
+    $scope.issuer       = angular.copy(args.data);
+    $scope.issuer.issId = $scope.issuer.id;
   });
 
   $scope.save = function() {
