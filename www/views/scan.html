@@ -194,6 +194,16 @@
 					</div>
 				</div>
 				<div class="option">
+					<label>Bank Number</label>
+					<button class="edit" ng-click="edit('bank')">Edit</button>
+					<div class="value" ng-if="!edit.bank">
+						<span>{{ scannedData.MICR.bankNum }}</span>
+					</div>
+					<div class="form-control-edit value" ng-if="edit.bank">
+						<input type="text" name="acct" ng-model="scannedData.MICR.bankNum" ng-keydown="inputKeyDown($event, 'bank')" />
+					</div>
+				</div>
+				<div class="option">
 					<label>Notes</label>
 					<div class="form-control-edit value">
 						<textarea class="notes" name="notes" ng-model="scannedData.notes" rows="10" cols="50">

@@ -102,6 +102,8 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
     function() {
       $scope.panes.scan = false;
       $scope.panes.info = true;
+
+      $scope.newBank.add = true;
     });
 
     saveCheck().then(function(id) {
@@ -164,10 +166,11 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
       }
     }).
     success(function(data, status, headers, config) {
-      console.log('success.');
+      console.log('success.', data);
       if(data.status) {
-        $scope.bank.id   = data.bnkId;
-        $scope.bank.name = data.name;
+        $scope.bank.id     = data.bnkId;
+        $scope.bank.name   = data.name;
+        $scope.newBank.add = false;
       }
       else {
         $scope.newBank.add = true;
@@ -254,7 +257,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   function saveScan(defer) {
     $http({
       method: 'POST',
-      url: 'http://' + configuration.device.url + '/q/check',
+      url: 'http://' + configuration.storage.hostUrl + '/q/check',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -277,7 +280,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   function updateScan() {
     $http({
       method: 'PUT',
-      url: 'http://' + configuration.device.url + '/q/check/update/' + process.chkId,
+      url: 'http://' + configuration.storage.hostUrl + '/q/check/update/' + process.chkId,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -336,9 +339,10 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   };
 
   $scope.edit = {
-    acct: false,
-    routing: false,
-    checkNum: false
+    acct:     false,
+    routing:  false,
+    checkNum: false,
+    bank:     false,
   };
 
   $scope.issuer = {
@@ -524,6 +528,9 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
         case 'routing':
           getIssuer();
           break;
+        case 'bank':
+          getBank();
+          break;
         default:
       }
     }
@@ -621,7 +628,7 @@ stx.controller('ScanController', ['$scope', '$http', '$q', '$timeout', 'process'
   $scope.rescan = function() {
     $http({
       method: 'DELETE',
-      url: 'http://' + configuration.device.url + '/q/check/delete/' + process.chkId,
+      url: 'http://' + configuration.storage.hostUrl + '/q/check/delete/' + process.chkId,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
