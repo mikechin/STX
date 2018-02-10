@@ -998,13 +998,17 @@ class Db {
 	}
 
 	public function updateCheck($id, $data) {
-		$values = 'cusId = :cusId, issId = :issId, bnkId = :bnkId, MICRAmt = :MICRAmt';
+		$values = 'cusId = :cusId, issId = :issId, bnkId = :bnkId, MICRAcct = :MICRAcct, MICRAmt = :MICRAmt, MICRBankNum = :MICRBankNum, MICRSerNum = :MICRSerNum, MICRTransit = :MICRTransit';
 
-		$cusId = $data->cusId;
-		$issId = $data->issId;
-		$bnkId = $data->bnkId;
-		$amt   = $data->MICR['amt'];
-		$notes = NULL;
+		$cusId   = $data->cusId;
+		$issId   = $data->issId;
+		$bnkId   = $data->bnkId;
+		$acct    = $data->MICR['acct'];
+		$amt     = $data->MICR['amt'];
+		$bankNum = $data->MICR['bankNum'];
+		$serNum  = $data->MICR['serNum'];
+		$transit = $data->MICR['transit'];
+		$notes   = NULL;
 
 		if(!empty($data->notes)) {
 			$notes   = $data->notes;
@@ -1012,13 +1016,17 @@ class Db {
 		}
 
 		$q = $this->db->prepare("UPDATE checks SET $values WHERE chkId = :id");
-		$q->bindParam(':id',      $id);
-		$q->bindParam(':cusId',   $cusId);
-		$q->bindParam(':issId',   $issId);
-		$q->bindParam(':bnkId',   $bnkId);
-		$q->bindParam(':MICRAmt', $amt);
+		$q->bindParam(':id',          $id);
+		$q->bindParam(':cusId',       $cusId);
+		$q->bindParam(':issId',       $issId);
+		$q->bindParam(':bnkId',       $bnkId);
+		$q->bindParam(':MICRAcct',    $acct);
+		$q->bindParam(':MICRAmt',     $amt);
+		$q->bindParam(':MICRBankNum', $bankNum);
+		$q->bindParam(':MICRSerNum',  $serNum);
+		$q->bindParam(':MICRTransit', $transit);
 		if($notes)
-			$q->bindParam(':comment', $notes);
+			$q->bindParam(':comment',   $notes);
 		$q->execute();
 
 		if($q->rowCount() > 0) {
