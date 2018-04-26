@@ -9,7 +9,7 @@
         <td>Photo</td>
         <td><input type="file" id="upload-photo" /></td>
         <div class="image" ng-show="edit">
-          <img ng-show="c.photo" ng-src="{{ c.photo }}" />
+          <img ng-show="c.photo" ng-src="cusimg/{{ c.id }}.jpg" />
           <img ng-hide="c.photo" src="assets/img/no_image_available.jpg" />
         </div>
       </tr>
