@@ -124,7 +124,7 @@ class Db {
 			$values .= ', :comment';
 		}
 		if(!empty($data->photo)) {
-			$photo = $data->photo;
+			$photo = true;
 			$columns .= ', photo';
 			$values .= ', :photo';
 		}
@@ -153,6 +153,18 @@ class Db {
 		$cusId = $this->db->lastInsertId();
 
 		if($cusId) {
+			if($photo) {
+				// save photo.
+				$save = explode(',', $data->photo);
+				$decoded = '';
+				// for larger images need to break up the base64 string.
+				for ($i = 0; $i < ceil(strlen($save[1])/256); $i++) {
+					$decoded = $decoded . base64_decode(substr($save[1], $i*256, 256));
+				}
+				// save the file.
+				file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/cusimg/$cusId.jpg", $decoded);
+			}
+
 			$this->send([
 				'status' => true,
 				'cusId' => $cusId
@@ -1085,8 +1097,18 @@ class Db {
 			$values .= ', comment = :comment';
 		}
 		if(!empty($data->photo)) {
-			$photo = $data->photo;
+			$photo = true;
 			$values .= ', photo = :photo';
+
+			// save photo.
+			$save = explode(',', $data->photo);
+			$decoded = '';
+			// for larger images need to break up the base64 string.
+			for ($i = 0; $i < ceil(strlen($save[1])/256); $i++) {
+				$decoded = $decoded . base64_decode(substr($save[1], $i*256, 256));
+			}
+			// save the file.
+			file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/cusimg/$id.jpg", $decoded);
 		}
 
 		$q = $this->db->prepare("UPDATE customers SET $values WHERE cusId = :id");
@@ -1119,7 +1141,7 @@ class Db {
 		}
 		else {
 			$this->send([
-				'status' => false
+				'status' => false,
 			]);
 		}
 	}
