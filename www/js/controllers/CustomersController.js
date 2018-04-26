@@ -72,8 +72,7 @@ stx.controller('CustomersController', ['$scope', '$http', 'configuration', funct
   });
 
   $scope.customerSearch = function() {
-    $scope.customer.add  = false;
-    $scope.customer.edit = false;
+    $scope.customer.info = false;
 
     if($scope.search.name.first === '' && $scope.search.name.last === '') {
       $scope.customerForm.firstname.$invalid = true;
