@@ -3,12 +3,12 @@
   <span ng-show="edit">Edit Customer</span>
 </div>
 <div class="section" ng-show="show">
-  <ng-form name="editForm">
+  <ng-form class="customer-edit" name="editForm">
     <table class="new-entry">
       <tr>
         <td>Photo</td>
         <td><input type="file" id="upload-photo" /></td>
-        <div ng-show="edit">
+        <div class="image" ng-show="edit">
           <img ng-show="c.photo" ng-src="{{ c.photo }}" />
           <img ng-hide="c.photo" src="assets/img/no_image_available.jpg" />
         </div>
