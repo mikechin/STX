@@ -119,6 +119,8 @@ stx.directive('customersInfo', ['$q', '$http', '$rootScope', 'configuration', fu
       // **************************************************
       scope.insert = function() {
         uploadPhoto().then(function() {
+          document.getElementById('upload-photo').value = '';
+
           var url = 'http://' + configuration.storage.hostUrl + '/q/customer/add';
           $http({
             method: 'POST',
@@ -146,6 +148,8 @@ stx.directive('customersInfo', ['$q', '$http', '$rootScope', 'configuration', fu
 
       scope.update = function() {
         uploadPhoto().then(function(upload) {
+          document.getElementById('upload-photo').value = '';
+
           var url = 'http://' + configuration.storage.hostUrl + '/q/customer/update/' + scope.c.id;
           $http({
             method: 'PUT',
