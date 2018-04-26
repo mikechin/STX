@@ -1097,7 +1097,6 @@ class Db {
 			$values .= ', comment = :comment';
 		}
 		if(!empty($data->photo)) {
-			$photo = true;
 			$values .= ', photo = :photo';
 
 			// save photo.
@@ -1108,7 +1107,9 @@ class Db {
 				$decoded = $decoded . base64_decode(substr($save[1], $i*256, 256));
 			}
 			// save the file.
-			file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/cusimg/$id.jpg", $decoded);
+			$file = $_SERVER['DOCUMENT_ROOT'] . "/cusimg/$id.jpg";
+			file_put_contents($file, $decoded);
+			$photo = filesize($file);
 		}
 
 		$q = $this->db->prepare("UPDATE customers SET $values WHERE cusId = :id");
@@ -1136,12 +1137,13 @@ class Db {
 		if($q->rowCount() > 0) {
 			$this->send([
 				'status' => true,
-				'cusId' => $id,
+				'cusId'  => $id,
 			]);
 		}
 		else {
 			$this->send([
 				'status' => false,
+				'cusId'  => $id,
 			]);
 		}
 	}

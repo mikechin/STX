@@ -86,13 +86,14 @@ stx.directive('customersInfo', ['$q', '$http', '$rootScope', 'configuration', fu
           r.onloadend = function(e) {
             var data = e.target.result;
             scope.c.photo = data;
-            upload.resolve();
+            upload.resolve(true);
           };
 
           r.readAsDataURL(f);
         }
         else {
-          upload.resolve();
+          scope.c.photo = false;
+          upload.resolve(false);
         }
 
         $q.all([ upload.promise ]).then(function() {
@@ -144,7 +145,7 @@ stx.directive('customersInfo', ['$q', '$http', '$rootScope', 'configuration', fu
       };
 
       scope.update = function() {
-        uploadPhoto().then(function() {
+        uploadPhoto().then(function(upload) {
           var url = 'http://' + configuration.storage.hostUrl + '/q/customer/update/' + scope.c.id;
           $http({
             method: 'PUT',
