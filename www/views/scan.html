@@ -219,6 +219,29 @@
 			</ng-form>
 		</div>
 		<div class="section-header">
+			<span>Issuer</span>
+		</div>
+		<div class="section" ng-class="{ 'has-error': issuer.invalid, 'bg-danger': issuer.danger, 'bg-warn': issuer.warn  }">
+			<div class="option">
+				<div ng-hide="issuer.add">
+					<div>
+						<select ng-model="issuer" ng-options="issuer.name for issuer in issuers"></select>
+					</div>
+					<label>Name</label>
+					<div>{{ issuer.name }}</div>
+					<label>Notes</label>
+					<div>{{ issuer.comment }}</div>
+					<div class="buttons">
+						<button class="new" ng-click="issuerNew()">+ New</button>
+					</div>
+				</div>
+				<div class="no-results" ng-show="issuer.add">
+					<span>No results.</span>
+				</div>
+			</div>
+		</div>
+		<issuers-info show="issuer.info"></issuers-info>
+		<div class="section-header">
 			<span>Customer</span>
 		</div>
 		<div class="section" ng-class="{ 'has-error': customer.invalid, 'bg-danger': customer.danger, 'bg-warn': customer.warn }">
@@ -284,29 +307,6 @@
 			</div>
 		</div>
 		<customers-info show="customer.info"></customers-info>
-		<div class="section-header">
-			<span>Issuer</span>
-		</div>
-		<div class="section" ng-class="{ 'has-error': issuer.invalid, 'bg-danger': issuer.danger, 'bg-warn': issuer.warn  }">
-			<div class="option">
-				<div ng-hide="issuer.add">
-					<div>
-						<select ng-model="issuer" ng-options="issuer.name for issuer in issuers"></select>
-					</div>
-					<label>Name</label>
-					<div>{{ issuer.name }}</div>
-					<label>Notes</label>
-					<div>{{ issuer.comment }}</div>
-					<div class="buttons">
-						<button class="new" ng-click="issuerNew()">+ New</button>
-					</div>
-				</div>
-				<div class="no-results" ng-show="issuer.add">
-					<span>No results.</span>
-				</div>
-			</div>
-		</div>
-		<issuers-info show="issuer.info"></issuers-info>
 		<div class="section-header">
 			<span>Bank</span>
 		</div>
