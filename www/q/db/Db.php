@@ -658,7 +658,7 @@ class Db {
 				'cusId'     => $row['cusId'],
 				'firstname' => $row['firstname'],
 				'lastname'  => $row['lastname'],
-				'photo'     => (int)$row['photo'] === 1 ? true : false,
+				'photo'     => (int)$row['photo'] !== 0 ? true : false,
 				'address1'  => $row['address1'],
 				'address2'  => $row['address2'],
 				'city'      => $row['city'],
@@ -703,7 +703,7 @@ class Db {
 				'cusId'     => $row['cusId'],
 				'firstname' => $row['firstname'],
 				'lastname'  => $row['lastname'],
-				'photo'     => (int)$row['photo'] === 1 ? true : false,
+				'photo'     => (int)$row['photo'] !== 1 ? true : false,
 				'comment'   => $row['comment'],
 				'warn'      => (int)$row['alert'] === 1 ? true : false,
 				'danger'    => (int)$row['alert'] === 2 ? true : false
