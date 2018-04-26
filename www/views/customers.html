@@ -32,7 +32,7 @@
         <a href="" class="select" ng-click="customerSelect($index)">
           <div class="customer-result">
             <div class="photo">
-              <img ng-show="c.photo" ng-src="{{ c.photo }}" />
+              <img ng-show="c.photo" ng-src="cusimg/{{ c.cusId }}.jpg" />
               <img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
             </div>
             <div class="info">
@@ -59,7 +59,7 @@
         <button class="edit" ng-click="reportCustomer(2)">Alert</button>
         <button class="edit" ng-click="reportCustomer(0)">Clear</button>
         <div class="photo">
-          <img ng-show="customer.photo" ng-src="{{ customer.photo }}" />
+          <img ng-show="customer.photo" ng-src="cusimg/{{ customer.id }}.jpg" />
           <img ng-hide="customer.photo" ng-src="assets/img/no_image_available.jpg" />
         </div>
         <div class="info">
