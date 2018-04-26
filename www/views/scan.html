@@ -249,13 +249,15 @@
 					</div>
 					<div class="search-result" ng-class="{ 'bg-danger': c.danger, 'bg-warn': c.warn }" ng-repeat="c in customers">
 						<a href="" class="select" ng-click="customerSelect($index)">
-							<div class="photo">
-								<img ng-show="c.photo" ng-src="{{ c.photo }}" />
-								<img ng-hide="c.photo" ng-src="assets/img/no_image_available.jpg" />
-							</div>
-							<div class="info">
-								<div class="name">{{ c.firstname }} {{ c.lastname }}</div>
-								<div class="notes">Notes: {{ c.comment }}</div>
+							<div class="customer-result">
+								<div class="photo">
+									<img ng-if="c.photo" ng-src="cusimg/{{ c.cusId }}.jpg" />
+									<img ng-if="!c.photo" ng-src="assets/img/no_image_available.jpg" />
+								</div>
+								<div class="info">
+									<div class="name">{{ c.firstname }} {{ c.lastname }}</div>
+									<div class="notes">Notes: {{ c.comment }}</div>
+								</div>
 							</div>
 						</a>
 						<div class="clear"></div>
@@ -264,13 +266,15 @@
 			</div>
 			<div ng-show="customer.selected">
 				<div class="search-result">
-					<div class="photo">
-						<img ng-show="customer.photo" ng-src="{{ customer.photo }}" />
-						<img ng-hide="customer.photo" ng-src="assets/img/no_image_available.jpg" />
-					</div>
-					<div class="info">
-						<div class="name">{{ customer.name.first }} {{ customer.name.last }}</div>
-						<div class="notes">Notes: {{ customer.notes }}</div>
+					<div class="customer-result">
+						<div class="photo">
+							<img ng-if="customer.photo" ng-src="cusimg/{{ customer.id }}.jpg" />
+							<img ng-if="!customer.photo" ng-src="assets/img/no_image_available.jpg" />
+						</div>
+						<div class="info">
+							<div class="name">{{ customer.name.first }} {{ customer.name.last }}</div>
+							<div class="notes">Notes: {{ customer.notes }}</div>
+						</div>
 					</div>
 					<div class="clear"></div>
 				</div>
