@@ -27,7 +27,7 @@ stx.directive('checkList', ['$q', '$http', 'configuration', function($q, $http, 
       scope.delete = function(id, index) {
         $http({
           method: 'DELETE',
-          url: 'http://' + configuration.device.url + '/q/check/delete/' + id,
+          url: 'http://' + configuration.storage.hostUrl + '/q/check/delete/' + id,
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
